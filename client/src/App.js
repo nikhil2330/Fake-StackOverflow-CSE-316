@@ -2,11 +2,14 @@
 // ************** DEFINE YOUR REACT COMPONENTS in ./components directory **************
 import './stylesheets/App.css';
 import FakeStackOverflow from './components/fakestackoverflow.js'
+import { BrowserRouter as Router} from 'react-router-dom';
 
 function App() {
-  return (
+  return ( 
     <section className="fakeso">
-      <FakeStackOverflow />
+      <Router>
+        <FakeStackOverflow />
+      </Router>
     </section>
   );
 }
