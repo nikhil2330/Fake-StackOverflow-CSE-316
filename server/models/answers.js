@@ -19,7 +19,7 @@ const answerSchema = new Schema({
   question: {
     type: Schema.Types.ObjectId,
     ref: 'Question',
-    required: false
+    required: true
   }
 });
 
