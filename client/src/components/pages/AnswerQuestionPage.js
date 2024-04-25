@@ -8,6 +8,7 @@ export default function AnswerQuestionPage({postAnswer}) {
     const[ans_text, setAnsText] = useState("");
     const[user, setUser] = useState("");
     const { id } = useParams();
+    console.log("Question ID:", id);
 
     const AnswerSubmit = async (event) => {
         event.preventDefault();

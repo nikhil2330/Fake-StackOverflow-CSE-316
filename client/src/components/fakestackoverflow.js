@@ -55,8 +55,9 @@ export default function FakeStackOverflow() {
     await axios.post('http://localhost:8000/models/answers', {
       text: anstext,
       ans_by: user,
-      questionId: qid
+      questionID: qid
     });
+    //navigate(`/question/${qid}`);
     fetchQuestionDetails(qid);
   }
 
@@ -112,7 +113,7 @@ export default function FakeStackOverflow() {
       setQuestions(sortedQuestions);
     });
   };
-  
+
   const handleTagClick = (tid) => {
     axios.get(`http://localhost:8000/models/questions/tag/${tid}`)
     .then(response => {
@@ -130,7 +131,8 @@ export default function FakeStackOverflow() {
         const response = await axios.get(`http://localhost:8000/models/questions/${qid}`);
         if (response.status === 200) {
           setCurQuestion(response.data);
-          navigate(`/questions/${qid}`);
+          navigate(`/question/${qid}`);
+          //navigate(`/questions/${qid}`);
 
         }
     } catch (error) {
@@ -140,6 +142,8 @@ export default function FakeStackOverflow() {
 
   const handleAnswerClick = (qid) => {
     incrementViews(qid);
+    
+
     
   };
   const handleMenu = async (e) => {
@@ -180,8 +184,8 @@ export default function FakeStackOverflow() {
                 displayAnswers={handleAnswerClick}
               />)} />
               <Route path="/ask" element={<AskQuestionPage postquestion={postquestion} />} />
-              <Route path='/questions/:id' element={<Answers AskQuestion={() => navigate('/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
-              <Route path="/answer/:id" element={curQuestion ? <AnswerQuestionPage postAnswer={postanswer} qid={curQuestion._id}/> : null} />
+              <Route path='/question/:id' element={<Answers AskQuestion={() => navigate('/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
+              <Route path="/answer/:id" element={<AnswerQuestionPage postAnswer={postanswer}/>} />
               <Route path="/tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('/ask')}  />} />
               {/* Add other routes as needed */}
             </Routes>

@@ -63,23 +63,24 @@ function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-app.post("/models/answers", async (req, res) => {
-    const { text, ans_by, questionId } = req.body; 
-    const newAnswer = new Answer({
-        text,
-        ans_by,
-        question: questionId,
-        ans_date_time: new Date() 
+    app.post("/models/answers", async (req, res) => {
+        const { text, ans_by, questionID } = req.body; 
+
+        const newAnswer = new Answer({
+            text,
+            ans_by,
+            question: questionID,
+            ans_date_time: new Date() 
+        });
+
+        await newAnswer.save();
+        const question = await Question.findById(questionID);
+        question.answers.push(newAnswer);
+        await question.save();
+        await question.populate('answers');
+        res.json(newAnswer);
+
     });
-
-    await newAnswer.save();
-    const question = await Question.findById(questionId);
-    question.answers.push(newAnswer);
-    await question.save();
-    await question.populate('answers');
-    res.json(newAnswer);
-
-});
 
 
 app.post("/models/questions", async (req, res) => {

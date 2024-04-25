@@ -17,14 +17,13 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
         fetchQuestion();
     }, [id]);
 
+    console.log();
     if (!question) {
         return <div></div>;
     }
 
-    const answersLength = question.answers ? question.answers.length : 0;
-    const answer_s = answersLength === 1 ? 'answer' : 'answers';
-    const views = question.views ? question.views : 0;
-    const view_s = views === 1 ? 'view' : 'views';
+    const answer_s = question.answers.length === 1 ? 'answer' : 'answers';
+    const view_s = question.views === 1 ? 'view' : 'views';
     return (
         <>
             <div id = "ansSec-A">
@@ -46,7 +45,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                     <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
                 </div>
             </div>
-            {question.answers && question.answers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time)).map(answer => (
+            {question.answers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time)).map(answer => (
                 <div key={answer._id}>
                     <div id = 'sectionAns' >
                         <div id = 'answertext' dangerouslySetInnerHTML={{ __html: answer.text}}></div>
@@ -57,7 +56,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                     </div>
                 </div>
             ))}
-            <button className = "button1" id="button2" key = {question._id} onClick={handleAnswerQuestion}>Answer Question</button>
+            <button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>
       </>
   );
 }
