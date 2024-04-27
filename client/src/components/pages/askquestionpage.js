@@ -29,7 +29,7 @@ export default function AskQuestionPage({postquestion}) {
       console.log("a");
       if(flag !== 1){
         const newText = text.replace(validHyperlink, (match, name, link) => `<a href="${link}" target="_blank">${name}</a>`);
-        await axios.post('http://localhost:8000/models/questions', {
+        await axios.post('http://localhost:8000/questions', {
             title: title,
             text: newText, 
             tags: tags,

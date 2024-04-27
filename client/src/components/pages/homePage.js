@@ -2,7 +2,7 @@ import React from 'react';
 import Top from '../top'
 import QuestionList from '../questionList';
 
-const HomePage = ({ handleSortNewest, title, handleSortActive, handleSortUnanswered, questions, AskQuestion, displayAnswers, QuestionC }) => {
+const HomePage = ({ handleSortNewest, title, handleSortActive, handleSortUnanswered, questions, AskQuestion, displayAnswers, QuestionC}) => {
     return (
         <div className="home-page">
             <Top

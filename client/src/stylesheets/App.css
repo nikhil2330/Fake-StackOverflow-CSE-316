@@ -739,44 +739,146 @@ li div:hover {
     color: white;
     cursor: pointer;
 }
-
-.welcome-cont {
-    /* Styles for your welcome container */
-  }
-  
-  .welcome-message {
-    /* Styles for your welcome message */
-    animation: fadeIn 1s;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  .banner {
-    /* Initial styles for the banner */
+.welcome-container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2vh; /* Reduced padding */
+    font-family: 'Arial', sans-serif;
+    margin: 0 auto; /* Center the container */
+    max-width: 1000px; /* Adjust the max-width to contain the boxes comfortably */
   }
   
-  .slide-left {
-    /* This class is added to slide the community side to the center */
-    animation: slideToRight 0.5s forwards;
+  .welcome-container h1 {
+    font-size: 4rem; /* Increase font size */
+    color: #2a2a2a;
+    margin: 1rem 0; /* Reduced space below the title */
   }
   
-  @keyframes slideToRight {
-    from { transform: translateX(0); }
-    to { transform: translateX(40%); }
+  .boxes-container {
+    display: flex;
+    flex-direction: column; /* Stack boxes vertically */
+    align-items: center; /* Align boxes horizontally */
+    gap: 1rem; /* Add gap between stacked boxes */
+    width: 100%;
+    margin: 1vh 0; /* Reduced margin at the bottom of the container */
   }
   
-  .community-side, .guest-side {
-    /* Styles for each side of the banner */
-    width: 50%;
+  .continue-as-guest, .join-community, .login-community {
+    padding: 1.5rem; /* Adjust padding */
+    border: 2px solid #ddd;
+    border-radius: 15px;
+    width: 100%; /* Make boxes full width */
+    text-align: center;
     cursor: pointer;
-    transition: transform 0.5s;
+    transition: all 0.3s ease;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
   }
   
-  .login-form {
-    /* Styles for the login form */
-    transition: transform 0.5s;
+  .continue-as-guest p, .join-community p, .login-community p {
+    font-size: 1.25rem; /* Adjust font size */
+    margin: 0;
   }
+  
+  .continue-as-guest:hover, .join-community:hover, .login-community:hover {
+    border-color: #007bff;
+    box-shadow: 0px 8px 15px rgba(0, 123, 255, 0.2);
+  }
+
+.login-signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 350px; /* Adjust width as necessary */
+  padding: 2em;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 1vh auto 2vh auto; /* Space above and below the form container */
+}
+
+/* Input field styles */
+.login-signup-container input {
+  width: calc(100% - 20px); /* Account for padding */
+  padding: 10px;
+  margin-bottom: 15px; /* Space between inputs */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem; /* Legible font size */
+}
+
+/* Button styles for primary action */
+.login-signup-container button {
+  width: 100%; /* Full width for better alignment */
+  padding: 0.75rem 0; /* Uniform padding */
+  margin-bottom: 1rem; /* Space below the button */
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold; /* Emphasize the button text */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.c{
+    background-color: #099928;
+}
+
+/* Container for secondary action buttons */
+.extra_buttons {
+  width: 100%; /* Match parent width */
+  display: flex;
+  flex-direction: column; /* Stack buttons */
+  align-items: center; /* Center buttons */
+}
+
+/* Secondary action buttons */
+.extra_buttons button {
+  width: 100%; /* Match the width of primary buttons */
+  padding: 0.75rem 0; /* Consistent padding with primary buttons */
+  margin-bottom: 1rem; /* Consistent space between buttons */
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Continue as Guest button */
+.a {
+  background-color: #d9534f; /* Red color for the 'Continue as Guest' button */
+  color: white;
+}
+
+/* Sign Up button in the login form, Login button in the signup form */
+.b {
+  background-color: #337ab7; /* Blue color for the 'Sign Up' or 'Login' button */
+  color: white;
+}
+
+/* Hover effect for all buttons */
+.login-signup-container button:hover,
+.extra_buttons button:hover {
+  filter: brightness(90%); /* Slightly darken on hover */
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-container input {
+    width: 100%;
+    padding-right: 150px; /* space for the icon */
+}
+
+.toggle-icon {
+    position: absolute;
+    right: 10px; /* adjust as needed */
+    top: 38%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    height: 20px; /* match your image size */
+    width: 20px;
+}

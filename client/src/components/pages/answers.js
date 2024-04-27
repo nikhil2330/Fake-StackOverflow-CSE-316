@@ -8,7 +8,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
     const [question, setQuestion] = useState(null);
     useEffect(() => {
         const fetchQuestion = async () => {
-            const response = await axios.get(`http://localhost:8000/models/questions/${id}`);
+            const response = await axios.get(`http://localhost:8000/questions/${id}`);
             if (response.status === 200) {
                 setQuestion(response.data);
             }
