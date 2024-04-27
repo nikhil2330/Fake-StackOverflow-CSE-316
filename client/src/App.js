@@ -2,13 +2,14 @@
 // ************** DEFINE YOUR REACT COMPONENTS in ./components directory **************
 import './stylesheets/App.css';
 import FakeStackOverflow from './components/fakestackoverflow.js'
-import { BrowserRouter as Router} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import WelcomePage from './components/pages/welcomePage.js';
 
 function App() {
   return ( 
     <section className="fakeso">
       <Router>
-        <FakeStackOverflow />
+        <FakeStackOverflow/>
       </Router>
     </section>
   );

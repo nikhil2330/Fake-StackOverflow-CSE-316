@@ -7,7 +7,7 @@ export default function TagsPage({getTagQuestion, AskQuestion}) {
 
   useEffect(() => {
 
-    axios.get('http://localhost:8000/models/tags')
+    axios.get('http://localhost:8000/tags')
       .then(response =>{ 
         setTags(response.data);
         const totalCount = response.data.reduce((acc, tag) => acc + tag.questionCount, 0);

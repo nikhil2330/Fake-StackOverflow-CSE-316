@@ -1,63 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from 'react-router-dom';
-import axios from 'axios';    
+import React,{useState} from 'react';
 
 
-export default function Welcome() {
-  const [pageState, setPageState] = useState('welcome');
-
-  const handleCommunityClick = () => {
-    setPageState('community');
-  };
-
-  const handleGuestClick = () => {
-    setPageState('guest');
-  };
-
-  const handleLogin = (username, password) => {
-    // Logic to handle login
-  };
-
-  const handleSignUp = () => {
-    setPageState('signup');
-  };
-
-  const handleContinueAsGuest = () => {
-    setPageState('continueAsGuest');
-  };
-
-  return (
-    <div className="welcome-cont">
-      {pageState === 'welcome' && (
-        <div className="welcome-message">
-          <h1>Welcome</h1>
-        </div>
-      )}
-
-      {(pageState === 'welcome' || pageState === 'community') && (
-        <div className={`banner ${pageState === 'community' ? 'slide-left' : ''}`}>
-          <div className="community-side" onClick={handleCommunityClick}>
-            <p>Login or sign up to the fake StackOverflow community</p>
+export default function WelcomePage({handleContinueAsGuest, showLogin, showSignup}) {
+  
+    return (
+      <div className="welcome-container">
+        <h1>Welcome to Fake StackOverflow</h1>
+        <div className="boxes-container">
+          <div className="continue-as-guest" onClick={handleContinueAsGuest}>
+            <p>Want a quick look through? Continue browsing as guest</p>
           </div>
-          <div className="guest-side" onClick={handleGuestClick}>
-            <p>Continue browsing as a guest</p>
+          <div className="join-community"  onClick={showSignup}>
+            <p>Want to be a part of the Fake StackOverflow community? Sign up!</p>
+          </div>
+          <div className="login-community" onClick={showLogin}>
+            <p>Already part of the Fake StackOverflow community? Log Back in!</p>
           </div>
         </div>
-      )}
-
-      {pageState === 'login' && (
-        <div className="login-form">
-          <input type="text" placeholder="Username or Email" />
-          <button onClick={() => handleLogin('username', 'password')}>Login</button>
-          <button onClick={handleSignUp}>Sign up</button>
-          <button onClick={handleContinueAsGuest}>Continue as guest</button>
-        </div>
-      )}
-    </div>
-  );
-};
+      </div>
+    );
+}

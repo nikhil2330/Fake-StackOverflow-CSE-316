@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { answerErrors } from '../../helpers';
 
@@ -8,7 +7,6 @@ export default function AnswerQuestionPage({postAnswer}) {
     const[ans_text, setAnsText] = useState("");
     const[user, setUser] = useState("");
     const { id } = useParams();
-    console.log("Question ID:", id);
 
     const AnswerSubmit = async (event) => {
         event.preventDefault();
