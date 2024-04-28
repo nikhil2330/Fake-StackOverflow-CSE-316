@@ -7,6 +7,7 @@ export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
     email: '',
     password: ''
   });
+  const [password, setPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,6 +26,9 @@ export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
       setErrors(loginErrors(formData));
     }
   };
+  const togglePassword = () => {
+    setPassword(!password);
+};
 
   return (
     <div className="welcome-container">
@@ -34,8 +38,12 @@ export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
             <input type="text" placeholder="Email" onChange = {e => setFormData({...formData, email: e.target.value })}/>
             {errors.email && <div className="error">{errors.email}</div>}
 
-            <input type="password" placeholder="Password" onChange = {e => setFormData({...formData, password: e.target.value })}/>
+            <div className="input-container">
+              <input type="password" placeholder="Password" onChange = {e => setFormData({...formData, password: e.target.value })}/>
+              <img src={password ? '../visible.png' : '../invisible.png'} onClick={togglePassword} className="toggle-icon" alt="Toggle " />
+            </div>
             {errors.password && <div className="error">{errors.password}</div>}
+
             <button className='c' onClick={handleSubmit}>Login</button>
             <div className="extra-buttons">
                 <button className='a' onClick={onContinueAsGuest}>Continue as Guest</button>
