@@ -12,6 +12,7 @@
   import Main from './main.js';
   import Signup from './signup.js';
   import Login from './login.js';
+  axios.defaults.withCredentials = true;
 
 
   export default function FakeStackOverflow() {
@@ -35,7 +36,7 @@
 
     const incrementViews = async (questionId) => {
       await axios.post(`http://localhost:8000/questions/increment-view/${questionId}`);
-      fetchQuestionDetails(questionId);
+
     }
     const registerUser = () => {
       navigate('/login');
@@ -67,7 +68,6 @@
         ans_by: user,
         questionID: qid
       });
-      //navigate(`/question/${qid}`);
       fetchQuestionDetails(qid);
     }
 
@@ -147,7 +147,6 @@
           const response = await axios.get(`http://localhost:8000/questions/${qid}`);
           if (response.status === 200) {
             navigate(`home/question/${qid}`);
-            //navigate(`/questions/${qid}`);
 
           }
       } catch (error) {
@@ -157,6 +156,7 @@
 
     const handleAnswerClick = (qid) => {
       incrementViews(qid);
+      fetchQuestionDetails(qid);
       
 
       
@@ -194,6 +194,7 @@
   const handleLogout = async () => {
     try {
         await axios.get('http://localhost:8000/users/logout');
+        console.log("userloggedout");
         navigate('/login');
     } catch (error) {
         console.error('Logout failed', error);

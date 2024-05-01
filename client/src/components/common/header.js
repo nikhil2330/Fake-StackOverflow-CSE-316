@@ -8,7 +8,7 @@ function Header({handleChange, handleKeyDown, handleLogout}) {
         <input type="text" id="input" placeholder="Search . . ." onChange = {handleChange}
          onKeyDown={handleKeyDown}/>
       </div>
-      <button onClick={handleLogout}>logout</button>
+      <button className='logout' onClick={handleLogout}>logout</button>
     </header>
   );
 }

@@ -29,7 +29,7 @@ export default function TagsPage({getTagQuestion, AskQuestion}) {
           <div className="tags-container" id="tags-container">
             
             {tags.map(tag => (
-              <div className="tag" key={tag.tid}>
+              <div className="tag" key={tag._id}>
                 <div className="tag-name" onClick={() => getTagQuestion(tag._id)} >{tag.name}</div>
                 <div className="tag-question-count">{tag.questionCount  + " " + ((tag.questionCount  > 1 || tag.questionCount  < 1) ? 'Questions' : 'Question')}</div>
               </div>

@@ -50,7 +50,7 @@ module.exports.loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '2h' });
-        await res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "none", maxAge: 7200000 }).status(200).json({
+        await res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 7200000 }).status(200).json({
             success: true,
             user: {
                 id: user._id,
