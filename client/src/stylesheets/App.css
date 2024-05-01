@@ -862,6 +862,10 @@ li div:hover {
   filter: brightness(90%); /* Slightly darken on hover */
 }
 
+.logout{
+    display: flex;
+
+}
 .input-container {
     position: relative;
     display: flex;

@@ -10,6 +10,7 @@ const answerSchema = new Schema({
   ans_by: {
     type: String,
     required: true,
+    default: anonymous
   },
   ans_date_time: {
     type: Date,
@@ -20,7 +21,16 @@ const answerSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Question',
     required: true
-  }
+  },
+  upvotes: {
+    type: Number,
+    required: false,
+    default: 0
+  },
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
+  }],
 });
 
 module.exports = mongoose.model('Answer', answerSchema);

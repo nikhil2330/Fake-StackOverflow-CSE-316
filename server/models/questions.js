@@ -13,6 +13,10 @@ const questionSchema = new Schema({
     type: String,
     required: true
   },
+  summary: {
+    type: String,
+    required: true
+  },
   tags: [{
     type: Schema.Types.ObjectId,
     ref: 'Tag'
@@ -34,6 +38,18 @@ const questionSchema = new Schema({
   views: {
     type: Number,
     default: 0
-  }});
 
-  module.exports = mongoose.model('Question', questionSchema);
+  },
+  upvotes: {
+    type: Number,
+    required: false,
+    default: 0
+  },
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
+  }],
+
+});
+
+module.exports = mongoose.model('Question', questionSchema);

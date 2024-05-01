@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { questionErrors} from '../../helpers'
 import axios from 'axios'
+//axios.defaults.withCredentials = true;
 
 export default function AskQuestionPage({postquestion}) {
     const[title, setTitle] = useState("");
