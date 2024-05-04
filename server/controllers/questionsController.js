@@ -1,5 +1,6 @@
 const Question = require('../models/questions');
 const Tag = require('../models/tags');
+const User = require('../models/user');
 
 module.exports.createQuestion = async (req, res) => {
     try{
@@ -20,11 +21,13 @@ module.exports.createQuestion = async (req, res) => {
         }
     
         const allTags = [...T_exist, ...newTags];
+        const user = await User.findById(req.user.userId);
+        console.log(user.username);
         const newQuestion = new Question({
             title,
             text,
             tags: allTags.map(tag => tag._id),
-            asked_by,
+            asked_by: user.username,
             ask_date_time: new Date(),
             views: 0,
             answers: []
@@ -64,7 +67,7 @@ module.exports.getAllQuestionsWithSearch = async (req, res) => {
         searchText = searchText.trim();
         const tagMatches = (searchText.match(/\[(.*?)\]/g) || []).map(match => match.slice(1, -1));
         const textMatches = searchText.replace(/\s*\[(.*?)\]\s*/g, " ").trim();
-        const searchWords = textMatches.split(/\s+/).filter(word => word);
+        const searchWords = textMatches.split(/\s+/).filter(word => word).map(escapeRegex);
         let conditions = [];
 
         if (tagMatches.length > 0) {
@@ -98,7 +101,12 @@ module.exports.getAllQuestionsWithSearch = async (req, res) => {
 
 };
 
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 module.exports.getQuestionsByTag = async (req, res) => {
         const questions = await Question.find({ tags: req.params.tid }).populate('tags').populate('answers'); 
         res.json(questions);
 }
+

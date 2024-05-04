@@ -1,8 +1,9 @@
 import React,{useState} from 'react';
 import { loginErrors } from '../helpers';
-import axios from 'axios';
+import { useAuth } from '../contexts/authContext.js';
 
 export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
+  const {login} = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -14,7 +15,7 @@ export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
   
     if(Object.keys(loginErrors(formData)).length === 0){
       try{
-        await axios.post('http://localhost:8000/users/login', formData);
+        await login(formData);
         loginUser();
       } catch(error){
         if(error.response.status === 401){
@@ -39,11 +40,10 @@ export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
             {errors.email && <div className="error">{errors.email}</div>}
 
             <div className="input-container">
-              <input type="password" placeholder="Password" onChange = {e => setFormData({...formData, password: e.target.value })}/>
+              <input type={password ? "text" : "password"} placeholder="Password" onChange = {e => setFormData({...formData, password: e.target.value })}/>
               <img src={password ? '../visible.png' : '../invisible.png'} onClick={togglePassword} className="toggle-icon" alt="Toggle " />
             </div>
             {errors.password && <div className="error">{errors.password}</div>}
-
             <button className='c' onClick={handleSubmit}>Login</button>
             <div className="extra-buttons">
                 <button className='a' onClick={onContinueAsGuest}>Continue as Guest</button>

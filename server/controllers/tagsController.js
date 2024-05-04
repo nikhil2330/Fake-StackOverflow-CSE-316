@@ -18,21 +18,3 @@ exports.getAllTags = async (req, res) => {
         console.error('Error retrieving all tags:', error);
     }
 };
-
-// exports.getAllTags = async (req, res) => {
-//     try {
-//         const tags = await Tag.find(); 
-//         let totalTagCount = 0;
-//         const tagsWithCounts = await Promise.all(tags.map(async (tag) => {
-//             const count = await Question.countDocuments({ tags: tag._id });
-//             return {
-//                 ...tag._doc, 
-//                 questionCount: count
-//             };
-//         }));
-
-//          res.json(tagsWithCounts);
-//     } catch (error) {
-//         console.error('Error retrieving all tags:', error);
-//     }
-// };

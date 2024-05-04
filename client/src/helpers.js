@@ -60,11 +60,11 @@ export function questionErrors() {
   const titleT = document.getElementById("title_input").value.trim();
   const textT = document.getElementById("quest_input").value.trim();
   const tagsT = document.getElementById("tags_input").value.trim();
-  const usernameT = document.getElementById("username_input").value.trim();
+  const summaryT = document.getElementById("summary_input").value.trim();
 
   if (titleT.length > 100 || titleT.length < 1) {
     document.getElementById("title_error").textContent =
-      "Title cannot be empty and cannot be greater than 100 characters!";
+      "Title cannot be empty and cannot be greater than 50 characters!";
     flag = 1;
   }
   if (textT.length < 1) {
@@ -97,9 +97,9 @@ export function questionErrors() {
       "There can't be more than 5 tags and each tag cannot be greater than 20 characters!";
     flag = 1;
   }
-  if (usernameT.length < 1) {
-    document.getElementById("username_error").textContent =
-      "Username cannot be empty!";
+  if (summaryT.length > 100 || summaryT.length < 1) {
+    document.getElementById("summary_error").textContent =
+      "Summary cannot be empty and cannot be greater than 50 characters!";
     flag = 1;
   }
   return flag;
@@ -107,13 +107,7 @@ export function questionErrors() {
 
 export function answerErrors() {
   let flag = 0;
-  const usernameT = document.getElementById("user_in").value.trim();
   const textT = document.getElementById("answer_input").value.trim();
-  if (usernameT.length < 1) {
-    document.getElementById("ans_username_error").textContent =
-      "Username cannot be empty!";
-    flag = 1;
-  }
   if (textT.length < 1) {
     document.getElementById("ans_text_error").textContent =
       "Text cannot be empty!";

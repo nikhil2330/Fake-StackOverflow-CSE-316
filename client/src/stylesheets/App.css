@@ -457,24 +457,24 @@ li div:hover {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.username{
+.summary{
     font-size: 30px;
     margin-top: 2%;
     margin-left: 37%;
 }
 
-.username_details{
+.summary_details{
     font-style: italic;
     margin-top: 1%;
-    margin-left: 35.5%;
+    margin-left: 31.5%;
     font-size: 15px;
 }
 
-.username_input{
+.summary_input{
     margin-top: 2%;
-    margin-left: 28%;
-    width: 30%;
-    height: 5%;
+    margin-left: 22%;
+    width: 40%;
+    height: 10%;
     text-align: center;
     font-size: 15px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -492,8 +492,8 @@ li div:hover {
 }
 #tags_error{
     margin-left: 17%;
-}#username_error{
-    margin-left: 28%;
+}#summary_error{
+    margin-left: 20%;
 }
 
 .mandatory {
@@ -518,11 +518,6 @@ li div:hover {
     background-color: #0e7da9;
 }
 
-.answer_username {
-    font-size: 30px;
-    margin-top: 2%;
-    margin-left: 37%;
-}
 
 .user_in {
     margin-top: 2%;
@@ -548,9 +543,6 @@ li div:hover {
     text-align: center;
     font-size: 15px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-#ans_username_error{
-    margin-left: 28%;
 }
 #ans_text_error{
     margin-left: 8%;
@@ -690,11 +682,6 @@ li div:hover {
     border: black 2px solid;
     color: white;
     border-radius: 6px;
-}
-.answer_username {
-    font-size: 30px;
-    margin-top: 2%;
-    margin-left: 37%;
 }
 
 .user_in {
@@ -862,7 +849,7 @@ li div:hover {
   filter: brightness(90%); /* Slightly darken on hover */
 }
 
-.logout{
+.logout, .login{
     display: flex;
 
 }

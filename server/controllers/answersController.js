@@ -1,13 +1,14 @@
 const Answer = require('../models/answers');
 const Question = require('../models/questions');
+const User = require('../models/user')
 
 exports.createAnswer = async (req, res) => {
-    const { text, ans_by, questionID } = req.body;
-
+    const { text, questionID } = req.body;
+    const user = await User.findById(req.user.userId);
     try {
         const newAnswer = new Answer({
             text,
-            ans_by,
+            ans_by: user.username,
             question: questionID,
             ans_date_time: new Date()
         });

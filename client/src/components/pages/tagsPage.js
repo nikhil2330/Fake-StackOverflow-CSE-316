@@ -1,9 +1,12 @@
 import React,{useEffect, useState} from 'react';
 import axios from 'axios';
+import { useAuth } from '../../contexts/authContext';
 
 export default function TagsPage({getTagQuestion, AskQuestion}) {
   const [tags, setTags] = useState([]);
   const [tagcount, setTagCount] = useState(0);
+  const { currentUser } = useAuth();
+
 
   useEffect(() => {
 
@@ -23,7 +26,7 @@ export default function TagsPage({getTagQuestion, AskQuestion}) {
           &nbsp;
           <div className="tag-s-" id="tag-s-">{(tagcount > 1 || tagcount < 1) ? 'Tags' : 'Tag'}</div>
           <div className="Ttitle" id="Ttitle"> All tags </div>
-          <button className="button1" id="button1" onClick={AskQuestion}>Ask Question</button>
+          {currentUser && (<button className  = "button1" id="button1" onClick={AskQuestion}>Ask Question</button>)}
         </div>
         <div className="tagsbox" id="tagsbox">
           <div className="tags-container" id="tags-container">

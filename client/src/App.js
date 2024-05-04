@@ -3,13 +3,15 @@
 import './stylesheets/App.css';
 import FakeStackOverflow from './components/fakestackoverflow.js'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import WelcomePage from './components/pages/welcomePage.js';
+import { AuthProvider } from './contexts/authContext';
 
 function App() {
   return ( 
     <section className="fakeso">
       <Router>
+      <AuthProvider>
         <FakeStackOverflow/>
+      </AuthProvider>
       </Router>
     </section>
   );

@@ -7,11 +7,12 @@
   import {useEffect} from 'react';
   import axios from 'axios';    
   import WelcomePage from './pages/welcomePage.js';
-  import { Routes, Route, useNavigate} from 'react-router-dom';
+  import { Routes, Route, useNavigate, Navigate} from 'react-router-dom';
   import HomePage from './pages/homePage.js';
   import Main from './main.js';
   import Signup from './signup.js';
   import Login from './login.js';
+  import { useAuth } from '../contexts/authContext.js';
   axios.defaults.withCredentials = true;
 
 
@@ -20,6 +21,7 @@
     const[searchInput, setSearchInput] = useState("");
     const[title, setTitle] = useState("All Questions");
     let navigate = useNavigate();
+    const { currentUser, continueAsGuest, logout, isGuest } = useAuth();
 
     useEffect(() => {
       // questions from the server
@@ -179,10 +181,6 @@
       navigate(`home/answer/${qid}`);
     };
 
-
-  const handleContinueAsGuest = () => {
-    navigate('/home');
-  };
   const showLogin = () => {
     navigate('/login');
   };
@@ -192,35 +190,33 @@
   };
 
   const handleLogout = async () => {
-    try {
-        await axios.get('http://localhost:8000/users/logout');
-        console.log("userloggedout");
-        navigate('/login');
-    } catch (error) {
-        console.error('Logout failed', error);
-    }
+    await logout();
+    console.log("userloggedout");
+    navigate('/login');
   };
-    return (
-      <Routes>
-        <Route path="/" element={<WelcomePage showSignup ={showSignup} showLogin = {showLogin} handleContinueAsGuest = {handleContinueAsGuest} />} />
-        <Route path="/login" element={<Login onContinueAsGuest={handleContinueAsGuest} onSignUp ={showSignup} loginUser={loginUser}/>} />
-        <Route path="/signup" element={<Signup onContinueAsGuest={handleContinueAsGuest} onLogin = {showLogin} registerUser={registerUser}/>} />
-        <Route path="/home" element={<Main handleSearchChange={handleSearchChange} handleKeyDown={handleKeyDown} handleMenu={handleMenu} handleLogout={handleLogout}/>}>
-          <Route index element={<HomePage
-            handleSortNewest={handleSortNewest}
-            handleSortActive={handleSortActive}
-            handleSortUnanswered={handleSortUnanswered}
-            QuestionC={questions.length}
-            AskQuestion={() => navigate('home/ask')}
-            title={title}
-            questions={questions}
-            displayAnswers={handleAnswerClick}
-          />} />
-          <Route path="ask" element={<AskQuestionPage postquestion={postquestion} />} />
-          <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
-          <Route path="answer/:id" element={<AnswerQuestionPage postAnswer={postanswer} />} />
-          <Route path="tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('home/ask')} />} />
-        </Route>
-      </Routes>
-    );
-  }
+
+
+  return (
+    <Routes>
+      <Route path="/" element={!currentUser && !isGuest  ?  <WelcomePage showSignup ={showSignup} showLogin = {showLogin} handleContinueAsGuest = {continueAsGuest} /> : <Navigate replace to="/home"/> } />
+      <Route path="/login" element={<Login onContinueAsGuest={continueAsGuest} onSignUp ={showSignup} loginUser={loginUser}/>} />
+      <Route path="/signup" element={<Signup onContinueAsGuest={continueAsGuest} onLogin = {showLogin} registerUser={registerUser}/>} />
+      <Route path="/home" element={!currentUser || !isGuest  ? <Main handleSearchChange={handleSearchChange} handleKeyDown={handleKeyDown} handleMenu={handleMenu} handleLogout={handleLogout}/> : <Navigate replace to="/" />} >
+        <Route index element={<HomePage
+          handleSortNewest={handleSortNewest}
+          handleSortActive={handleSortActive}
+          handleSortUnanswered={handleSortUnanswered}
+          QuestionC={questions.length}
+          AskQuestion={() => navigate('home/ask')}
+          title={title}
+          questions={questions}
+          displayAnswers={handleAnswerClick}
+        />} />
+        <Route path="ask" element={<AskQuestionPage postquestion={postquestion} />} />
+        <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
+        <Route path="answer/:id" element={<AnswerQuestionPage postAnswer={postanswer} />} />
+        <Route path="tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('home/ask')} />} />
+      </Route>
+    </Routes>
+  );
+}

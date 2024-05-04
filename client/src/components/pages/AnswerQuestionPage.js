@@ -11,7 +11,6 @@ export default function AnswerQuestionPage({postAnswer}) {
     const AnswerSubmit = async (event) => {
         event.preventDefault();
         document.getElementById("ans_text_error").textContent = "";
-        document.getElementById("ans_username_error").textContent = "";
 
         let flag = 0;
         flag = answerErrors();
@@ -33,16 +32,11 @@ export default function AnswerQuestionPage({postAnswer}) {
 
     return (
         <>
-            <div className="answer_username">Username*</div>
-            <input type="text" id="user_in" className="user_in" placeholder="Enter your username" onChange={e => setUser(e.target.value)}/>
-            <div className="error_message" id="ans_username_error"></div>
-
             <br/>
             <div className="answer_title">Answer Text*</div>
             <textarea type="text" id="answer_input" className="answer_input" placeholder="Enter your answer" onChange={e => setAnsText(e.target.value)}></textarea>
             <div className="error_message" id="ans_text_error"></div>
             <br/>
-
             <button className="post_ans_button" id="post_ans_button" onClick={AnswerSubmit}>Post Answer</button>
             <div className="mand">* indicates mandatory fields</div>      
         </>
