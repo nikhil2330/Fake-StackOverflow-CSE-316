@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getTimeStamp } from '../../helpers';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../../contexts/authContext';
 
 export default function Answers({AskQuestion, handleAnswerQuestion}) {
     const { id } = useParams(); 
     const [question, setQuestion] = useState(null);
+    const { currentUser } = useAuth();
     useEffect(() => {
         const fetchQuestion = async () => {
             const response = await axios.get(`http://localhost:8000/questions/${id}`);
@@ -31,7 +33,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                 &nbsp;
                 <div className ="answer-s-" id="answer-s-">{answer_s}</div>
                 <div className ="Ques_title" id="Ques_title">{question.title}</div>
-                <button className  = "button1" id="button1" onClick={AskQuestion}>Ask Question</button>
+                {currentUser && (<button className  = "button1" id="button1" onClick={AskQuestion}>Ask Question</button>)}
             </div>
             <div id = "ansSec-B">
                 <div id = "Adata">
@@ -56,7 +58,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                     </div>
                 </div>
             ))}
-            <button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>
+            {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>)}
       </>
   );
 }

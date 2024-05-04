@@ -8,14 +8,14 @@ export default function AskQuestionPage({postquestion}) {
     const[title, setTitle] = useState("");
     const[tags, setTags] = useState("");
     const[text, setText] = useState("");
-    const[username, setUsername] = useState("");
+    const[summary, setSummary] = useState("");
 
     const QuestionSubmit = async (event) => {
       event.preventDefault();
       document.getElementById("title_error").textContent = "";
       document.getElementById("text_error").textContent = "";
       document.getElementById("tags_error").textContent = "";
-      document.getElementById("username_error").textContent = "";
+      document.getElementById("summary_error").textContent = "";
       let flag = 0;
       flag = questionErrors();
       const validHyperlink = /\[([^[\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
@@ -34,7 +34,7 @@ export default function AskQuestionPage({postquestion}) {
             title: title,
             text: newText, 
             tags: tags,
-            asked_by: username
+            summary: summary
         });
         postquestion(); //response.data
       }
@@ -43,11 +43,17 @@ export default function AskQuestionPage({postquestion}) {
     return (
         <>
             <div className="new_title">Question Title*</div>
-            <div className="title_limit">Limit title to 100 characters or less</div>
+            <div className="title_limit">Limit title to 50 characters or less</div>
 
             <input type="text" id="title_input" className="title_input" placeholder="Enter your question title" onChange={e => setTitle(e.target.value)}/>
             <div id="title_error" className="error_message"></div>
             <br/>
+
+            <div className="summary">Summary*</div>
+            <div className="summary_details">Limit summary to 140 characters or less</div>
+            <textarea type="text" id="summary_input" className="summary_input" placeholder="Enter Summary" onChange={e => setSummary(e.target.value)} />
+            <div id="summary_error" className="error_message"></div>
+
             <div className="quest_text">Question Text*</div>
             <div className="text_details">Add details</div>
 
@@ -58,11 +64,6 @@ export default function AskQuestionPage({postquestion}) {
             <div className="tags_details">Add maximum 5 keywords separated by whitespace. Hyphenated words count as one word.</div>
             <input type="text" id="tags_input" className="tags_input" placeholder="Add keywords" onChange={e => setTags(e.target.value)} />
             <div id="tags_error" className="error_message"></div>
-
-            <div className="username">Username*</div>
-            <div className="username_details">Username cannot be empty</div>
-            <input type="text" id="username_input" className="username_input" placeholder="Enter username here" onChange={e => setUsername(e.target.value)} />
-            <div id="username_error" className="error_message"></div>
 
             <br/>
             <button className="post_quest_button" id="post_quest_button" onClick={QuestionSubmit}>Post Question</button>

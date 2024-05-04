@@ -19,8 +19,8 @@ function QuestionList ({questions, displayAnswers}){
                             <span className = 'name'>{question.asked_by}</span> asked {getTimeStamp(question.ask_date_time)}
                             </div>
                             <div id = 'tag_cont' className = 'tag_cont'>
-                                {question.tags.map(tag => (
-                                <div key={`${question._id}-${tag._id}`} id='tagsec'>
+                                {question.tags.map(tag => ( 
+                                <div key={`${question._id}-${tag._id}`} id='tagsec'> {/* try just tag-id*/}
                                     {tag.name}
                                 </div>
                                 ))}

@@ -7,7 +7,7 @@ const questionSchema = new Schema({
   title: {
     type: String,
     required: true,
-    maxlength: 100
+    maxlength: 50
   },
   text: {
     type: String,
@@ -15,7 +15,9 @@ const questionSchema = new Schema({
   },
   summary: {
     type: String,
-    required: true
+    default: "nothing",
+    required: true,
+    maxlength: 140
   },
   tags: [{
     type: Schema.Types.ObjectId,
@@ -35,6 +37,7 @@ const questionSchema = new Schema({
     default: Date.now,
     required: true
   },
+  
   views: {
     type: Number,
     default: 0

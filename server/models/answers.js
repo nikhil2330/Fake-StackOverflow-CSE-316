@@ -10,7 +10,7 @@ const answerSchema = new Schema({
   ans_by: {
     type: String,
     required: true,
-    default: anonymous
+    default: 'Anonymous'
   },
   ans_date_time: {
     type: Date,
