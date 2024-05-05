@@ -20,6 +20,8 @@
     const[questions, setQuestions] = useState([]);
     const[searchInput, setSearchInput] = useState("");
     const[title, setTitle] = useState("All Questions");
+    const [currentQuestions, setCurrentQuestions] = useState([]);
+    const [filter, setFilter] = useState("newest");
     let navigate = useNavigate();
     const { currentUser, continueAsGuest, logout, isGuest } = useAuth();
 
@@ -31,6 +33,7 @@
       axios.get('http://localhost:8000/questions')
       .then(response => {
           setQuestions(response.data.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time)));
+          setCurrentQuestions(response.data.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time)));
       })
       .catch(error => console.error('Error fetching questions:', error));
 
@@ -44,7 +47,7 @@
       navigate('/login');
 
     }
-    const loginUser = () => {
+    const loginUser = () => { 
       navigate('/home');
 
     }
@@ -56,10 +59,21 @@
     };
 
     const postquestion = () => {
-        axios.get('http://localhost:8000/questions')
-        .then(response => {
-        const sorted = response.data.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
-        setQuestions(sorted);
+      axios.get('http://localhost:8000/questions').then(response => {
+      setCurrentQuestions(response.data);
+      switch (filter) {
+        case 'newest':
+          handleSortNewest();
+          break;
+        case 'active':
+          handleSortActive();
+          break;
+        case 'unanswered':
+          handleSortUnanswered();
+          break;
+        default:
+          handleSortNewest();
+      }
       });
       navigate('/home');
     };
@@ -82,6 +96,7 @@
         setTitle("Search Results");
         console.log(title);
         setQuestions(response.data.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time)));
+        setCurrentQuestions(response.data.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time)));
         navigate('/home');
       });
     }
@@ -92,49 +107,36 @@
       }
     };
 
-
     function handleSortNewest() {
-      navigate('/home');
-      setTitle("All Questions");
-      axios.get('http://localhost:8000/questions')
-      .then(response => {
-        const sorted = response.data.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
-        setQuestions(sorted);
-      });
-      
+      const sorted = [...currentQuestions].sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
+      setQuestions(sorted);
+      setFilter("newest");
     };
 
     function handleSortActive(){ 
-      navigate('/home');
-      setTitle("All Questions");
-      axios.get('http://localhost:8000/questions')
-      .then(response => {
-        let answered = response.data.filter(q => q.answers.length > 0);
-        let unanswered = response.data.filter(q => q.answers.length === 0);
-        answered = answered.sort((a, b) => { 
-            return new Date(b.answers[b.answers.length - 1].ans_date_time)
-            - new Date(a.answers[a.answers.length - 1].ans_date_time);
-        });
-        unanswered = unanswered.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
-        setQuestions([...answered, ...unanswered]);
+      let answered = currentQuestions.filter(q => q.answers.length > 0);
+      let unanswered = currentQuestions.filter(q => q.answers.length === 0);
+      answered = answered.sort((a, b) => { 
+          return new Date(b.answers[b.answers.length - 1].ans_date_time)
+          - new Date(a.answers[a.answers.length - 1].ans_date_time);
       });
-    
+      unanswered = unanswered.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
+      setQuestions([...answered, ...unanswered]);
+      setFilter("active");
+  
     };  
 
     function handleSortUnanswered (){
-      navigate('/home');
-      setTitle("All Questions");
-      axios.get('http://localhost:8000/questions')
-      .then(response => {
-        const sortedQuestions = response.data.filter(q => q.answers.length === 0).sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
-        setQuestions(sortedQuestions);
-      });
+      const sortedQuestions = questions.filter(q => q.answers.length === 0).sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
+      setQuestions(sortedQuestions);
+      setFilter("unanswered");
     };
 
     const handleTagClick = (tid) => {
       axios.get(`http://localhost:8000/questions/tag/${tid}`)
       .then(response => {
           setQuestions(response.data);
+          setCurrentQuestions(response.data);
           navigate('/home');
           setTitle("All Questions");
       })
@@ -171,6 +173,8 @@
         .then(response => {
           const sorted = response.data.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
           setQuestions(sorted);
+          setCurrentQuestions(sorted);
+          setFilter("newest");
         });
         } else{
           navigate('home/tags');
@@ -211,6 +215,7 @@
           title={title}
           questions={questions}
           displayAnswers={handleAnswerClick}
+          filter = {filter}
         />} />
         <Route path="ask" element={<AskQuestionPage postquestion={postquestion} />} />
         <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />

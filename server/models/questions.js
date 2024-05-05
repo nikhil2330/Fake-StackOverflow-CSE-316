@@ -27,10 +27,9 @@ const questionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Answer'
   }],
-  asked_by: {
-    type: String,
-    required: true,
-    default: 'Anonymous'
+  asked_by: { 
+    type: Schema.Types.ObjectId,
+    ref: 'User' 
   },
   ask_date_time: {
     type: Date,
@@ -43,9 +42,9 @@ const questionSchema = new Schema({
     default: 0
 
   },
-  upvotes: {
+  votes: {
     type: Number,
-    required: false,
+    required: true,
     default: 0
   },
   comments: [{

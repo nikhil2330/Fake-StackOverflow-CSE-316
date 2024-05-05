@@ -8,7 +8,7 @@ exports.createAnswer = async (req, res) => {
     try {
         const newAnswer = new Answer({
             text,
-            ans_by: user.username,
+            ans_by: user._id,
             question: questionID,
             ans_date_time: new Date()
         });

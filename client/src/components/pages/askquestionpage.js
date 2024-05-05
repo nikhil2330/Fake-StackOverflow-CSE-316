@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { questionErrors} from '../../helpers'
 import axios from 'axios'
 //axios.defaults.withCredentials = true;
@@ -9,6 +9,20 @@ export default function AskQuestionPage({postquestion}) {
     const[tags, setTags] = useState("");
     const[text, setText] = useState("");
     const[summary, setSummary] = useState("");
+    const [existingTags, setExistingTags] = useState([]);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+      const fetchTags = async () => {
+          try {
+              const response = await axios.get('http://localhost:8000/tags'); 
+              setExistingTags(response.data);
+          } catch (error) {
+              console.error('Failed to fetch tags:', error);
+          }
+      };
+      fetchTags();
+    }, []);
 
     const QuestionSubmit = async (event) => {
       event.preventDefault();
@@ -30,13 +44,19 @@ export default function AskQuestionPage({postquestion}) {
       console.log("a");
       if(flag !== 1){
         const newText = text.replace(validHyperlink, (match, name, link) => `<a href="${link}" target="_blank">${name}</a>`);
-        await axios.post('http://localhost:8000/questions', {
-            title: title,
-            text: newText, 
-            tags: tags,
-            summary: summary
-        });
-        postquestion(); //response.data
+        try {
+          await axios.post('http://localhost:8000/questions', {
+              title: title,
+              text: newText, 
+              tags: tags,
+              summary: summary
+          });
+          postquestion(); 
+        }catch(error){
+          if (error.response && error.response.status === 403) {
+            setError(error.response.data.error);
+          } 
+        }
       }
     };
 
@@ -61,9 +81,10 @@ export default function AskQuestionPage({postquestion}) {
             <div id="text_error" className="error_message"></div>
             
             <div className="tags_title">Tags*</div>
-            <div className="tags_details">Add maximum 5 keywords separated by whitespace. Hyphenated words count as one word.</div>
+            <div className="tags_details">Add maximum 5 keywords separated by whitespace. Hyphenated words count as one word. Only add new tags if your reputation is greater than 50. </div>
             <input type="text" id="tags_input" className="tags_input" placeholder="Add keywords" onChange={e => setTags(e.target.value)} />
-            <div id="tags_error" className="error_message"></div>
+            <div className="existing_tags">Existing Tags to add: {existingTags.map(tag => `${tag.name}, `)}</div>
+            <div id="tags_error" className="error_message">{error}</div>
 
             <br/>
             <button className="post_quest_button" id="post_quest_button" onClick={QuestionSubmit}>Post Question</button>
