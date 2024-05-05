@@ -43,7 +43,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                 </div>
                 <div className ="ques_text" id="ques_text" dangerouslySetInnerHTML={{ __html: question.text}}></div>
                 <div  id = 'Qans_metadata'>
-                    <span id = 'Qans_name' >{question.asked_by}</span>
+                    <span id = 'Qans_name' >{question.asked_by.username}</span>
                     <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
                 </div>
             </div>
@@ -52,7 +52,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                     <div id = 'sectionAns' >
                         <div id = 'answertext' dangerouslySetInnerHTML={{ __html: answer.text}}></div>
                         <div id = 'Ans_metadata'>
-                            <div id = 'Ans_name' >{answer.ans_by}</div>
+                            <div id = 'Ans_name' >{answer.ans_by.username}</div>
                             <span id = 'Ans_time' > answered {getTimeStamp(answer.ans_date_time)}</span>
                         </div>
                     </div>

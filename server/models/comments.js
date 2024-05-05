@@ -6,12 +6,11 @@ const commentSchema = new Schema({
       type: String,
       required: true
     },
-    asked_by: {
-      type: String,
-      required: true,
-      default: 'Anonymous'
+    commented_by: { 
+        type: Schema.Types.ObjectId,
+        ref: 'User' 
     },
-    upvotes: {
+    votes: {
         type: Number,
         required: false,
         default: 0

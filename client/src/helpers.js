@@ -54,7 +54,7 @@ export function getTimeStamp(askDate) {
   }
 }
 
-export function questionErrors() {
+export function questionErrors(reputation) {
   // function for errors in post question page
   let flag = 0;
   const titleT = document.getElementById("title_input").value.trim();
@@ -72,13 +72,8 @@ export function questionErrors() {
     flag = 1;
   }
   let a = 0;
-  let newtagarray = tagsT
-    .trim()
-    .split(" ")
-    .filter((tag) => tag !== "");
-  newtagarray = newtagarray.filter(
-    (item, i) => newtagarray.indexOf(item) === i
-  );
+  let newtagarray = tagsT.trim().split(" ").filter((tag) => tag !== "");
+  newtagarray = newtagarray.filter((item, i) => newtagarray.indexOf(item) === i);
   if (newtagarray.length === 0) a = -1;
   for (let i = 0; i < newtagarray.length; i++) {
     if (newtagarray[i].length > 20) {
