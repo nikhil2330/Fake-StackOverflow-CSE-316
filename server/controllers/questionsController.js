@@ -4,16 +4,18 @@ const User = require('../models/user');
 
 module.exports.createQuestion = async (req, res) => {
     try{
-    
-        const { title, text, tags, asked_by } = req.body;
-    
+        const { title, text, tags } = req.body;
+        const user = await User.findById(req.user.userId);
         const tagsarr = tags.split(/\s+/).filter((value, index, self) => value && self.indexOf(value) === index);
         const T_exist = await Tag.find({ name: { $in: tagsarr } });
         const T_ex_name = T_exist.map(tag => tag.name);
-    
+        console.log(user.reputation);
         const newTags = [];
         for (const tagName of tagsarr) {
             if (!T_ex_name.includes(tagName)) {
+                if (user.reputation < 50) {
+                    return res.status(403).json({ error: "Users with reputation below 50 cannot add new tags." });
+                }
                 const newTag = new Tag({ name: tagName });
                 await newTag.save();
                 newTags.push(newTag);
@@ -21,13 +23,13 @@ module.exports.createQuestion = async (req, res) => {
         }
     
         const allTags = [...T_exist, ...newTags];
-        const user = await User.findById(req.user.userId);
+
         console.log(user.username);
         const newQuestion = new Question({
             title,
             text,
             tags: allTags.map(tag => tag._id),
-            asked_by: user.username,
+            asked_by: user._id,
             ask_date_time: new Date(),
             views: 0,
             answers: []
@@ -56,7 +58,10 @@ module.exports.incrementQuestionViews = async (req, res) => {
 };
 
 module.exports.getQuestionById = async (req, res) => {
-    const question = await Question.findById(req.params.id).populate('tags').populate('answers');
+    const question = await Question.findById(req.params.id).populate('tags').populate({
+        path: 'answers',
+        populate: { path: 'ans_by', select: 'username' }
+    }).populate('asked_by', 'username');;
     res.json(question);
 };
 
@@ -92,7 +97,7 @@ module.exports.getAllQuestionsWithSearch = async (req, res) => {
             query = conditions.length > 1 ? { $or: conditions } : conditions[0];
         }
         
-        const questions = await Question.find(query).populate('tags').populate('answers');
+        const questions = await Question.find(query).populate('tags').populate('answers').populate('asked_by', 'username');
         res.json(questions);
 
     } catch (error) {
@@ -106,7 +111,7 @@ function escapeRegex(text) {
 }
 
 module.exports.getQuestionsByTag = async (req, res) => {
-        const questions = await Question.find({ tags: req.params.tid }).populate('tags').populate('answers'); 
+        const questions = await Question.find({ tags: req.params.tid }).populate('tags').populate('answers').populate('asked_by', 'username'); 
         res.json(questions);
 }
 

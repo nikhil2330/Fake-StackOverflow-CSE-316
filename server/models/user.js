@@ -6,7 +6,9 @@ const userSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     reputation: {type: Number, default: 50},
-    join_date_time:{type: Date, default: Date.now, required: true}
+    join_date_time:{type: Date, default: Date.now, required: true},
+    questions: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
+    answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }]
 });
 
 module.exports = mongoose.model('User', userSchema);

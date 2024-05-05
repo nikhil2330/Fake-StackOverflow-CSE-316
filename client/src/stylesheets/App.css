@@ -179,6 +179,11 @@ li div:hover {
     background-color: lightgray;
 }
 
+
+#button_cont button.active {
+    background-color: darkgrey; 
+}
+
 #main hr{
     margin-top: 20px;
     border-top:  dashed 2px;
@@ -200,7 +205,7 @@ li div:hover {
     text-align: left; 
     white-space: nowrap;
 }
-#views, #answers {
+#views, #answers, #votes {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 15px;
     color: #777777;

@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../contexts/authContext';
 
 
-export default function Top({Newest, Active, Unanswered, QuestionC, AskQuestion, title}) {
+export default function Top({Newest, Active, Unanswered, QuestionC, AskQuestion, title, filter}) {
   const { currentUser } = useAuth();
   const questionText = QuestionC === 1 ? 'question' : 'questions';
   return (
@@ -14,9 +14,9 @@ export default function Top({Newest, Active, Unanswered, QuestionC, AskQuestion,
       <div className = "mid" id = "mid">
           <div id ="question_count">{QuestionC} {questionText}</div>
           <div id ="button_cont">
-              <button id = 'newest' onClick={Newest}>Newest</button>
-              <button id = 'active' onClick={Active}>Active</button>
-              <button id = 'unanswered' onClick={Unanswered}>Unanswered</button>
+              <button id = 'newest' onClick={Newest} className={filter === 'newest' ? 'active' : ''} >Newest</button>
+              <button id = 'active' onClick={Active}  className={filter === 'active' ? 'active' : ''}>Active</button>
+              <button id = 'unanswered' onClick={Unanswered}  className={filter === 'unanswered' ? 'active' : ''}>Unanswered</button>
           </div>
       </div>
     </>
