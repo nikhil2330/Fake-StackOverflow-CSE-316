@@ -8,56 +8,76 @@ body, html {
     /* overflow:hidden; */
 }
 
-#page {
-    margin-top: 3%;
-    padding-left: 15.3%;
-    /* overflow:scroll; */
-
-}
-
 #header {
-    display: flex;
-    justify-content:space-between;
-    align-items: center;
     z-index:1;
-    /* padding: 10px; */
     padding: 1vh;
     border-bottom: 1px solid black;
-    background-color: rgb(229, 226, 226);
-    /* padding-left: 600; */
+    background-color: rgb(169, 224, 253);
     position: fixed;
     width: 100%;
+    height: 6%;
+    display: flex; /* Add flexbox */
+    align-items: center; /* Center vertically */
 }
 
-#main_title{
-    text-align: center;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 700;
-    font-size: 35px;
-    white-space: nowrap;  
-    margin: auto;
-    padding-top: 25px;
-    padding-bottom: 25px;
+
+.fake{
+    font-family: 'Optima', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: #333333; 
+    margin-left: 10%; 
+     
+}
+
+.stack {
+    font-family: 'Optima', sans-serif;
+    color: #333; 
+    font-weight: 500;
+    margin-left: 3%;
+}
+
+#firstpage {
+    margin-left: 5%;
+    font-size: 18px;
+    font-family: 'Gill Sans', sans-serif;
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: transform 0.2s ease;
+}
+
+#tags {
+    font-size: 18px;
+    font-family: 'Gill Sans', sans-serif;
+    margin-left: 3%;
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: transform 0.2s ease;
+}
+
+#firstpage:hover, #tags:hover {
+    transform: translateY(2px); 
+}
+
+#firstpage:active, #tags:active {
+    transform: translateY(1px);
 }
 
 #search{  
-    /* margin-top: 40px;
-    margin-right: 20px; */
-    /* align-self: right; */
     position: fixed;
-    right: 2%;
+    left: 32%;
+    /* right: 2%; */
 }
 
 #search input{
     text-align: left;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Gill Sans', sans-serif;
     font-size: 20px;
-    width: 200px;
+    width: 700px;
     height: 30px;
+    border-radius: 5px;
 }
 
 #main{
-    padding-top: 7.6%;
+    padding-top: 6%;
     width: 100%;
     height: 100%;
     display: grid;
@@ -65,31 +85,7 @@ body, html {
     /* justify-content: center;
     grid-template-columns: 15% 1fr; */
     background-color: white;   
-    margin-bottom: 100; 
-}
-
-#menu{
-    margin-top: 1px;
-    border-right: dashed;
-    height: 100%;
-    width: 15%;
-    position: fixed;
-    background-color: white;
     
-    /* margin-right: 100; */
-    /* position: fixed;
-    width: 15%; */
-}
-
-#menu ul{
-    list-style-type: none;
-    margin-top: 8px;
-    margin-left: -8px;
-    padding: 0;
-    width: 15%;
-    position: fixed;
-    height: 100%;  
-    margin-top: 0.5%;  
 }
  
 li div {
@@ -120,13 +116,15 @@ li div:hover {
     grid-template-columns: 200px 150px;
     gap: 68%;
     margin-top: 0%;
-    margin-left: 2%;
+    margin-left: 5%;
     align-items: center;
     
 }
 
 #head{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Gill Sans', sans-serif;
+    font-weight: 500;
+    font-size: 35px;
 }
 
 .button1{
@@ -147,43 +145,49 @@ li div:hover {
     margin-left: 2%;
     margin-top: 15;
     display: flex;
-    align-items: center;
+    align-items: right;
 }
 
 #question_count{
-    /* margin-left: 30px; */
-    font-size: 20px;
+    margin-left: 3.2%;
+    font-size: 22px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 500;
+    margin-top: 1%;
+}
 
-}
 #button_cont{
-    margin-left: 50%;
-    display: table; 
+    /* margin-left: 50%; */
     position: static;
-    
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 63%;
+    align-items: center;
+    margin-top: 1%;
 }
+
 
 
 #button_cont button:not(:last-child){
+    
     border-right: none;
 }
+
 #button_cont button{
     padding: 5px;
     padding-left: 15px;  
     padding-right: 15px;
-    text-align: right;
+    text-align: center;
     cursor: pointer;
-    border-radius: 0;
-    border: 1;
+    border-radius: 0px;
+    border: 2px solid; /* Specify border style */
+    height: 35px;
 }
 #button_cont button:hover{
     background-color: lightgray;
 }
 
-
 #button_cont button.active {
-    background-color: darkgrey; 
+    background-color: rgb(197, 232, 252); 
 }
 
 #main hr{
@@ -251,7 +255,8 @@ li div:hover {
 #no_quest{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 40px;
-    margin-top: 40px;
+    margin-top: 5%;
+    margin-left: 5%;
 }
 #ansSec-A{
     display: flex;
@@ -421,98 +426,162 @@ svg {
     
 }
 
+.new_question_title{
+    font-size: 35px;
+    text-align: center;
+    text-decoration: underline;
+    font-family: 'Gill Sans', sans-serif;
+}
+
 .new_title{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-size: 30px;
-    margin-top: 2%;
-    margin-left: 35%;
+    margin-top: 4%;
+   /*  margin-left: 35%; */
     /* text-align: left; */
 }
 
+.new_title::after {
+    content: '*'; /* Add the asterisk */
+    color: red; /* Set the color of the asterisk to red */
+}
+
 .title_limit{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-style: italic;
     margin-top: 1%;
-    margin-left: 33%;
     font-size: 15px;
 }
 
 .title_input{
-    margin-top: 2%;
-    margin-left: 28%;
-    width: 30%;
-    height: 5%;
+    font-family: 'Gill Sans', sans-serif;
     text-align: center;
+    margin-top: 1%;
+    width: 25%;
+    height: 3%;
     font-size: 15px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 .quest_text{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-size: 30px;
     margin-top: 2%;
-    margin-left: 35%;
+}
+
+.quest_text::after {
+    content: '*'; /* Add the asterisk */
+    color: red; /* Set the color of the asterisk to red */
 }
 
 .quest_input{
     margin-top: 1%;
-    margin-left: 8%;
-    width: 70%;
-    height: 15%;
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
+    width: 50%;
+    height: 10%;
     text-align: center;
     font-size: 15px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 .text_details{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-style: italic;
     margin-top: 1%;
-    margin-left: 40.5%;
     font-size: 15px;
 }
 
 .tags_title{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-size: 30px;
     margin-top: 2%;
-    margin-left: 39%;
+}
+
+.tags_title::after {
+    content: '*'; /* Add the asterisk */
+    color: red; /* Set the color of the asterisk to red */
 }
 
 .tags_details{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-style: italic;
     margin-top: 1%;
-    margin-left: 17%;
     font-size: 15px;
 }
 
+.tags_details ul {
+    margin-right: 4%;
+    list-style-type: disc; /* Use disc as bullet points */
+    list-style-position: inside; /* Set bullet points inside the list */
+}
+
+.tags_details li:last-child {
+    list-style-type: none; /* Remove bullet point from the last list item */
+    margin-top: 5px; /* Add some space above the last list item */
+    color: rgb(190, 29, 64); /* Change the color of the last list item */
+}
 .tags_input{
     margin-top: 2%;
-    margin-left: 17%;
-    width: 50%;
-    height: 7%;
+    width: 40%;
+    height: 5%;
     text-align: center;
     font-size: 15px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Gill Sans', sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 .summary{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-size: 30px;
-    margin-top: 2%;
-    margin-left: 37%;
+    margin-top: 1%;
+}
+
+.summary::after {
+    content: '*'; /* Add the asterisk */
+    color: red; /* Set the color of the asterisk to red */
 }
 
 .summary_details{
+    font-family: 'Gill Sans', sans-serif;
+    text-align: center;
     font-style: italic;
     margin-top: 1%;
-    margin-left: 31.5%;
     font-size: 15px;
 }
 
 .summary_input{
-    margin-top: 2%;
-    margin-left: 22%;
-    width: 40%;
-    height: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 1%;
+    width: 43%;
+    height: 6%;
     text-align: center;
     font-size: 15px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Gill Sans', sans-serif;
 }
+
+.existing_tags {
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Gill Sans', sans-serif;
+    margin-top: 2%;
+}
+
 .error_message{
     color: red;
     font-size: 16px;
@@ -877,16 +946,58 @@ svg {
   color: white;
 }
 
-/* Hover effect for all buttons */
-.login-signup-container button:hover,
-.extra_buttons button:hover {
-  filter: brightness(90%); /* Slightly darken on hover */
-}
-
 .logout, .login{
+    /* margin-top: 70px;
+    margin-right: 50px; */
+    justify-content: center; 
+    align-items: center; 
     display: flex;
-
+    margin-left: 54%;
+    height: 30px;
+    width: 80px;
+    text-align: center;
+    background-color: transparent; 
+    border: 2px solid rgb(0, 15, 228); 
+    border-radius: 5px; /* Apply a slight curve to the border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #0339c4;
+    font-weight: 600;
+    font-family: 'Gill Sans', sans-serif;
 }
+
+.logout:hover, .login:hover {
+    background-color: rgb(142, 191, 218); /* Example: darken the background color */
+    border-color:  rgb(0, 15, 228); /* Example: darken the border color */
+    color: rgb(0, 15, 228);
+    transform: translateY(2px); 
+}
+
+
+
+.signup, .profile {
+    justify-content: center; /* Center the text horizontally */
+    align-items: center; /* Center the text vertically */
+    display: flex;
+    margin-left: 2%;
+    height: 30px;
+    width: 80px;
+    text-align: center;
+    background-color: rgb(0, 15, 228); /* Set background to transparent */
+    border: 2px solid rgb(0, 15, 228); /* Set border to black */
+    border-radius: 5px; /* Apply a slight curve to the border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #ffffff;
+    font-weight: 600;
+    font-family: 'Gill Sans', sans-serif;
+}
+
+.signup:hover, .profile:hover {
+    background-color: rgb(1, 13, 182); /* Example: darken the background color */
+    border-color:  rgb(0, 15, 228); /* Example: darken the border color */
+    color: #ffffff;
+    transform: translateY(2px); 
+}
+
 .input-container {
     position: relative;
     display: flex;
