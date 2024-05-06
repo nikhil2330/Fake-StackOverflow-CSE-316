@@ -62,28 +62,36 @@ export default function AskQuestionPage({postquestion}) {
 
     return (
         <>
-            <div className="new_title">Question Title*</div>
+            <div className='new_question_title'>New Question</div>
+            <div className="new_title">Question Title</div>
             <div className="title_limit">Limit title to 50 characters or less</div>
 
             <input type="text" id="title_input" className="title_input" placeholder="Enter your question title" onChange={e => setTitle(e.target.value)}/>
             <div id="title_error" className="error_message"></div>
             <br/>
 
-            <div className="summary">Summary*</div>
+            <div className="summary">Summary</div>
             <div className="summary_details">Limit summary to 140 characters or less</div>
             <textarea type="text" id="summary_input" className="summary_input" placeholder="Enter Summary" onChange={e => setSummary(e.target.value)} />
             <div id="summary_error" className="error_message"></div>
 
-            <div className="quest_text">Question Text*</div>
+            <div className="quest_text">Question Text</div>
             <div className="text_details">Add details</div>
 
             <textarea type="text" id="quest_input" className="quest_input" placeholder="Enter your question text" onChange={e => setText(e.target.value)}></textarea>
             <div id="text_error" className="error_message"></div>
             
-            <div className="tags_title">Tags*</div>
-            <div className="tags_details">Add maximum 5 keywords separated by whitespace. Hyphenated words count as one word. Only add new tags if your reputation is greater than 50. </div>
+            <div className="tags_title">Tags</div>
+            <div className="tags_details">
+                <ul>
+                    <li>Add maximum 5 keywords separated by whitespace.</li>
+                    <li>Hyphenated words count as one word.</li>
+                    <li>(You can only add new tags if your reputation is greater than 50!)</li>
+                </ul>
+            </div>
+
             <input type="text" id="tags_input" className="tags_input" placeholder="Add keywords" onChange={e => setTags(e.target.value)} />
-            <div className="existing_tags">Existing Tags to add: {existingTags.map(tag => `${tag.name}, `)}</div>
+            <div className="existing_tags">Current existing tags: {existingTags.map(tag => `${tag.name}, `)}</div>
             <div id="tags_error" className="error_message">{error}</div>
 
             <br/>

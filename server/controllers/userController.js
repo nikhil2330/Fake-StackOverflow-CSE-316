@@ -48,7 +48,9 @@ module.exports.loginUser = async (req, res) => {
         if (!passwordCorrect) {
             return res.status(401).json({ password: "Wrong email or password."})
         }
+
         console.log(process.env.JWT_SECRET);
+
         if (!process.env.JWT_SECRET) {
             console.error('FATAL ERROR: JWT_SECRET is not defined.');
             process.exit(1); // Exit process with failure
