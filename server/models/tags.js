@@ -7,6 +7,10 @@ const tagSchema = new Schema({
       type: String,
       required: true,
       unique: true 
+    },
+    set_by: { 
+      type: Schema.Types.ObjectId,
+      ref: 'User' 
     }
 });
 

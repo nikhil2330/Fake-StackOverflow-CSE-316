@@ -35,7 +35,7 @@ module.exports.createQuestion = async (req, res) => {
             answers: []
         });
         await newQuestion.save();
-        await newQuestion.populate('tags');
+        (await newQuestion.populate('tags')).populate('asked_by', 'username');
         res.json(newQuestion);
     }catch(error){
         console.error('Couldnt put questions:', error);
@@ -57,11 +57,51 @@ module.exports.incrementQuestionViews = async (req, res) => {
     }
 };
 
+module.exports.upvoteQuestion = async (req, res) => {
+    try {
+        const question = await Question.findById(req.params.id);
+        const user = await User.findById(req.user.userId);
+        if (!question) {
+            return res.json({ message: 'Question not found' });
+        }
+        if (user.reputation < 50) {
+            return res.status(403).json({ error: "Users with reputation below 50 cannot vote" });
+        }
+        question.votes += 1;
+        user.reputation += 5;
+        await question.save();
+        res.json({ message: 'votes incremented'});
+    }catch(error){
+        console.error('Error voting', error);
+    }
+}
+module.exports.upvoteQuestion = async (req, res) => {
+    try {
+        const question = await Question.findById(req.params.id);
+        const user = await User.findById(req.user.userId);
+        if (!question) {
+            return res.json({ message: 'Question not found' });
+        }
+        if (user.reputation < 50) {
+            return res.status(403).json({ error: "Users with reputation below 50 cannot vote" });
+        }
+        question.votes -= 1;
+        user.reputation -= 10;
+        await question.save();
+        res.json({ message: 'votes decremented'});
+    }catch(error){
+        console.error('Error voting', error);
+    }
+}
+
 module.exports.getQuestionById = async (req, res) => {
     const question = await Question.findById(req.params.id).populate('tags').populate({
         path: 'answers',
-        populate: { path: 'ans_by', select: 'username' }
-    }).populate('asked_by', 'username');;
+        populate: {
+            path: 'ans_by',
+            select: 'username'
+        }
+    }).populate('asked_by', 'username');
     res.json(question);
 };
 

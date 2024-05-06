@@ -8,7 +8,9 @@ const userSchema = new Schema({
     reputation: {type: Number, default: 50},
     join_date_time:{type: Date, default: Date.now, required: true},
     questions: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
-    answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }]
+    answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+    tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
 });
 
 module.exports = mongoose.model('User', userSchema);

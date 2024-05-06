@@ -156,3 +156,25 @@ export const loginErrors = (formData) => {
   } 
   return errors;
 };
+
+
+
+export function newest(questions){
+  return [...questions].sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
+
+}
+
+export function active(questions){
+  let answered = [...questions].filter(q => q.answers.length > 0);
+  let unanswered = [...questions].filter(q => q.answers.length === 0);
+  answered = answered.sort((a, b) => { 
+      return new Date(b.answers[b.answers.length - 1].ans_date_time)
+      - new Date(a.answers[a.answers.length - 1].ans_date_time);
+  });
+  unanswered = unanswered.sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
+  return [...answered, ...unanswered];
+}
+
+export function unanswered(questions){
+  return [...questions].filter(q => q.answers.length === 0).sort((a, b) => new Date(b.ask_date_time) - new Date(a.ask_date_time));
+}

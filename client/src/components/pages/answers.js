@@ -8,16 +8,26 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
     const { id } = useParams(); 
     const [question, setQuestion] = useState(null);
     const { currentUser } = useAuth();
+    const fetchQuestion = async () => {
+        const response = await axios.get(`http://localhost:8000/questions/${id}`);
+        if (response.status === 200) {
+            setQuestion(response.data);
+        }
+    };
     useEffect(() => {
-        const fetchQuestion = async () => {
-            const response = await axios.get(`http://localhost:8000/questions/${id}`);
-            if (response.status === 200) {
-                setQuestion(response.data);
-            }
-        };
-
         fetchQuestion();
     }, [id]);
+    const handleVote = async (type) => {
+        const endpoint = type === 'up' ? `/upvote/${id}` : `/downvote/${id}`;
+        try {
+            await axios.get(`http://localhost:8000/questions${endpoint}`);
+            fetchQuestion(); 
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.error);
+            }
+        }
+    }
 
     console.log();
     if (!question) {
@@ -40,6 +50,16 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                     <div className ="viewC" id="viewC">{question.views}</div> 
                     &nbsp;
                     <div className ="view-s-" id="view-s-">{view_s}</div>
+                    &nbsp;
+                    <div className='votebox'>
+                        <svg width="36" height="36" className="vote" onClick={() => handleVote('up')}>
+                            <path d="M2 26h32L18 10 2 26z" ></path>
+                        </svg>
+                        <span className='votes'>{question.votes}</span>
+                        <svg width="36" height="36" className="vote" onClick={() => handleVote('down')}>
+                            <path d="M2 10h32L18 26 2 10z" ></path>
+                        </svg>
+                    </div>
                 </div>
                 <div className ="ques_text" id="ques_text" dangerouslySetInnerHTML={{ __html: question.text}}></div>
                 <div  id = 'Qans_metadata'>

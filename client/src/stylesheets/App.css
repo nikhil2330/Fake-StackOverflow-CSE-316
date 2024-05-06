@@ -163,6 +163,8 @@ li div:hover {
     position: static;
     
 }
+
+
 #button_cont button:not(:last-child){
     border-right: none;
 }
@@ -273,6 +275,33 @@ li div:hover {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 700;
 
+}
+.votebox {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 5px; 
+}
+
+.vote {
+    cursor: pointer;
+    fill: rgb(169,224,253); /* Light blue color for the SVG arrows */
+    transition: fill 0.3s; /* Smooth transition for color change on hover */
+}
+
+.vote:hover {
+    fill: #007bff; /* A darker blue for hover, adjust this color as desired */
+}
+
+.votes {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Ensure the SVG arrows have the correct orientation and are clickable */
+svg {
+    pointer-events: all;
 }
 #Ques_title{
     width: 50%;
