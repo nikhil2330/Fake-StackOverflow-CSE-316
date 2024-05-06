@@ -13,6 +13,7 @@ export default function Signup({ onContinueAsGuest, onLogin, registerUser }) {
   const [password, setPassword] = useState(false);
   const [password2, setPassword2] = useState(false);
   const handleSubmit = async (event) => {
+    console.log("abc");
     event.preventDefault();
   
     if(Object.keys(signupErrors(formData)).length === 0){
