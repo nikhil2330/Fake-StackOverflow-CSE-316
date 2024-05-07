@@ -35,7 +35,7 @@ module.exports.createQuestion = async (req, res) => {
             answers: []
         });
         await newQuestion.save();
-        await newQuestion.populate('tags');
+        (await newQuestion.populate('tags')).populate('asked_by', 'username');
         res.json(newQuestion);
     }catch(error){
         console.error('Couldnt put questions:', error);
@@ -57,11 +57,123 @@ module.exports.incrementQuestionViews = async (req, res) => {
     }
 };
 
+module.exports.upvoteQuestion = async (req, res) => {
+    try {
+        console.log("ab");
+        const question = await Question.findById(req.params.id);
+        const user = await User.findById(req.user.userId);
+        const targetUser = await User.findById(question.asked_by);
+        if (!question) {
+            return res.json({ message: 'Question not found' });
+        }
+        if (user.reputation < 50) {
+            return res.status(403).json({ error: "Users with reputation below 50 cannot vote" });
+        }
+        console.log((targetUser.username === user.username));
+        const alreadyUpvoted = user.upVotes.includes(question._id);
+        const alreadyDownvoted = user.downVotes.includes(question._id)
+        if(alreadyUpvoted){ //reputation only icnreases if not same user as as the post
+            
+            user.upVotes.pull(question._id);
+            question.votes -= 1;
+            
+            if(!(targetUser._id.equals(user._id))){
+                targetUser.reputation -= 5; 
+            }
+            console.log(user._id, targetUser._id, targetUser.reputation);
+            
+        }
+        if(alreadyDownvoted){
+            user.downVotes.pull(question._id);
+            question.votes += 1;
+            
+            if(!(targetUser._id.equals(user._id))){
+                targetUser.reputation += 10;
+            }
+            console.log(user._id, targetUser._id, targetUser.reputation);
+            
+        }
+        if(!alreadyDownvoted && !alreadyUpvoted){
+            user.upVotes.push(question._id);
+            question.votes += 1;
+            
+            if(!(targetUser._id.equals(user._id))){
+                targetUser.reputation += 5;
+            }
+            console.log(user._id, targetUser._id, targetUser.reputation);
+            
+        }
+        await question.save();
+        await user.save(); 
+        await targetUser.save();
+        res.json({ message: 'votes incremented'});
+    }catch(error){
+        console.error('Error voting', error);
+    }
+}
+
+module.exports.downvoteQuestion = async (req, res) => {
+    try {
+        console.log("abc");
+        const question = await Question.findById(req.params.id);
+        const user = await User.findById(req.user.userId);
+        const targetUser = await User.findById(question.asked_by);
+        if (!question) {
+            return res.json({ message: 'Question not found' });
+        }
+        if (user.reputation < 50) {
+            return res.status(403).json({ error: "Users with reputation below 50 cannot vote" });
+        }
+        const alreadyUpvoted = user.upVotes.includes(question._id);
+        const alreadyDownvoted = user.downVotes.includes(question._id);
+        if(alreadyDownvoted){
+            user.downVotes.pull(question._id);
+            question.votes += 1;
+            if(!(targetUser._id.equals(user._id))){
+                targetUser.reputation += 10;
+            }
+            console.log(user._id, targetUser._id, targetUser.reputation);
+            
+        }
+
+        if(alreadyUpvoted){
+            user.upVotes.pull(question._id);
+            question.votes -= 1;
+            
+            if(!(targetUser._id.equals(user._id))){
+                targetUser.reputation -= 5;
+            }
+            console.log(user._id, targetUser._id, targetUser.reputation);
+        }
+
+        if(!alreadyDownvoted && !alreadyUpvoted){
+            user.downVotes.push(question._id);
+            question.votes -= 1;
+            
+            if(!(targetUser._id.equals(user._id))){
+                targetUser.reputation -= 10;
+            }
+            console.log(user._id, targetUser._id, targetUser.reputation);
+            
+        }
+
+        await question.save();
+        await user.save(); 
+        await targetUser.save(); 
+        res.json({ message: 'votes decremented'});
+    }catch(error){
+        console.error('Error voting', error);
+    }
+}
+
 module.exports.getQuestionById = async (req, res) => {
     const question = await Question.findById(req.params.id).populate('tags').populate({
         path: 'answers',
-        populate: { path: 'ans_by', select: 'username' }
-    }).populate('asked_by', 'username');;
+        populate: {
+            path: 'ans_by',
+            select: 'username'
+        }
+    }).populate('asked_by', 'username');
     res.json(question);
 };
 

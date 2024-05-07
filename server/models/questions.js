@@ -25,7 +25,8 @@ const questionSchema = new Schema({
   }],
   answers: [{
     type: Schema.Types.ObjectId,
-    ref: 'Answer'
+    ref: 'Answer',
+    required: true
   }],
   asked_by: { 
     type: Schema.Types.ObjectId,
