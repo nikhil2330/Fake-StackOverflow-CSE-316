@@ -9,7 +9,8 @@ const answerSchema = new Schema({
   },
   ans_by: { 
     type: Schema.Types.ObjectId,
-    ref: 'User' 
+    ref: 'User',
+    required: true
   },
   ans_date_time: {
     type: Date,

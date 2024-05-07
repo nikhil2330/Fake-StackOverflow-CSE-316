@@ -40,14 +40,14 @@ body, html {
 #firstpage {
     margin-left: 5%;
     font-size: 18px;
-    font-family: 'Gill Sans', sans-serif;
-    cursor: pointer; /* Change cursor to pointer on hover */
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
     transition: transform 0.2s ease;
 }
 
 #tags {
     font-size: 18px;
-    font-family: 'Gill Sans', sans-serif;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     margin-left: 3%;
     cursor: pointer; /* Change cursor to pointer on hover */
     transition: transform 0.2s ease;
@@ -69,8 +69,7 @@ body, html {
 
 #search input{
     text-align: left;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 20px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 20px;
     width: 700px;
     height: 30px;
     border-radius: 5px;
@@ -96,8 +95,7 @@ li div {
     text-align: center;
     margin-top: 35px;
     padding: 5px;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 18px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 18px;
     cursor: pointer;
 }
 
@@ -122,8 +120,7 @@ li div:hover {
 }
 
 #head{
-    font-family: 'Gill Sans', sans-serif;
-    font-weight: 500;
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 500;
     font-size: 35px;
 }
 .pn-buttons {
@@ -134,8 +131,7 @@ li div:hover {
 }
 
 .pn-buttons button {
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 14px; 
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px; 
     padding: 8px 16px; 
     color: #fff; 
     background-color: #ffa041; 
@@ -167,8 +163,7 @@ li div:hover {
     cursor: pointer;
     height: 40px;
     width: 130px;
-    font-family: 'Gill Sans', sans-serif;
-    margin-left: 1vh; 
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    margin-left: 1vh; 
     transition: background-color 0.3s ease;
 }
 
@@ -187,19 +182,19 @@ li div:hover {
 #question_count{
     margin-left: 3.2%;
     font-size: 22px;
-    font-family: 'Gill Sans', sans-serif;
-    font-weight: 500;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 500;
     margin-top: 1%;
 }
 
 #button_cont{
     /* margin-left: 50%; */
     position: static;
-    font-family: 'Gill Sans', sans-serif;
-    margin-left: 118vh;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    margin-left: 118vh;
     align-items: center;
     margin-top: 1%;
 }
+
+
 
 #button_cont button:not(:last-child){
     
@@ -249,8 +244,7 @@ li div:hover {
     white-space: nowrap;
 }
 #views, #answers, #votes {
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 15px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 15px;
     color: #777777;
 
 }
@@ -258,8 +252,7 @@ li div:hover {
     font-size: 20px;
     text-align: left;
     color: rgb(249, 155, 13);
-    font-family: 'Gill Sans', sans-serif;
-    cursor: pointer;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    cursor: pointer;
     font-weight: 600;
 
 }
@@ -272,8 +265,7 @@ li div:hover {
     margin-left: 50vh;
     display: flex;
     /* white-space: nowrap;  */
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 16px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 16px;
     color: #777777;
     text-align: right;
     flex-wrap: wrap;
@@ -281,8 +273,7 @@ li div:hover {
 }
 
 .name{
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 16px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 16px;
     color: #e90a0a;
     text-align: left;
     margin-right: 5px;
@@ -291,8 +282,7 @@ li div:hover {
     
 }
 #no_quest{
-    font-family: 'Gill Sans', sans-serif;
-    margin: 40px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    margin: 40px;
     margin-top: 5%;
     margin-left: 5%;
 }
@@ -309,15 +299,44 @@ li div:hover {
 #ans_count{
     margin-left: 31.4px;
     font-size: 20px;
-    font-family: 'Gill Sans', sans-serif;
-    font-weight: 700;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 700;
 
 }
 #answer-s-{
     font-size: 20px;
-    font-family: 'Gill Sans', sans-serif;
-    font-weight: 700;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 700;
 
+}
+.votebox {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 5px; 
+}
+
+.vote {
+    cursor: pointer;
+    fill: rgb(169,224,253); /* Light blue color for the SVG arrows */
+    transition: fill 0.3s; /* Smooth transition for color change on hover */
+}
+
+.vote:hover {
+    fill: #007bff; /* A darker blue for hover, adjust this color as desired */
+}
+.voted {
+    fill: #0056b3; 
+    transform: scale(1.1); 
+}
+
+.votesC {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Ensure the SVG arrows have the correct orientation and are clickable */
+svg {
+    pointer-events: all;
 }
 #Ques_title{
     width: 50%;
@@ -326,8 +345,7 @@ li div:hover {
     margin-right: 110px;  
     font-size: 22px;
     font-weight: 700;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 #ansSec-B{
     margin-top: 30px;
     display: grid;
@@ -342,8 +360,7 @@ li div:hover {
     margin-top: 40px;
     font-size: 20px;
     margin-left: 30px;
-    font-family: 'Gill Sans', sans-serif;
-    font-weight: 700;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 700;
     white-space: nowrap;
 }
 
@@ -353,12 +370,10 @@ li div:hover {
     margin-right: 30px;
     padding: 0px; 
     font-size: 16px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 .Qans_metadata {
     display: inline-block;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 14px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
     color: #777777;
     text-align: right;  
     flex-wrap: wrap; 
@@ -367,8 +382,7 @@ li div:hover {
 
 #Qans_name{
     display: inline;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 14px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
     color: #e90a0a;
     text-align: left;
     overflow-wrap: break-word;
@@ -378,8 +392,7 @@ li div:hover {
 }
 #Qans_time{
     display: inline;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 14px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
     color: #777777;
     text-align: left;
     white-space: nowrap;
@@ -403,12 +416,10 @@ li div:hover {
     padding: 0px; 
     align-items: center;
     font-size: 16px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 .Ans_metadata {
     display: inline-block;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 14px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
     color: #777777;
     text-align: right; 
     flex-wrap: wrap; 
@@ -418,8 +429,7 @@ li div:hover {
 }
 #Ans_name{
     display: inline;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 14px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
     color: #099928;
     text-align: left;
     overflow-wrap: break-word;
@@ -429,8 +439,7 @@ li div:hover {
 }
 #Ans_time{
     display: inline;
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 14px;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
     color: #777777;
     text-align: left;
     white-space: nowrap;
@@ -441,12 +450,10 @@ li div:hover {
     font-size: 35px;
     text-align: center;
     text-decoration: underline;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .new_title{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-size: 30px;
     margin-top: 4%;
    /*  margin-left: 35%; */
@@ -459,16 +466,14 @@ li div:hover {
 }
 
 .title_limit{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-style: italic;
     margin-top: 1%;
     font-size: 15px;
 }
 
 .title_input{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     margin-top: 1%;
     width: 25%;
     height: 3%;
@@ -479,8 +484,7 @@ li div:hover {
 }
 
 .quest_text{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-size: 30px;
     margin-top: 2%;
 }
@@ -492,8 +496,7 @@ li div:hover {
 
 .quest_input{
     margin-top: 1%;
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     width: 50%;
     height: 10%;
     text-align: center;
@@ -504,16 +507,14 @@ li div:hover {
 }
 
 .text_details{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-style: italic;
     margin-top: 1%;
     font-size: 15px;
 }
 
 .tags_title{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-size: 30px;
     margin-top: 2%;
 }
@@ -524,8 +525,7 @@ li div:hover {
 }
 
 .tags_details{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-style: italic;
     margin-top: 1%;
     font-size: 15px;
@@ -548,15 +548,13 @@ li div:hover {
     height: 5%;
     text-align: center;
     font-size: 15px;
-    font-family: 'Gill Sans', sans-serif;
-    margin-left: auto;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    margin-left: auto;
     margin-right: auto;
     display: block;
 }
 
 .summary{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-size: 30px;
     margin-top: 1%;
 }
@@ -567,8 +565,7 @@ li div:hover {
 }
 
 .summary_details{
-    font-family: 'Gill Sans', sans-serif;
-    text-align: center;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
     font-style: italic;
     margin-top: 1%;
     font-size: 15px;
@@ -583,14 +580,12 @@ li div:hover {
     height: 6%;
     text-align: center;
     font-size: 15px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .existing_tags {
     text-align: center;
     font-size: 15px;
-    font-family: 'Gill Sans', sans-serif;
-    margin-top: 1%;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    margin-top: 1%;
 }
 .error_message{
     color: red;
@@ -642,8 +637,7 @@ li div:hover {
     cursor: pointer;
     display: block; /* Ensures the button takes full width */
     transition: background-color 0.3s ease;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .post_quest_button:hover {
     background-color: rgb(18, 72, 219);
@@ -658,27 +652,23 @@ li div:hover {
     height: 5%;
     text-align: center;
     font-size: 15px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .new_ans_title{
     font-size: 35px;
     text-align: center;
     text-decoration: underline;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .answer_title {
     font-size: 30px;
     margin-top: 2%;
     text-align: center; /* Center the text */
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .answer_input {
     margin-top: 1%;
-    font-family: 'Gill Sans', sans-serif;
-    width: 30%;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    width: 30%;
     height: 10%;
     text-align: center; /* Center the text */
     font-size: 15px;
@@ -724,8 +714,7 @@ li div:hover {
     cursor: pointer;
     display: block; /* Ensures the button takes full width */
     transition: background-color 0.3s ease;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .post_ans_button:hover {
     background-color: rgb(18, 72, 219);
@@ -756,15 +745,13 @@ li div:hover {
 #tagsC{
     margin-left: 30px;
     font-size: 24px;
-    font-family: 'Gill Sans', sans-serif;
-    font-weight: 700;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 700;
 
 }
 
 #tag-s-{
     font-size: 24px;
-    font-family: 'Gill Sans', sans-serif;
-    font-weight: 700;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 700;
 
 }
 #Ttitle{
@@ -774,8 +761,7 @@ li div:hover {
     margin-right: 130px;  
     font-size: 26px;
     font-weight: 700;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 #tagsbox{
     justify-content: center;
     margin: auto;
@@ -823,8 +809,7 @@ li div:hover {
 
 #summary_line {
     font-size: 15px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 #tag_cont {
     display: flex; 
@@ -846,8 +831,7 @@ li div:hover {
     border: rgba(0, 15, 228, 0.49) 2px solid;
     color: rgba(0, 15, 228, 0.769);
     border-radius: 6px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .user_in {
     margin-top: 2%;
@@ -856,8 +840,7 @@ li div:hover {
     height: 5%;
     text-align: center;
     font-size: 15px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .answer_title {
     font-size: 30px;
@@ -872,8 +855,7 @@ li div:hover {
     height: 15%;
     text-align: center;
     font-size: 15px;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .mand{
     display: inline-block;
@@ -1024,8 +1006,7 @@ li div:hover {
     cursor: pointer; /* Change cursor to pointer on hover */
     color: rgb(0, 15, 228);
     font-weight: 600;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .logout:hover, .login:hover {
     background-color: rgba(142, 191, 218, 0.42); /* Example: darken the background color */
@@ -1050,8 +1031,7 @@ li div:hover {
     cursor: pointer; /* Change cursor to pointer on hover */
     color: #ffffff;
     font-weight: 600;
-    font-family: 'Gill Sans', sans-serif;
-}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 .signup:hover, .profile:hover {
     background-color: rgb(18, 72, 219); /* Example: darken the background color */

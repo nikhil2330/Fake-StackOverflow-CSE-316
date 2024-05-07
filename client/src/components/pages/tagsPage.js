@@ -30,7 +30,6 @@ export default function TagsPage({getTagQuestion, AskQuestion}) {
         </div>
         <div className="tagsbox" id="tagsbox">
           <div className="tags-container" id="tags-container">
-            
             {tags.map(tag => (
               <div className="tag" key={tag._id}>
                 <div className="tag-name" onClick={() => getTagQuestion(tag._id)} >{tag.name}</div>

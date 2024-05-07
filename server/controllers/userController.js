@@ -94,3 +94,19 @@ module.exports.getLoggedIn = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+module.exports.getUserVotes = async (req, res) => { 
+    console.log("Fetching votes for user:", req.params.userId);
+    try {
+        const user = await User.findById(req.user.userId).select('upVotes downVotes');
+        if (!user) {
+            console.log("No user found for ID:", req.params.userId);
+            return res.status(404).json({ message: "User not found" });
+        }
+        console.log("Votes data:", user.upVotes, user.downVotes);
+        res.json({ upVotes: user.upVotes, downVotes: user.downVotes });
+    } catch (error) {
+        console.error('Failed to fetch user votes:', error);
+        res.status(500).json({ message: "Server error" });
+    }
+};  
