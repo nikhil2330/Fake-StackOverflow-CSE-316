@@ -33,12 +33,15 @@ export default function AnswerQuestionPage({postAnswer}) {
     return (
         <>
             <br/>
-            <div className="answer_title">Answer Text*</div>
+            <div className='new_ans_title'>New Answer</div>
+            <div className="answer_title">Answer Text</div>
             <textarea type="text" id="answer_input" className="answer_input" placeholder="Enter your answer" onChange={e => setAnsText(e.target.value)}></textarea>
             <div className="error_message" id="ans_text_error"></div>
             <br/>
-            <button className="post_ans_button" id="post_ans_button" onClick={AnswerSubmit}>Post Answer</button>
-            <div className="mand">* indicates mandatory fields</div>      
+            <div className="container">
+                <button className="post_quest_button" id="post_quest_button" onClick={AnswerSubmit}>Post Question</button>
+                <div className="mandatory">* indicates mandatory fields</div>  
+            </div>   
         </>
     );
 }

@@ -95,8 +95,11 @@ export default function AskQuestionPage({postquestion}) {
             <div id="tags_error" className="error_message">{error}</div>
 
             <br/>
-            <button className="post_quest_button" id="post_quest_button" onClick={QuestionSubmit}>Post Question</button>
-            <div className="mandatory">* indicates mandatory fields</div>      
+            <div className="container">
+                <button className="post_quest_button" id="post_quest_button" onClick={QuestionSubmit}>Post Question</button>
+                <div className="mandatory">* indicates mandatory fields</div>  
+            </div>
+    
         </>
     );
   }
