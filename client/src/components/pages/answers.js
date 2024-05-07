@@ -8,34 +8,51 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
     const { id } = useParams(); 
     const [question, setQuestion] = useState(null);
     const { currentUser } = useAuth();
+    const [upvoted, setUpvoted] = useState(false);
+    const [downvoted, setDownvoted] = useState(false);
     const fetchQuestion = async () => {
         const response = await axios.get(`http://localhost:8000/questions/${id}`);
-        if (response.status === 200) {
-            setQuestion(response.data);
-        }
+        setQuestion(response.data);
+        
     };
+    const fetchVotes = async () => {
+        const response = await axios.get(`http://localhost:8000/users/${currentUser._id}/votes`);
+        setUpvoted(response.data.upVotes.includes(id));
+        console.log(id, response.data.upVotes ,upvoted);
+        setDownvoted(response.data.downVotes.includes(id));
+        console.log(downvoted);
+    }
     useEffect(() => {
         fetchQuestion();
-    }, [id]);
+        if(currentUser){
+            fetchVotes();
+        }
+    }, [id, currentUser]);
     const handleVote = async (type) => {
-        const endpoint = type === 'up' ? `/upvote/${id}` : `/downvote/${id}`;
+        console.log(type);
+        const endpoint = type === 'up' ? `/upvote/${id}`:`/downvote/${id}`;
         try {
-            await axios.get(`http://localhost:8000/questions${endpoint}`);
-            fetchQuestion(); 
+            await axios.post(`http://localhost:8000/questions${endpoint}`);
+            fetchQuestion();
+            if(currentUser){
+                fetchVotes();
+            }
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.error);
+                console.log("abc");
+                if(currentUser){
+                    alert(error.response.data.error);
+                }
             }
         }
     }
-
-    console.log();
-    if (!question) {
+    if (!question) {    
         return <div></div>;
     }
-
+    const voted = (isActive) => isActive ? "voted" : "vote";
     const answer_s = question.answers.length === 1 ? 'answer' : 'answers';
     const view_s = question.views === 1 ? 'view' : 'views';
+    const votes_s = question.votes === 1 ? 'vote' : 'votes';
     return (
         <>
             <div id = "ansSec-A">
@@ -52,13 +69,13 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                     <div className ="view-s-" id="view-s-">{view_s}</div>
                     &nbsp;
                     <div className='votebox'>
-                        <svg width="36" height="36" className="vote" onClick={() => handleVote('up')}>
+                        {currentUser && <svg width="36" height="36" className= {voted(upvoted)} onClick={() => handleVote('up')}>
                             <path d="M2 26h32L18 10 2 26z" ></path>
-                        </svg>
-                        <span className='votes'>{question.votes}</span>
-                        <svg width="36" height="36" className="vote" onClick={() => handleVote('down')}>
+                        </svg>}
+                        <span className='votesC'>{question.votes} {votes_s}</span>
+                        {currentUser && <svg width="36" height="36" className= {voted(downvoted)} onClick={() => handleVote('down')}>
                             <path d="M2 10h32L18 26 2 10z" ></path>
-                        </svg>
+                        </svg>}
                     </div>
                 </div>
                 <div className ="ques_text" id="ques_text" dangerouslySetInnerHTML={{ __html: question.text}}></div>

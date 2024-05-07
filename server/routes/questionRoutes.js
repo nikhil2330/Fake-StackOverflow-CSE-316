@@ -8,7 +8,7 @@ router.get('/', QuestionsController.getAllQuestionsWithSearch);
 router.get('/:id', QuestionsController.getQuestionById);
 router.post('/increment-view/:id', QuestionsController.incrementQuestionViews);
 router.get('/tag/:tid', QuestionsController.getQuestionsByTag);
-router.get('/upvote/:id', QuestionsController.upvoteQuestion);
-router.get('/downvote/:id', QuestionsController.upvoteQuestion);
+router.post('/upvote/:id', verifyToken, QuestionsController.upvoteQuestion);
+router.post('/downvote/:id', verifyToken, QuestionsController.downvoteQuestion);
 
 module.exports = router;

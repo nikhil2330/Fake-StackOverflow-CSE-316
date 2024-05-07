@@ -10,12 +10,12 @@ const userRoutes = require('./routes/userRoutes');
 const questionRoutes = require('./routes/questionRoutes');
 const answerRoutes = require('./routes/answerRoutes');
 const tagRoutes = require('./routes/tagRoutes'); 
-//const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const app = express();
 app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 app.use(express.json());
-//app.use(cookieParser());
+app.use(cookieParser());
 
 const mongoDB = 'mongodb://127.0.0.1:27017/fake_so';
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});

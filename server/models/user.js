@@ -10,7 +10,10 @@ const userSchema = new Schema({
     questions: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
     answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-    tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
+    tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+    upVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
+    downVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }]
+
 });
 
 module.exports = mongoose.model('User', userSchema);

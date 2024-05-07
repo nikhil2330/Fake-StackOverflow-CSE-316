@@ -4,15 +4,14 @@ const User = require('../models/user');
 
 module.exports.verifyToken = async (req, res, next) => {
     try {
-        console.log('Token received:', req.cookies.token); 
         const token = req.cookies.token; 
 
         if (!token) {
             console.log('No token provided');
             return res.status(401).json({ errorMessage: "Unauthorized" });
         }
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(verified.userId);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId);
         req.user =  { userId: user._id, username: user.username };  
         console.log('Token verified');
         next();
