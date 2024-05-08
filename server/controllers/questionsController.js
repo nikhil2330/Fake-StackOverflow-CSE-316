@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 module.exports.createQuestion = async (req, res) => {
     try{
-        const { title, text, tags } = req.body;
+        const { title, text, tags, summary} = req.body;
         const user = await User.findById(req.user.userId);
         const tagsarr = tags.split(/\s+/).filter((value, index, self) => value && self.indexOf(value) === index);
         const T_exist = await Tag.find({ name: { $in: tagsarr } });
@@ -16,14 +16,14 @@ module.exports.createQuestion = async (req, res) => {
                 if (user.reputation < 50) {
                     return res.status(403).json({ error: "Users with reputation below 50 cannot add new tags." });
                 }
-                const newTag = new Tag({ name: tagName });
+                const newTag = new Tag({ name: tagName, set_by: user.userId });
                 await newTag.save();
                 newTags.push(newTag);
             }
         }
     
         const allTags = [...T_exist, ...newTags];
-
+        user.tags.push(allTags.map(tag => tag._id));
         console.log(user.username);
         const newQuestion = new Question({
             title,
@@ -32,8 +32,12 @@ module.exports.createQuestion = async (req, res) => {
             asked_by: user._id,
             ask_date_time: new Date(),
             views: 0,
-            answers: []
+            votes: 0,
+            answers: [],
+            summary
         });
+        user.questions.push(newQuestion._id);
+        await user.save();
         await newQuestion.save();
         (await newQuestion.populate('tags')).populate('asked_by', 'username');
         res.json(newQuestion);
@@ -59,7 +63,6 @@ module.exports.incrementQuestionViews = async (req, res) => {
 
 module.exports.upvoteQuestion = async (req, res) => {
     try {
-        console.log("ab");
         const question = await Question.findById(req.params.id);
         const user = await User.findById(req.user.userId);
         const targetUser = await User.findById(question.asked_by);
@@ -69,7 +72,6 @@ module.exports.upvoteQuestion = async (req, res) => {
         if (user.reputation < 50) {
             return res.status(403).json({ error: "Users with reputation below 50 cannot vote" });
         }
-        console.log((targetUser.username === user.username));
         const alreadyUpvoted = user.upVotes.includes(question._id);
         const alreadyDownvoted = user.downVotes.includes(question._id)
         if(alreadyUpvoted){ //reputation only icnreases if not same user as as the post
@@ -80,7 +82,6 @@ module.exports.upvoteQuestion = async (req, res) => {
             if(!(targetUser._id.equals(user._id))){
                 targetUser.reputation -= 5; 
             }
-            console.log(user._id, targetUser._id, targetUser.reputation);
             
         }
         if(alreadyDownvoted){
@@ -90,7 +91,6 @@ module.exports.upvoteQuestion = async (req, res) => {
             if(!(targetUser._id.equals(user._id))){
                 targetUser.reputation += 10;
             }
-            console.log(user._id, targetUser._id, targetUser.reputation);
             
         }
         if(!alreadyDownvoted && !alreadyUpvoted){
@@ -100,7 +100,6 @@ module.exports.upvoteQuestion = async (req, res) => {
             if(!(targetUser._id.equals(user._id))){
                 targetUser.reputation += 5;
             }
-            console.log(user._id, targetUser._id, targetUser.reputation);
             
         }
         await question.save();
@@ -114,7 +113,6 @@ module.exports.upvoteQuestion = async (req, res) => {
 
 module.exports.downvoteQuestion = async (req, res) => {
     try {
-        console.log("abc");
         const question = await Question.findById(req.params.id);
         const user = await User.findById(req.user.userId);
         const targetUser = await User.findById(question.asked_by);
@@ -132,7 +130,6 @@ module.exports.downvoteQuestion = async (req, res) => {
             if(!(targetUser._id.equals(user._id))){
                 targetUser.reputation += 10;
             }
-            console.log(user._id, targetUser._id, targetUser.reputation);
             
         }
 
@@ -143,7 +140,6 @@ module.exports.downvoteQuestion = async (req, res) => {
             if(!(targetUser._id.equals(user._id))){
                 targetUser.reputation -= 5;
             }
-            console.log(user._id, targetUser._id, targetUser.reputation);
         }
 
         if(!alreadyDownvoted && !alreadyUpvoted){
@@ -153,7 +149,6 @@ module.exports.downvoteQuestion = async (req, res) => {
             if(!(targetUser._id.equals(user._id))){
                 targetUser.reputation -= 10;
             }
-            console.log(user._id, targetUser._id, targetUser.reputation);
             
         }
 

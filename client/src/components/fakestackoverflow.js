@@ -77,15 +77,6 @@
       navigate('/home');
     };
 
-    const postanswer = async (qid, user, anstext) => {
-      await axios.post('http://localhost:8000/answers', {
-        text: anstext,
-        ans_by: user,
-        questionID: qid
-      });
-      fetchQuestionDetails(qid);
-    }
-
     const Search = () => {
       axios.get('http://localhost:8000/questions', {
         params: {
@@ -138,21 +129,19 @@
 
     const fetchQuestionDetails = async (qid) => {
       try {
-          const response = await axios.get(`http://localhost:8000/questions/${qid}`);
-          if (response.status === 200) {
-            navigate(`home/question/${qid}`);
+        const response = await axios.get(`http://localhost:8000/questions/${qid}`);
+        if (response.status === 200) {
+          navigate(`home/question/${qid}`);
 
-          }
+        }
       } catch (error) {
-          console.error('Error fetching question details:', error);
+        console.error('Error fetching question details:', error);
       }
-  };
+    };
 
     const handleAnswerClick = (qid) => {
       incrementViews(qid);
       fetchQuestionDetails(qid);
-      
-
       
     };
     const handleMenu = async (e) => {
@@ -208,8 +197,9 @@
         />} />
         <Route path="ask" element={<AskQuestionPage postquestion={postquestion} />} />
         <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
-        <Route path="answer/:id" element={<AnswerQuestionPage postAnswer={postanswer} />} />
+        <Route path="answer/:id" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
         <Route path="tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('home/ask')} />} />
+        {/* <Route path="profile" element={<Profile />} /> */}
       </Route>
     </Routes>
   );
