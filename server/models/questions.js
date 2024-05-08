@@ -15,7 +15,6 @@ const questionSchema = new Schema({
   },
   summary: {
     type: String,
-    default: "nothing",
     required: true,
     maxlength: 140
   },

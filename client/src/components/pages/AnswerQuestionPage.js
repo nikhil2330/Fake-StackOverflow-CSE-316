@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { answerErrors } from '../../helpers';
+import axios from 'axios';
 
 
-export default function AnswerQuestionPage({postAnswer}) {
+export default function AnswerQuestionPage({fetchQuestionDetails}) {
     const[ans_text, setAnsText] = useState("");
-    const[user, setUser] = useState("");
     const { id } = useParams();
 
     const AnswerSubmit = async (event) => {
         event.preventDefault();
         document.getElementById("ans_text_error").textContent = "";
-
         let flag = 0;
         flag = answerErrors();
         const validHyperlink = /\[([^[\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
@@ -26,9 +25,14 @@ export default function AnswerQuestionPage({postAnswer}) {
 
         if(flag !== 1) {
             const newText = ans_text.replace(validHyperlink, (match, name, link) => `<a href="${link}" target="_blank">${name}</a>`);
-            postAnswer(id, user, newText);
+                await axios.post('http://localhost:8000/answers', {
+                  text: newText,
+                  questionID: id
+                });
+                fetchQuestionDetails(id);
         }
     };
+    
 
     return (
         <>

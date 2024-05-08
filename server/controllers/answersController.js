@@ -15,6 +15,8 @@ exports.createAnswer = async (req, res) => {
 
         await newAnswer.save();
         const question = await Question.findById(questionID);
+        user.answers.push(question._id);
+        await user.save();
         question.answers.push(newAnswer);
         await question.save();
         (await question.populate({
@@ -24,6 +26,7 @@ exports.createAnswer = async (req, res) => {
                 select: 'username'
             }
         })).populate('tags');
+        
 
         res.json(newAnswer);
     } catch (error) {

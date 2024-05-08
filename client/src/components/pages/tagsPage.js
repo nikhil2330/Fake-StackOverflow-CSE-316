@@ -9,7 +9,6 @@ export default function TagsPage({getTagQuestion, AskQuestion}) {
 
 
   useEffect(() => {
-
     axios.get('http://localhost:8000/tags')
       .then(response =>{ 
         setTags(response.data);

@@ -35,6 +35,64 @@ module.exports.registerUser = async (req, res) => {
 
 };
 
+module.exports.getUserDetails = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId).select('-password');  
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+        res.json(user);
+    } catch (error) {
+        res.json({ message: "Internal server error" });
+    }
+};
+
+module.exports.getUserQuestions = async (req,res) => {
+    try {
+    const user = await User.findById(req.user.userId).populate('questions', 'title');
+    const questions = user.questions.map(question => {
+        return {
+            id: question._id, 
+            title: question.title
+        };
+    });
+    res.json(questions);
+    } catch (error) {
+        console.error('Error fetching user questions:', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+module.exports.getUserTags = async (req,res) => {
+    try {
+    const user = await User.findById(req.user.userId).populate('tags', 'name');
+    const questions = user.questions.map(question => {
+        return {
+            id: question._id, 
+            title: question.title
+        };
+    });
+    res.json(questions);
+    } catch (error) {
+        console.error('Error fetching user questions:', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+module.exports.getUserAnswerQuestions = async (req,res) => {
+    try {
+    const user = await User.findById(req.user.userId).populate('questions', 'title');
+    const questions = user.questions.map(question => {
+        return {
+            id: question._id, 
+            title: question.title
+        };
+    });
+    res.json(questions);
+    } catch (error) {
+        console.error('Error fetching user questions:', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 
 
 module.exports.loginUser = async (req, res) => {
@@ -96,14 +154,11 @@ module.exports.getLoggedIn = async (req, res) => {
 };
 
 module.exports.getUserVotes = async (req, res) => { 
-    console.log("Fetching votes for user:", req.params.userId);
     try {
         const user = await User.findById(req.user.userId).select('upVotes downVotes');
         if (!user) {
-            console.log("No user found for ID:", req.params.userId);
             return res.status(404).json({ message: "User not found" });
         }
-        console.log("Votes data:", user.upVotes, user.downVotes);
         res.json({ upVotes: user.upVotes, downVotes: user.downVotes });
     } catch (error) {
         console.error('Failed to fetch user votes:', error);
