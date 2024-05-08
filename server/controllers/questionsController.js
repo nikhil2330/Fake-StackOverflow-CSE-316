@@ -8,8 +8,9 @@ module.exports.createQuestion = async (req, res) => {
         const user = await User.findById(req.user.userId);
         const tagsarr = tags.split(/\s+/).filter((value, index, self) => value && self.indexOf(value) === index);
         const T_exist = await Tag.find({ name: { $in: tagsarr } });
+
+        const userTagIds = new Set(user.tags.map(tag => tag.toString()));
         const T_ex_name = T_exist.map(tag => tag.name);
-        console.log(user.reputation);
         const newTags = [];
         for (const tagName of tagsarr) {
             if (!T_ex_name.includes(tagName)) {
@@ -19,11 +20,18 @@ module.exports.createQuestion = async (req, res) => {
                 const newTag = new Tag({ name: tagName, set_by: user.userId });
                 await newTag.save();
                 newTags.push(newTag);
+                if (!userTagIds.has(newTag._id.toString())) {
+                    user.tags.push(newTag._id); 
+                }
+            } else {
+                const existingTag = T_exist.find(tag => tag.name === tagName);
+                if (!userTagIds.has(existingTag._id.toString())) {
+                    user.tags.push(existingTag._id); 
+                }
             }
         }
     
         const allTags = [...T_exist, ...newTags];
-        user.tags.push(allTags.map(tag => tag._id));
         console.log(user.username);
         const newQuestion = new Question({
             title,

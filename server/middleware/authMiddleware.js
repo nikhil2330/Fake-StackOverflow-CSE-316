@@ -13,7 +13,6 @@ module.exports.verifyToken = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.userId);
         req.user =  { userId: user._id, username: user.username };  
-        console.log('Token verified');
         next();
     } catch (err) {
         console.error("Token verification failed:", err);

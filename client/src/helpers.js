@@ -42,14 +42,13 @@ export function getTimeStamp(askDate) {
       " at " +
       date.getHours() +
       ":" +
-      date.getMinutes().toString().padStart(2, "0") +
-      "."
+      date.getMinutes().toString().padStart(2, "0")
     );
   } else if (hours > 0) {
     return hours + " hours ago.";
   } else if (min > 0) {
     return min + " minutes ago.";
-  } else if ((sec) => 0) {
+  } else if ((sec) >= 0) {
     return sec + " seconds ago.";
   }
 }

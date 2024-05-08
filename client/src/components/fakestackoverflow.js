@@ -14,6 +14,7 @@
   import Login from './login.js';
   import { useAuth } from '../contexts/authContext.js';
   import { newest, active, unanswered } from '../helpers.js';
+  import Profile from './pages/profilePage.js';
   axios.defaults.withCredentials = true;
 
 
@@ -177,12 +178,11 @@
     navigate('/login');
   };
 
-
   return (
     <Routes>
       <Route path="/" element={!currentUser && !isGuest  ?  <WelcomePage showSignup ={showSignup} showLogin = {showLogin} handleContinueAsGuest = {continueAsGuest} /> : <Navigate replace to="/home"/> } />
-      <Route path="/login" element={<Login onContinueAsGuest={continueAsGuest} onSignUp ={showSignup} loginUser={loginUser}/>} />
-      <Route path="/signup" element={<Signup onContinueAsGuest={continueAsGuest} onLogin = {showLogin} registerUser={registerUser}/>} />
+      <Route path="/login" element={!currentUser ? <Login onContinueAsGuest={continueAsGuest} onSignUp ={showSignup} loginUser={loginUser}/> : <Navigate replace to="/home"/>} />
+      <Route path="/signup" element={!currentUser ?  <Signup onContinueAsGuest={continueAsGuest} onLogin = {showLogin} registerUser={registerUser}/> : <Navigate replace to="/home"/>} />
       <Route path="/home" element={!currentUser || !isGuest  ? <Main handleSearchChange={handleSearchChange} handleKeyDown={handleKeyDown} handleMenu={handleMenu} handleLogout={handleLogout}/> : <Navigate replace to="/" />} >
         <Route index element={<HomePage
           handleSortNewest={handleSortNewest}
@@ -199,7 +199,7 @@
         <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
         <Route path="answer/:id" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
         <Route path="tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('home/ask')} />} />
-        {/* <Route path="profile" element={<Profile />} /> */}
+        <Route path="profile" element={<Profile getTagQuestion={handleTagClick}  />} />
       </Route>
     </Routes>
   );

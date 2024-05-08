@@ -17,8 +17,10 @@ exports.createAnswer = async (req, res) => {
         const question = await Question.findById(questionID);
         user.answers.push(question._id);
         await user.save();
+        console.log(user);
         question.answers.push(newAnswer);
         await question.save();
+
         (await question.populate({
             path: 'answers',
             populate: {
