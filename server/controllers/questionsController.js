@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 module.exports.createQuestion = async (req, res) => {
     try{
-        const { title, text, tags, summary} = req.body;
+        const {title, text, tags, summary} = req.body;
         const user = await User.findById(req.user.userId);
         const tagsarr = tags.split(/\s+/).filter((value, index, self) => value && self.indexOf(value) === index);
         const T_exist = await Tag.find({ name: { $in: tagsarr } });
@@ -28,13 +28,13 @@ module.exports.createQuestion = async (req, res) => {
         const newQuestion = new Question({
             title,
             text,
+            summary,
             tags: allTags.map(tag => tag._id),
             asked_by: user._id,
             ask_date_time: new Date(),
             views: 0,
             votes: 0,
             answers: [],
-            summary
         });
         user.questions.push(newQuestion._id);
         await user.save();

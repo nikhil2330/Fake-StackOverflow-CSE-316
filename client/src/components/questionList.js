@@ -42,14 +42,15 @@ function QuestionList ({questions, displayAnswers}){
                             <div className="metadata">
                                 <span className='name'>{question.asked_by.username}</span> asked {getTimeStamp(question.ask_date_time)}
                             </div>
-                            <p id="summary_line">{question.summary}</p> {/* Add summary here */}
-                            
-                            <div id='tag_cont' className='tag_cont'>
-                                {question.tags.map(tag => ( 
-                                    <div key={`${tag._id}`} id='tagsec'> {/* try just tag-id*/}
-                                        {tag.name}
-                                    </div>
-                                ))}
+                            <div className="summary-tags">
+                                <p id="summary_line">{question.summary}</p>
+                                <div id='tag_cont' className='tag_cont'>
+                                    {question.tags.map(tag => ( 
+                                        <div key={`${tag._id}`} id='tagsec'>
+                                            {tag.name}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>

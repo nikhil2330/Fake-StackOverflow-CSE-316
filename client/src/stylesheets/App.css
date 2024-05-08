@@ -9,7 +9,7 @@ body, html {
 }
 
 #header {
-    z-index:1;
+    /* z-index:1; */
     padding: 1vh;
     border-bottom: 3px solid rgb(245, 170, 42);
     background-color: rgb(255, 255, 255);
@@ -22,23 +22,29 @@ body, html {
 
 
 .fake{
+    position: fixed;
     font-family: 'Optima', sans-serif;
     font-size: 25px;
     font-weight: bold;
     color: #333333; 
-    margin-left: 10%; 
-     
+    margin-left: 1vh; 
+    margin-top: -1.4vh; /* Adjust margin-top to move up */
+
 }
 
 .stack {
+    margin-left: 3vh; /* Adjust margin-left */
+    margin-top: -1.3vh; /* Adjust margin-top to move up */
+    position: fixed;
     font-family: 'Optima', sans-serif;
     color: #333; 
     font-weight: 500;
-    margin-left: 3%;
+    margin-left: 7vh;
 }
 
 #firstpage {
-    margin-left: 5%;
+    position: fixed;
+    margin-left: 30vh;
     font-size: 18px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     cursor: pointer;
@@ -46,9 +52,10 @@ body, html {
 }
 
 #tags {
+    position: fixed;
     font-size: 18px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    margin-left: 3%;
+    margin-left: 45vh;
     cursor: pointer; /* Change cursor to pointer on hover */
     transition: transform 0.2s ease;
 }
@@ -60,6 +67,59 @@ body, html {
 #firstpage:active, #tags:active {
     transform: translateY(1px);
 }
+
+
+.logout, .login{
+    position: fixed;
+    align-items: center; 
+    right: 20vh;
+    /* margin-left: 54%; */
+    height: 30px;
+    width: 80px;
+    text-align: center;
+    background-color: white; 
+    border: 2px solid rgb(0, 15, 228); 
+    border-radius: 5px; /* Apply a slight curve to the border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: rgb(0, 15, 228);
+    font-weight: 600;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.logout:hover, .login:hover {
+    background-color: rgba(142, 191, 218, 0.42); /* Example: darken the background color */
+    border-color:  rgb(0, 15, 228); /* Example: darken the border color */
+    color: rgb(0, 15, 228);
+    transform: translateY(2px); 
+}
+
+
+
+.signup, .profile {
+    position: fixed;
+    align-items: center; 
+    right: 7vh;
+    justify-content: center; /* Center the text horizontally */
+    display: flex;
+    margin-left: 2%;
+    height: 30px;
+    width: 80px;
+    text-align: center;
+    background-color: rgb(22, 123, 232); /* Set background to transparent */
+    border: 2px solid rgb(0, 15, 228); /* Set border to black */
+    border-radius: 5px; /* Apply a slight curve to the border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #ffffff;
+    font-weight: 600;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+
+.signup:hover, .profile:hover {
+    background-color: rgb(18, 72, 219); /* Example: darken the background color */
+    border-color:  rgb(0, 15, 228); /* Example: darken the border color */
+    color: #ffffff;
+    transform: translateY(2px); 
+}
+
 
 #search{  
     position: fixed;
@@ -165,6 +225,8 @@ li div:hover {
     width: 130px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    margin-left: 1vh; 
     transition: background-color 0.3s ease;
+    position: fixed;
+    right: 4vh;
 }
 
 .button1:hover {
@@ -230,7 +292,7 @@ li div:hover {
 
 #section {
     display: grid;
-    grid-template-columns: 10vw 38vw 50vw; 
+    grid-template-columns: 10vw 30vw 50vw; 
     gap: 2vw;
     align-items: center;
     margin-top: -10;
@@ -244,8 +306,9 @@ li div:hover {
     white-space: nowrap;
 }
 #views, #answers, #votes {
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 15px;
-    color: #777777;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    
+font-size: 20px;
+color: #000000;
 
 }
 #section h3{
@@ -265,7 +328,8 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
     margin-left: 50vh;
     display: flex;
     /* white-space: nowrap;  */
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 16px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    
+    font-size: 16px;
     color: #777777;
     text-align: right;
     flex-wrap: wrap;
@@ -273,7 +337,8 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
 }
 
 .name{
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 16px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    
+    font-size: 16px;
     color: #e90a0a;
     text-align: left;
     margin-right: 5px;
@@ -663,12 +728,13 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 .answer_title {
     font-size: 30px;
     margin-top: 2%;
-    text-align: center; /* Center the text */
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
 
 .answer_input {
     margin-top: 1%;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    width: 30%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    
+    width: 30%;
     height: 10%;
     text-align: center; /* Center the text */
     font-size: 15px;
@@ -807,9 +873,20 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     clear: both;
 }
 
+.summary-tags {
+    
+    margin-left: 18vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+}
+
 #summary_line {
+    margin-left: 3vh;
     font-size: 15px;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
 
 #tag_cont {
     display: flex; 
@@ -988,56 +1065,6 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 .b {
   background-color: #337ab7; /* Blue color for the 'Sign Up' or 'Login' button */
   color: white;
-}
-
-.logout, .login{
-    /* margin-top: 70px;
-    margin-right: 50px; */
-    justify-content: center; 
-    align-items: center; 
-    display: flex;
-    margin-left: 54%;
-    height: 30px;
-    width: 80px;
-    text-align: center;
-    background-color: white; 
-    border: 2px solid rgb(0, 15, 228); 
-    border-radius: 5px; /* Apply a slight curve to the border */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: rgb(0, 15, 228);
-    font-weight: 600;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
-
-.logout:hover, .login:hover {
-    background-color: rgba(142, 191, 218, 0.42); /* Example: darken the background color */
-    border-color:  rgb(0, 15, 228); /* Example: darken the border color */
-    color: rgb(0, 15, 228);
-    transform: translateY(2px); 
-}
-
-
-
-.signup, .profile {
-    justify-content: center; /* Center the text horizontally */
-    align-items: center; /* Center the text vertically */
-    display: flex;
-    margin-left: 2%;
-    height: 30px;
-    width: 80px;
-    text-align: center;
-    background-color: rgb(22, 123, 232); /* Set background to transparent */
-    border: 2px solid rgb(0, 15, 228); /* Set border to black */
-    border-radius: 5px; /* Apply a slight curve to the border */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #ffffff;
-    font-weight: 600;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
-
-.signup:hover, .profile:hover {
-    background-color: rgb(18, 72, 219); /* Example: darken the background color */
-    border-color:  rgb(0, 15, 228); /* Example: darken the border color */
-    color: #ffffff;
-    transform: translateY(2px); 
 }
 
 .input-container {
