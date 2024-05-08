@@ -4,12 +4,14 @@ import { getTimeStamp } from '../../helpers';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 
-export default function Answers({AskQuestion, handleAnswerQuestion}) {
+export default function Answers({AskQuestion, handleAnswerQuestion, AddComment}) {
     const { id } = useParams(); 
     const [question, setQuestion] = useState(null);
     const { currentUser } = useAuth();
     const [upvoted, setUpvoted] = useState(false);
     const [downvoted, setDownvoted] = useState(false);
+    const [comments, setComments] = useState([]);
+
     const fetchQuestion = async () => {
         const response = await axios.get(`http://localhost:8000/questions/${id}`);
         setQuestion(response.data);
@@ -53,6 +55,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
     const answer_s = question.answers.length === 1 ? 'answer' : 'answers';
     const view_s = question.views === 1 ? 'view' : 'views';
     const votes_s = question.votes === 1 ? 'vote' : 'votes';
+
     return (
         <>
             <div id = "ansSec-A">
@@ -94,8 +97,17 @@ export default function Answers({AskQuestion, handleAnswerQuestion}) {
                         </div>
                     </div>
                 </div>
+ 
             ))}
             {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>)}
+
+            <div id = "ans-comments">
+                {currentUser && (<button className  = "comments-button" id="comments-button" onClick={AddComment}>Add Comment</button>)}
+                {/* <div className='comm-views' id="comm-views">{comment_views}</div> */}
+                &nbsp;
+                <div className ="comment_text" id="comment_text" dangerouslySetInnerHTML={{ __html: comments.text}}></div>
+
+            </div>
       </>
   );
 }

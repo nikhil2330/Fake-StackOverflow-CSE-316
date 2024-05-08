@@ -13,12 +13,14 @@ function Header({handleChange, handleKeyDown, handleLogout, handleMenu, handlePr
         </h1>
 
       
+      
+      <div id = "firstpage"  className = {(active === 'firstpage' || active === 'searchresults' || active === 'tagquestions') ? 'active' : ''} onClick = {handleMenu}>Questions</div>
+      <div id = "tags" className = {active === 'tags' ? 'active' : ''} onClick = {handleMenu}>Tags</div>
+
       <div id="search">
         <input type="text" id="input" placeholder="Search . . ." onChange = {handleChange}
          onKeyDown={handleKeyDown}/>
       </div>
-      <div id = "firstpage"  className = {(active === 'firstpage' || active === 'searchresults' || active === 'tagquestions') ? 'active' : ''} onClick = {handleMenu}>Questions</div>
-      <div id = "tags" className = {active === 'tags' ? 'active' : ''} onClick = {handleMenu}>Tags</div>
  
       {currentUser ? (<button className='logout' onClick={handleLogout}>Logout</button>) : 
       (<button className='login' onClick={() => navigate('/login')}>Login</button>)}
