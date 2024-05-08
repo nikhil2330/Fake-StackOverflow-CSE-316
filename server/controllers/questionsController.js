@@ -28,6 +28,7 @@ module.exports.createQuestion = async (req, res) => {
         const newQuestion = new Question({
             title,
             text,
+            summary,
             tags: allTags.map(tag => tag._id),
             asked_by: user._id,
             ask_date_time: new Date(),
