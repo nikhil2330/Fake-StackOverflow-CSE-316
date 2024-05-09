@@ -12,6 +12,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     const [tags, setTags] = useState([]);
     const [newTid, setNewTid] = useState(null);
     const [newTag, setNewTag] = useState('');
+    const [error, setError] = useState('');
     const navigate  = useNavigate();
     const fetchUserDetails = async () => {
         const { data } = await axios.get('http://localhost:8000/users/details');
@@ -35,16 +36,16 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     
 
     const deleteTag = async (tagId) => {
+        console.log(tagId);
         try {
-            await axios.delete(`http://localhost:8000/tags/${tagId}`);
-            setTags(prevTags => prevTags.filter(tag => tag._id !== tagId));
+            const response = await axios.delete(`http://localhost:8000/tags/${tagId}`)
+            setTags(prevTags => prevTags.filter(tag => tag.id !== tagId));
         } catch (error) {
             console.error('Failed to delete tag:', error);
         }
     };
-    tags.map(tag => {console.log(tag)});
     const handleEdit = (tag) => {
-        setNewTid(tag._id);
+        setNewTid(tag.id);  
         setNewTag(tag.name);
     };
 
@@ -59,7 +60,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
         try {
             await axios.put(`http://localhost:8000/tags/${newTid}`, { name: newTag });
             const updatedTags = tags.map(tag => {
-                if (tag._id === newTid) {
+                if (tag.id === newTid) {
                     return { ...tag, name: newTag };
                 }
                 return tag;
@@ -120,9 +121,8 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                         <div className="tagsbox" id="tagsbox">
                             <div className="tags-container" id="tags-container">
                             {tags.map((tag, index) => (
-                                <div className="tag" key={tag._id || index}>
-                                    {/* {console.log(index)}   */}
-                                    {newTid === tag._id ? (
+                                <div className="tag" key={tag.id || index}>
+                                    {newTid === tag.id ? (
                                         <>
                                             <input value={newTag} onChange={handleEditChange} />
                                             <button onClick={submitTagEdit}>Save</button>
@@ -130,12 +130,12 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                                         </>
                                     ) : (
                                         <>
-                                            <div className="tag-name" onClick={() => getTagQuestion(tag._id)}>{tag.name}</div>
+                                            <div className="tag-name" onClick={() => getTagQuestion(tag.id)}>{tag.name}</div>
                                             <div className="tag-question-count">
                                                 {tag.questionCount} {tag.questionCount === 1 ? 'Question' : 'Questions'}
                                             </div>
                                             <button onClick={() => handleEdit(tag)}>Edit</button>
-                                            <button onClick={() => deleteTag(tag._id)}>Delete</button>
+                                            <button onClick={() => deleteTag(tag.id)}>Delete</button>
                                         </>
                                     )}
                                 </div>

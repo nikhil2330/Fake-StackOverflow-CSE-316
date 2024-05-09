@@ -78,7 +78,6 @@ module.exports.getUserTags = async (req,res) => {
             questionCount: count
         };
     }));
-    console.log(tagsWithCounts);
     res.json(tagsWithCounts);
     } catch (error) {
         console.error('Error fetching user questions:', error);
@@ -88,7 +87,6 @@ module.exports.getUserTags = async (req,res) => {
 module.exports.getUserAnswerQuestions = async (req,res) => {
     try {
     const user = await User.findById(req.user.userId).populate('answers', 'title');
-    console.log(user);
     const uniqueQuestions = {};
     user.answers.forEach(question => {
         if (!uniqueQuestions[question._id]) {
@@ -120,8 +118,6 @@ module.exports.loginUser = async (req, res) => {
         if (!passwordCorrect) {
             return res.status(401).json({ password: "Wrong email or password."})
         }
-
-        console.log(process.env.JWT_SECRET);
 
         if (!process.env.JWT_SECRET) {
             console.error('FATAL ERROR: JWT_SECRET is not defined.');
