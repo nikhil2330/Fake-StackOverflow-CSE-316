@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const questionRoutes = require('./routes/questionRoutes');
 const answerRoutes = require('./routes/answerRoutes');
 const tagRoutes = require('./routes/tagRoutes'); 
+const commentRoutes = require('./routes/commentRoutes'); 
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const app = express();
@@ -29,6 +30,7 @@ app.use('/questions', questionRoutes);
 app.use('/answers', answerRoutes);
 app.use('/tags', tagRoutes);
 app.use('/users', userRoutes);
+app.use('/comments', commentRoutes);
 
 app.listen(8000, () => console.log(`Example app listening on port!`));
 

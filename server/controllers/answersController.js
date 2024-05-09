@@ -136,3 +136,82 @@ module.exports.downvoteAnswer = async (req, res) => {
         console.error('Error voting', error);
     }
 }
+
+
+module.exports.updateAnswer= async (req,res) => {
+    const { id } = req.params;
+    const { text} = req.body;
+    try{
+        const answer = await Answer.findById(id);
+        const user = await User.findById(req.user.userId);
+        answer.text = text || answer.text;
+        await user.save();
+        await answer.save();
+        res.json({ message: "answer updated successfully", answer });
+    }catch(error){
+        console.error('Error updating answer:', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+module.exports.deleteAnswer= async (req, res)=> {
+    const { id } = req.params;
+    try {
+        const answer = await Answer.findById(id);
+
+        const otherAnswers = await Answer.find({
+            question: answer.question,
+            ans_by: answer.ans_by,
+            _id: { $ne: id }  // Exclude the current answer
+        });
+
+        await Question.findByIdAndUpdate(answer.question, {
+            $pull: { answers: id }
+        });
+        if (otherAnswers.length === 0) {
+            await User.findByIdAndUpdate(answer.ans_by, {
+                $pull: {
+                    answers: answer.question,
+                    A_upVotes: id,
+                    A_downVotes: id
+                }
+            });
+        } else{
+            await User.findByIdAndUpdate(answer.ans_by, {
+                $pull: {
+                    A_upVotes: id,
+                    A_downVotes: id
+                }
+            });
+        }
+
+        //await Comment.deleteMany({ question: id });
+       
+        await Answer.findByIdAndDelete(id);
+        // const user = await User.findById(req.user.userId);
+        // console.log(user);
+        res.json({ message: "Answer and associated data deleted successfully" });
+    } catch (error) {
+        console.error('Failed to delete Answer:', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+module.exports.getAnswer = async (req, res) => {
+    try {
+        const answer = await Answer.findById(req.params.id)
+            .populate('ans_by', 'username')
+            .populate('question');
+
+        if (!answer) {
+            return res.status(404).json({ message: 'Answer not found' });
+        }
+
+        res.json(answer);
+    } catch (error) {
+        console.error('Failed to fetch answer:', error);
+        res.status(500).json({ message: 'Error fetching answer' });
+    }
+};
+
+
