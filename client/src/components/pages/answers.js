@@ -12,9 +12,9 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
     const [downvoted, setDownvoted] = useState(false);
     const [a_upvoted, setA_upvoted] = useState(false);
     const [a_downvoted, setA_downvoted] = useState(false);
-    const [comments, setComments] = useState([]);
-    const [commentViews, setCommentViews] = useState(3); // Number of comments to display
-    const [commentPage, setCommentPage] = useState(1); // Current comment page
+    // const [comments, setComments] = useState([]);
+    // const [commentViews, setCommentViews] = useState(3); // Number of comments to display
+    // const [commentPage, setCommentPage] = useState(1); // Current comment page
     const navigate = useNavigate();
 
     const fetchQuestion = async () => {
@@ -33,10 +33,10 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
         console.log(response.data.A_upVotes);
         console.log(response.data.A_downVotes);
     }
-    const fetchComments = async () => {
-        const response = await axios.get(`http://localhost:8000/comments/${id}`);
-        setComments(response.data);
-    };
+    // const fetchComments = async () => {
+    //     const response = await axios.get(`http://localhost:8000/comments/${id}`);
+    //     setComments(response.data);
+    // };
 
     useEffect(() => {
         fetchQuestion();
@@ -64,19 +64,19 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
         }
     }
 
-    const handleAddComment = async (commentText) => {
-        try {
-            await axios.post('http://localhost:8000/comments/add', {
-                postId: id,
-                text: commentText,
-                commenterId: currentUser._id,
-                timestamp: new Date().toISOString(),
-            });
-            await fetchComments(); // Fetch updated comments after adding a new one
-        } catch (error) {
-            console.error('Error adding comment:', error);
-        }
-    };
+    // const handleAddComment = async (commentText) => {
+    //     try {
+    //         await axios.post('http://localhost:8000/comments/add', {
+    //             postId: id,
+    //             text: commentText,
+    //             commenterId: currentUser._id,
+    //             timestamp: new Date().toISOString(),
+    //         });
+    //         await fetchComments(); // Fetch updated comments after adding a new one
+    //     } catch (error) {
+    //         console.error('Error adding comment:', error);
+    //     }
+    // };
     
 
 
@@ -145,36 +145,6 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
             {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>)}
 
       
-            {/* Comments Section */}
-            <div id="ans-comments">
-                {currentUser && (
-                    <button className="comments-button" onClick={handleAddComment}>Add Comment</button>
-                )}
-                {/* Comment Counter */}
-                <div className='comment-counter'>Comments ({comments.length})</div>
-                {/* Display Comments */}
-                {comments.slice((commentPage - 1) * commentViews, commentPage * commentViews).map(comment => (
-                    <div key={comment.id}>
-                        <div className="comment">
-                            {/* Display comment text */}
-                            <div className="comment-text">{comment.text}</div>
-                            {/* Display commenter and timestamp */}
-                            <div className="comment-metadata">
-                                <span className="commenter">{comment.commenter}</span>
-                                <span className="comment-time">{getTimeStamp(comment.timestamp)}</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-                {/* Pagination for comments */}
-                {comments.length > commentViews && (
-                    <div className="comment-pagination">
-                        <button onClick={() => setCommentPage(commentPage - 1)} disabled={commentPage === 1}>Previous</button>
-                        <span>{commentPage} / {Math.ceil(comments.length / commentViews)}</span>
-                        <button onClick={() => setCommentPage(commentPage + 1)} disabled={commentPage === Math.ceil(comments.length / commentViews)}>Next</button>
-                    </div>
-                )}
-            </div>
       </>
   );
 }
