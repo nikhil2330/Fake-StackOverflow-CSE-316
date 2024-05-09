@@ -12,7 +12,9 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
     const [downvoted, setDownvoted] = useState(false);
     const [a_upvoted, setA_upvoted] = useState(false);
     const [a_downvoted, setA_downvoted] = useState(false);
-    const [comments, setComments] = useState([]);
+    // const [comments, setComments] = useState([]);
+    // const [commentViews, setCommentViews] = useState(3); // Number of comments to display
+    // const [commentPage, setCommentPage] = useState(1); // Current comment page
     const navigate = useNavigate();
 
     const fetchQuestion = async () => {
@@ -31,6 +33,11 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
         console.log(response.data.A_upVotes);
         console.log(response.data.A_downVotes);
     }
+    // const fetchComments = async () => {
+    //     const response = await axios.get(`http://localhost:8000/comments/${id}`);
+    //     setComments(response.data);
+    // };
+
     useEffect(() => {
         fetchQuestion();
         if(currentUser){
@@ -56,6 +63,23 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
             }
         }
     }
+
+    // const handleAddComment = async (commentText) => {
+    //     try {
+    //         await axios.post('http://localhost:8000/comments/add', {
+    //             postId: id,
+    //             text: commentText,
+    //             commenterId: currentUser._id,
+    //             timestamp: new Date().toISOString(),
+    //         });
+    //         await fetchComments(); // Fetch updated comments after adding a new one
+    //     } catch (error) {
+    //         console.error('Error adding comment:', error);
+    //     }
+    // };
+    
+
+
     if (!question) {    
         return <div></div>;
     }
@@ -120,13 +144,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
             ))}
             {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>)}
 
-            <div id = "ans-comments">
-                {currentUser && (<button className  = "comments-button" id="comments-button" onClick={AddComment}>Add Comment</button>)}
-                {/* <div className='comm-views' id="comm-views">{comment_views}</div> */}
-                &nbsp;
-                <div className ="comment_text" id="comment_text" dangerouslySetInnerHTML={{ __html: comments.text}}></div>
-
-            </div>
+      
       </>
   );
 }
