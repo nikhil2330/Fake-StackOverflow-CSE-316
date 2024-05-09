@@ -2,12 +2,14 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const Question = require('../models/questions');
+
 
 
 const time = 2;
 
 module.exports.registerUser = async (req, res) => {
-    const { username, email, password, password2 } = req.body;
+    const { username, email, password} = req.body;
 
     try {
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -49,11 +51,13 @@ module.exports.getUserDetails = async (req, res) => {
 
 module.exports.getUserQuestions = async (req,res) => {
     try {
-    const user = await User.findById(req.user.userId).populate('questions', 'title');
+    const user = await User.findById(req.user.userId).populate('questions', 'title ask_date_time' );
+    
     const questions = user.questions.map(question => {
         return {
             id: question._id, 
-            title: question.title
+            title: question.title,
+            ask_date_time: question.ask_date_time
         };
     });
     res.json(questions);
@@ -65,13 +69,17 @@ module.exports.getUserQuestions = async (req,res) => {
 module.exports.getUserTags = async (req,res) => {
     try {
     const user = await User.findById(req.user.userId).populate('tags', 'name');
-    const questions = user.questions.map(question => {
+    const tagsWithCounts = await Promise.all(user.tags.map(async (tag) => {
+        const count = await Question.countDocuments({ tags: tag._id });
+        
         return {
-            id: question._id, 
-            title: question.title
+            id: tag._id, 
+            name: tag.name,
+            questionCount: count
         };
-    });
-    res.json(questions);
+    }));
+    console.log(tagsWithCounts);
+    res.json(tagsWithCounts);
     } catch (error) {
         console.error('Error fetching user questions:', error);
         res.status(500).json({ message: "Internal server error" });
@@ -79,14 +87,20 @@ module.exports.getUserTags = async (req,res) => {
 }
 module.exports.getUserAnswerQuestions = async (req,res) => {
     try {
-    const user = await User.findById(req.user.userId).populate('questions', 'title');
-    const questions = user.questions.map(question => {
-        return {
-            id: question._id, 
-            title: question.title
-        };
+    const user = await User.findById(req.user.userId).populate('answers', 'title');
+    console.log(user);
+    const uniqueQuestions = {};
+    user.answers.forEach(question => {
+        if (!uniqueQuestions[question._id]) {
+            uniqueQuestions[question._id] = {
+                id: question._id, 
+                title: question.title
+            };
+        }
     });
-    res.json(questions);
+    const answerQuestions = Object.values(uniqueQuestions);
+    
+    res.json(answerQuestions);
     } catch (error) {
         console.error('Error fetching user questions:', error);
         res.status(500).json({ message: "Internal server error" });
@@ -155,11 +169,11 @@ module.exports.getLoggedIn = async (req, res) => {
 
 module.exports.getUserVotes = async (req, res) => { 
     try {
-        const user = await User.findById(req.user.userId).select('upVotes downVotes');
+        const user = await User.findById(req.user.userId).select('upVotes downVotes A_upVotes A_downVotes');
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        res.json({ upVotes: user.upVotes, downVotes: user.downVotes });
+        res.json({ upVotes: user.upVotes, downVotes: user.downVotes, A_upVotes: user.A_upVotes , A_downVotes: user.A_downVotes });
     } catch (error) {
         console.error('Failed to fetch user votes:', error);
         res.status(500).json({ message: "Server error" });

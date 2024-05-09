@@ -1,7 +1,7 @@
 const Tag = require('../models/tags');
 const Question = require('../models/questions');
 
-exports.getAllTags = async (req, res) => {
+module.exports.getAllTags = async (req, res) => {
     try {
         const tags = await Tag.find();
         const tagsWithCounts = await Promise.all(tags.map(async (tag) => {

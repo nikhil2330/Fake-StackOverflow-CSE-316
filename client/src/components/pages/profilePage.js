@@ -1,36 +1,152 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getTimeStamp } from '../../helpers';
+import { useNavigate } from 'react-router-dom';
+import { newest } from '../../helpers';
 
-const UserProfile = () => {
+export default function Profile({getTagQuestion, displayAnswers}) {
     const [user, setUser] = useState(null);
     const [content, setContent] = useState('questions');
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
     const [tags, setTags] = useState([]);
+    const [newTid, setNewTid] = useState(null);
+    const [newTag, setNewTag] = useState('');
+    const navigate  = useNavigate();
     const fetchUserDetails = async () => {
-        const { data } = await axios.get('/api/user/details');
+        const { data } = await axios.get('http://localhost:8000/users/details');
         setUser(data);
     };
     const fetchContent = async () => {
-        const questions = await axios.get('http://localhost:8000/questions');
-        setQuestions(questions.data);
-        const answers = await axios.get('http://localhost:8000/questions');
-        setAnswersQuestions(tags.data);
-        const tags = await axios.get('http://localhost:8000/tags');
+        const questions = await axios.get('http://localhost:8000/users/questions');
+        setQuestions(newest(questions.data));
+        const answers = await axios.get('http://localhost:8000/users/answers');
+        setAnswers(newest(answers.data));
+        const tags = await axios.get('http://localhost:8000/users/tags');
         setTags(tags.data);
-    };
-    useEffect(() => {
-        // Fetch user details
         
+    };
+    
+    useEffect(() => {
         fetchUserDetails();
-
-        // Fetch user content
-       
         fetchContent();
+
     }, []);
+    
 
+    const deleteTag = async (tagId) => {
+        try {
+            await axios.delete(`http://localhost:8000/tags/${tagId}`);
+            setTags(prevTags => prevTags.filter(tag => tag._id !== tagId));
+        } catch (error) {
+            console.error('Failed to delete tag:', error);
+        }
+    };
+    tags.map(tag => {console.log(tag)});
+    const handleEdit = (tag) => {
+        setNewTid(tag._id);
+        setNewTag(tag.name);
+    };
 
+    const handleEditChange = (e) => {
+        setNewTag(e.target.value);
+    };
+    const cancelEdit = () => {
+        setNewTid(null);
+        setNewTag('');
+    };
+    const submitTagEdit = async () => {
+        try {
+            await axios.put(`http://localhost:8000/tags/${newTid}`, { name: newTag });
+            const updatedTags = tags.map(tag => {
+                if (tag._id === newTid) {
+                    return { ...tag, name: newTag };
+                }
+                return tag;
+            });
+            setTags(updatedTags);
+            setNewTid(null);
+            setNewTag('');
+        } catch (error) {
+            console.error('Failed to update tag:', error);
+        }
+    };
+    return(
+        <div className="user-profile">
+            <div className="user-details">
+                <h1 className='Prof-title'>Profile</h1>
+                {user && (
+                    <>
+                    <div className = 'deet-box'>
+                        <p>Username: {user.username}</p>
+                        <p>Email: {user.email}</p>
+                        <p>Member Since: {getTimeStamp(user.join_date_time)}</p>
+                        <p>Reputation: {user.reputation}</p>
+                    </div>
+                    <div className = 'deet-box'>
+                        <p>Questions {user.questions.length}</p>
+                        <p>Tags {user.tags.length}</p>
+                        <p>Answers {user.answers.length}</p>
+                    </div>
+                    </>
+                )}
+            </div>
+            <div className="profile-menu">
+                <button onClick={() => setContent('questions')}>Questions</button>
+                <button onClick={() => setContent('answers')}>Answers</button>
+                <button onClick={() => setContent('tags')}>Tags</button>
+            </div>
+            <div className="profile-box">
+                {questions.length === 0 && content === 'questions' ? (<div className='no_quest'>No Questions</div>) : (
+                    content === 'questions' && questions.map(question => (
+                        <div className = "question_card" key={question.id}>
+                            <span className = "title" onClick={() => displayAnswers(question.id)}>{question.title}</span>
+                            <img src="" alt="Edit" className="edit_icon" onClick={() => navigate(`/home/ask/${question.id}`)}/>
+                        </div>
+                    )))
+                }
+                {questions.length === 0 && content === 'answers' ? (<div className='no_ans'>No Answers</div>) : (
+                    content === 'answers' && answers.map(answer => (
+                    <div key={answer.id}>
+                        <span >{answer.title}</span>
+                    </div>
+                )))
+                }
+                {
+                    content === 'tags' && tags.length === 0 ? (
+                        <div className='no_tags'>No Tags</div>
+                    ) : (
+                        content === 'tags' && (
+                        <div className="tagsbox" id="tagsbox">
+                            <div className="tags-container" id="tags-container">
+                            {tags.map((tag, index) => (
+                                <div className="tag" key={tag._id || index}>
+                                    {/* {console.log(index)}   */}
+                                    {newTid === tag._id ? (
+                                        <>
+                                            <input value={newTag} onChange={handleEditChange} />
+                                            <button onClick={submitTagEdit}>Save</button>
+                                            <button onClick={cancelEdit}>Cancel</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="tag-name" onClick={() => getTagQuestion(tag._id)}>{tag.name}</div>
+                                            <div className="tag-question-count">
+                                                {tag.questionCount} {tag.questionCount === 1 ? 'Question' : 'Questions'}
+                                            </div>
+                                            <button onClick={() => handleEdit(tag)}>Edit</button>
+                                            <button onClick={() => deleteTag(tag._id)}>Delete</button>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+                            </div>
+                        </div>
+                        )
+                    )}
+            </div>
+        </div>
+    );
+}
 
-
-
-};
+        
