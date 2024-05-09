@@ -38,7 +38,7 @@ function QuestionList ({questions, displayAnswers}){
                                 <div id="views">{question.views} {question.views === 1 ? 'view' : 'views'}</div>
                                 <div id="votes">{question.votes} {question.votes === 1 ? 'vote' : 'votes'}</div>
                             </div>
-                            <h3 id="title" onClick={() => displayAnswers(question._id)}>{question.title}</h3>
+                            <h3 id="title" onClick={() => displayAnswers(question._id, false)}>{question.title}</h3>
                             <div className="metadata">
                                 <span className='name'>{question.asked_by.username}</span> asked {getTimeStamp(question.ask_date_time)}
                             </div>

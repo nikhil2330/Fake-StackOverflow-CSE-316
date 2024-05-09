@@ -40,6 +40,9 @@ module.exports.editTag = async (req, res) => {
     try {
         const { name } = req.body;
         const count = await Question.countDocuments({ tags: req.params.id });
+        if (count > 1) {
+            return res.status(403).json({ message: "Tag is shared by multiple questions and cannot be edited." });
+        }
         const existingTag = await Tag.findOne({ name, _id: { $ne: req.params.id } });
         
         if (existingTag) {
