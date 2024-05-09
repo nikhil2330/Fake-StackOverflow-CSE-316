@@ -11,6 +11,8 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
     const [upvoted, setUpvoted] = useState(false);
     const [downvoted, setDownvoted] = useState(false);
     const [comments, setComments] = useState([]);
+    const [commentViews, setCommentViews] = useState(3); // Number of comments to display
+    const [commentPage, setCommentPage] = useState(1); // Current comment page
 
     const fetchQuestion = async () => {
         const response = await axios.get(`http://localhost:8000/questions/${id}`);
@@ -24,6 +26,11 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
         setDownvoted(response.data.downVotes.includes(id));
         console.log(downvoted);
     }
+    const fetchComments = async () => {
+        const response = await axios.get(`http://localhost:8000/comments/${id}`);
+        setComments(response.data);
+    };
+
     useEffect(() => {
         fetchQuestion();
         if(currentUser){
@@ -48,6 +55,23 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
             }
         }
     }
+
+    const handleAddComment = async (commentText) => {
+        try {
+            await axios.post('http://localhost:8000/comments/add', {
+                postId: id,
+                text: commentText,
+                commenterId: currentUser._id,
+                timestamp: new Date().toISOString(),
+            });
+            await fetchComments(); // Fetch updated comments after adding a new one
+        } catch (error) {
+            console.error('Error adding comment:', error);
+        }
+    };
+    
+
+
     if (!question) {    
         return <div></div>;
     }
@@ -101,12 +125,36 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
             ))}
             {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>)}
 
-            <div id = "ans-comments">
-                {currentUser && (<button className  = "comments-button" id="comments-button" onClick={AddComment}>Add Comment</button>)}
-                {/* <div className='comm-views' id="comm-views">{comment_views}</div> */}
-                &nbsp;
-                <div className ="comment_text" id="comment_text" dangerouslySetInnerHTML={{ __html: comments.text}}></div>
-
+      
+            {/* Comments Section */}
+            <div id="ans-comments">
+                {currentUser && (
+                    <button className="comments-button" onClick={handleAddComment}>Add Comment</button>
+                )}
+                {/* Comment Counter */}
+                <div className='comment-counter'>Comments ({comments.length})</div>
+                {/* Display Comments */}
+                {comments.slice((commentPage - 1) * commentViews, commentPage * commentViews).map(comment => (
+                    <div key={comment.id}>
+                        <div className="comment">
+                            {/* Display comment text */}
+                            <div className="comment-text">{comment.text}</div>
+                            {/* Display commenter and timestamp */}
+                            <div className="comment-metadata">
+                                <span className="commenter">{comment.commenter}</span>
+                                <span className="comment-time">{getTimeStamp(comment.timestamp)}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {/* Pagination for comments */}
+                {comments.length > commentViews && (
+                    <div className="comment-pagination">
+                        <button onClick={() => setCommentPage(commentPage - 1)} disabled={commentPage === 1}>Previous</button>
+                        <span>{commentPage} / {Math.ceil(comments.length / commentViews)}</span>
+                        <button onClick={() => setCommentPage(commentPage + 1)} disabled={commentPage === Math.ceil(comments.length / commentViews)}>Next</button>
+                    </div>
+                )}
             </div>
       </>
   );
