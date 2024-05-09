@@ -9,53 +9,79 @@ body, html {
 }
 
 #header {
-    /* z-index:1; */
+/* 
     padding: 1vh;
     border-bottom: 3px solid rgb(245, 170, 42);
     background-color: rgb(255, 255, 255);
     position: fixed;
     width: 100%;
     height: 6%;
-    display: flex; /* Add flexbox */
-    align-items: center; /* Center vertically */
+    display: flex; 
+    align-items: center;  */
+    border-bottom: 3px solid rgb(245, 170, 42);
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribute items along the main axis */
+    padding: 1vh 2vw; /* Adjust padding */
+    min-height: 50px; /* Set a minimum height */
 }
 
 
 .fake{
-    position: fixed;
+    /* position: fixed;
     font-family: 'Optima', sans-serif;
     font-size: 25px;
     font-weight: bold;
     color: #333333; 
     margin-left: 1vh; 
-    margin-top: -1.4vh; /* Adjust margin-top to move up */
+    margin-top: -1.4vh; */
+    font-family: 'Optima', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: #333333;
+    margin-left: 1vh;
 
 }
 
 .stack {
-    margin-left: 3vh; /* Adjust margin-left */
-    margin-top: -1.3vh; /* Adjust margin-top to move up */
+    /* margin-left: 3vh;
+    margin-top: -1.3vh; 
     position: fixed;
     font-family: 'Optima', sans-serif;
     color: #333; 
     font-weight: 500;
-    margin-left: 7vh;
+    margin-left: 7vh; */
+    font-family: 'Optima', sans-serif;
+    color: #333;
+    font-weight: 500;
+    margin-left: 1vh;
 }
 
 #firstpage {
-    position: fixed;
+    /* position: fixed;
     margin-left: 30vh;
     font-size: 18px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease; */
+    /* margin-left: 1vh;     */
+    font-size: 18px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
 
 #tags {
-    position: fixed;
+    /* position: fixed;
     font-size: 18px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     margin-left: 45vh;
+    cursor: pointer; 
+    transition: transform 0.2s ease; */
+    /* margin-left: 3vh; */
+    font-size: 18px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     cursor: pointer; /* Change cursor to pointer on hover */
     transition: transform 0.2s ease;
 }
@@ -72,7 +98,7 @@ body, html {
 .logout, .login{
     position: fixed;
     align-items: center; 
-    right: 20vh;
+    right: 18vh;
     /* margin-left: 54%; */
     height: 30px;
     width: 80px;
@@ -98,7 +124,7 @@ body, html {
 .signup, .profile {
     position: fixed;
     align-items: center; 
-    right: 7vh;
+    right: 5vh;
     justify-content: center; /* Center the text horizontally */
     display: flex;
     margin-left: 2%;
@@ -122,21 +148,28 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 
 #search{  
-    position: fixed;
-    left: 32%;
+    /* position: fixed;
+    left: 32%; */
     /* right: 2%; */
+    margin-right: 28vh; /* Push search input to the right */
 }
 
 #search input{
-    text-align: left;
+    /* text-align: left;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 20px;
+    width: 700px;
+    height: 30px;
+    border-radius: 5px; */
+    text-align: left;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
     width: 700px;
     height: 30px;
     border-radius: 5px;
 }
 
 #main{
-    padding-top: 6%;
+    /* padding-top: 6%; */
     width: 100%;
     height: 100%;
     display: grid;
@@ -296,13 +329,13 @@ li div:hover {
     gap: 2vw;
     align-items: center;
     margin-top: -10;
-    padding: 20px;
+    padding: 5px;
     border-bottom: dashed 2px;
 }
 #data {
     text-align: left; 
-    margin-left: 2vh;
-    margin-top: 2vh;
+    margin-left: 3vh;
+    margin-top: 5vh;
     white-space: nowrap;
 }
 #views, #answers, #votes {
@@ -874,18 +907,18 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 }
 
 .summary-tags {
-    
     margin-left: 18vh;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    
+    margin-top: -60px; /* Adjust margin-top to move the summary-tags closer */   
 }
 
 #summary_line {
     margin-left: 3vh;
     font-size: 15px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    width: 700px;
 }
 
 #tag_cont {
