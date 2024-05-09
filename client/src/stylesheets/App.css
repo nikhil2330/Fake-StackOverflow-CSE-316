@@ -137,7 +137,8 @@ body, html {
     cursor: pointer; /* Change cursor to pointer on hover */
     color: #ffffff;
     font-weight: 600;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
 
 .signup:hover, .profile:hover {
     background-color: rgb(18, 72, 219); /* Example: darken the background color */
@@ -258,7 +259,7 @@ li div:hover {
     width: 130px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    margin-left: 1vh; 
     transition: background-color 0.3s ease;
-    position: fixed;
+    /* position: fixed; */
     right: 4vh;
 }
 
@@ -409,8 +410,9 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
     display: flex;
     flex-direction: column; 
     align-items: center; 
-    justify-content: center; 
+    width: 10vh;
     gap: 5px; 
+    /* margin-left: 20vh; */
 }
 
 .vote {
@@ -430,6 +432,8 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
 .votesC {
     font-size: 16px;
     font-weight: bold;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-weight: 700;
+
 }
 
 /* Ensure the SVG arrows have the correct orientation and are clickable */
@@ -498,8 +502,8 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
 }
 #sectionAns {
     display: grid;
-    grid-template-columns: 700px 300px; 
-    gap: 10vh;
+    grid-template-columns: 300px 300px 300px; 
+    gap: 1vh;
     align-items: center;
     margin-top: 3vh;
     padding: 20px;
@@ -507,17 +511,17 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
     border-bottom: dashed 2px;
 }
 #answertext{
-    /* margin-top: 20px;
-    margin-left: 30px;
-    margin-right: 50px;
-    margin-top: 20px; */
-    padding: 0px; 
-    align-items: center;
+    transform: translateX(-20vh); /* Adjust the value as needed */
+    padding: 0px;
+    align-items: left;
+    
     font-size: 16px;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
 .Ans_metadata {
     display: inline-block;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 14px;
     color: #777777;
     text-align: right; 
     flex-wrap: wrap; 
@@ -548,7 +552,8 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
     font-size: 35px;
     text-align: center;
     text-decoration: underline;
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
 
 .new_title{
 font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    text-align: center;
@@ -923,7 +928,6 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 
 #tag_cont {
     display: flex; 
-    flex-wrap: wrap; 
     justify-content: flex-start;
     margin-top: 0px;
     width: 600%;
@@ -1126,3 +1130,90 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     color: darkgray; /* Darken icon on hover */
     cursor: pointer;
 }
+
+.Prof-title {
+    font-size: 35px;
+    text-align: center;
+    text-decoration: underline;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.deet-container {
+    display: grid;
+    grid-template-columns: 80vh 30vh;
+    gap: 20px; /* Adjust the gap as needed */
+    margin-left: 30vh;
+}
+
+.deet-box,
+.deet-box-qta {
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #a4e4ff5d;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 15px;
+    width: 30vh;
+    text-align: center;
+}
+
+.deet-box p,
+.deet-box-qta p {
+    margin: 5px 0;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.profile-menu {
+    display: flex;
+    justify-content: center; 
+    gap: 10vh;
+}
+
+.profile-menu button {
+    height: 50px;
+    width: 100px;
+    text-align: center;
+    font-size: 18px;
+    background-color: rgb(125, 184, 247); 
+    border: 2px solid rgb(43, 54, 212); 
+    border-radius: 5px;
+    margin: 10px 10px; 
+    padding: 10px 20px; 
+    cursor: pointer; 
+    margin-top: 7vh;
+    transition: transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.profile-menu button:hover {
+    background-color: rgba(142, 191, 218, 0.42);
+    border-color:  rgb(0, 15, 228);
+    color: rgb(0, 15, 228);
+    transform: translateY(2px); 
+}
+
+.question_card {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    margin-top: 2vh;
+    cursor: pointer; 
+}
+
+.answer_card {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    margin-top: 2vh;
+    cursor: pointer; 
+}
+
+.profile-box {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    margin-top: 2vh;
+}
+
