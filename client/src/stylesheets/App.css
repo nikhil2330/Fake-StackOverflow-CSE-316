@@ -1087,3 +1087,9 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     height: 20px; /* match your image size */
     width: 20px;
 }
+
+
+.edit_icon:hover {
+    color: darkgray; /* Darken icon on hover */
+    cursor: pointer;
+}

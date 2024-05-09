@@ -12,7 +12,9 @@ const userSchema = new Schema({
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     upVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
-    downVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }]
+    downVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
+    A_upVotes: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
+    A_downVotes: [{ type: Schema.Types.ObjectId, ref: 'Answer' }]
 
 });
 

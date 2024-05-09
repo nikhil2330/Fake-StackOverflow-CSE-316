@@ -114,9 +114,11 @@
       setQuestions(unanswered(currentQuestions));
     };
 
-    const handleTagClick = (tid) => {
+    const handleTagClick =(tid) => {
+      console.log("abc"); 
       axios.get(`http://localhost:8000/questions/tag/${tid}`)
       .then(response => {
+          console.log("abc"); 
           setQuestions(response.data);
           setCurrentQuestions(response.data);
           navigate('/home');
@@ -195,11 +197,12 @@
           displayAnswers={handleAnswerClick}
           filter = {filter}
         />} />
+        <Route path="ask/:id" element={<AskQuestionPage postquestion={postquestion} />} />
         <Route path="ask" element={<AskQuestionPage postquestion={postquestion} />} />
         <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
         <Route path="answer/:id" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
         <Route path="tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('home/ask')} />} />
-        <Route path="profile" element={<Profile getTagQuestion={handleTagClick}  />} />
+        <Route path="profile" element={<Profile getTagQuestion={handleTagClick} displayAnswers={handleAnswerClick} />} />
       </Route>
     </Routes>
   );
