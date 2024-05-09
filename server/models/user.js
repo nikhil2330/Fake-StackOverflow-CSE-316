@@ -8,11 +8,13 @@ const userSchema = new Schema({
     reputation: {type: Number, default: 50, min: 0},
     join_date_time:{type: Date, default: Date.now, required: true},
     questions: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
-    answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
+    answers: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     upVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
-    downVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }]
+    downVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
+    A_upVotes: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
+    A_downVotes: [{ type: Schema.Types.ObjectId, ref: 'Answer' }]
 
 });
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getTimeStamp } from '../../helpers';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 
 export default function Answers({AskQuestion, handleAnswerQuestion, AddComment}) {
@@ -10,9 +10,12 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
     const { currentUser } = useAuth();
     const [upvoted, setUpvoted] = useState(false);
     const [downvoted, setDownvoted] = useState(false);
+    const [a_upvoted, setA_upvoted] = useState(false);
+    const [a_downvoted, setA_downvoted] = useState(false);
     const [comments, setComments] = useState([]);
     const [commentViews, setCommentViews] = useState(3); // Number of comments to display
     const [commentPage, setCommentPage] = useState(1); // Current comment page
+    const navigate = useNavigate();
 
     const fetchQuestion = async () => {
         const response = await axios.get(`http://localhost:8000/questions/${id}`);
@@ -22,9 +25,13 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
     const fetchVotes = async () => {
         const response = await axios.get(`http://localhost:8000/users/${currentUser._id}/votes`);
         setUpvoted(response.data.upVotes.includes(id));
-        console.log(id, response.data.upVotes ,upvoted);
         setDownvoted(response.data.downVotes.includes(id));
-        console.log(downvoted);
+        console.log(response.data.upVotes);
+        console.log(response.data.downVotes);
+        setA_upvoted(response.data.A_upVotes.includes(id));
+        setA_downvoted(response.data.A_downVotes.includes(id));
+        console.log(response.data.A_upVotes);
+        console.log(response.data.A_downVotes);
     }
     const fetchComments = async () => {
         const response = await axios.get(`http://localhost:8000/comments/${id}`);
@@ -37,11 +44,12 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
             fetchVotes();
         }
     }, [id, currentUser]);
-    const handleVote = async (type) => {
+    const handleVote = async (id, type, isQuestion) => {
         console.log(type);
-        const endpoint = type === 'up' ? `/upvote/${id}`:`/downvote/${id}`;
+        const endpoint = isQuestion ? (type === 'up' ? `questions/upvote/${id}`:`questions/downvote/${id}`) : (type === 'up' ? `answers/upvote/${id}`:`answers/downvote/${id}`);
+        console.log(endpoint);
         try {
-            await axios.post(`http://localhost:8000/questions${endpoint}`);
+            await axios.post(`http://localhost:8000/${endpoint}`);
             fetchQuestion();
             if(currentUser){
                 fetchVotes();
@@ -88,6 +96,7 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
                 <div className ="answer-s-" id="answer-s-">{answer_s}</div>
                 <div className ="Ques_title" id="Ques_title">{question.title}</div>
                 {currentUser && (<button className  = "button1" id="button1" onClick={AskQuestion}>Ask Question</button>)}
+                {currentUser && currentUser._id === question.asked_by._id && (<button onClick={() => navigate(`/home/ask/${question._id}`)}>Edit Question</button>)}
             </div>
             <div id = "ansSec-B">
                 <div id = "Adata">
@@ -96,11 +105,11 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
                     <div className ="view-s-" id="view-s-">{view_s}</div>
                     &nbsp;
                     <div className='votebox'>
-                        {currentUser && <svg width="36" height="36" className= {voted(upvoted)} onClick={() => handleVote('up')}>
+                        {currentUser && <svg width="36" height="36" className= {voted(upvoted)} onClick={() => handleVote(id,'up', true)}>
                             <path d="M2 26h32L18 10 2 26z" ></path>
                         </svg>}
                         <span className='votesC'>{question.votes} {votes_s}</span>
-                        {currentUser && <svg width="36" height="36" className= {voted(downvoted)} onClick={() => handleVote('down')}>
+                        {currentUser && <svg width="36" height="36" className= {voted(downvoted)} onClick={() => handleVote(id,'down', true)}>
                             <path d="M2 10h32L18 26 2 10z" ></path>
                         </svg>}
                     </div>
@@ -113,7 +122,17 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
             </div>
             {question.answers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time)).map(answer => (
                 <div key={answer._id}>
+                {console.log(answer._id)}
                     <div id = 'sectionAns' >
+                        <div className='votebox'>
+                            {currentUser && <svg width="36" height="36" className= {voted(a_upvoted)} onClick={() => handleVote(answer._id,'up', false)}>
+                                <path d="M2 26h32L18 10 2 26z" ></path>
+                            </svg>}
+                            <span className='votesC'>{answer.votes} {answer.votes === 1 ? 'vote' : 'votes'}</span>
+                            {currentUser && <svg width="36" height="36" className= {voted(a_downvoted)} onClick={() => handleVote(answer._id,'down', false)}>
+                                <path d="M2 10h32L18 26 2 10z" ></path>
+                            </svg>}
+                        </div>
                         <div id = 'answertext' dangerouslySetInnerHTML={{ __html: answer.text}}></div>
                         <div id = 'Ans_metadata'>
                             <div id = 'Ans_name' >{answer.ans_by.username}</div>
