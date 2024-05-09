@@ -77,19 +77,19 @@ export default function Profile({getTagQuestion, displayAnswers}) {
             <div className="user-details">
                 <h1 className='Prof-title'>Profile</h1>
                 {user && (
-                    <>
-                    <div className = 'deet-box'>
-                        <p>Username: {user.username}</p>
-                        <p>Email: {user.email}</p>
-                        <p>Member Since: {getTimeStamp(user.join_date_time)}</p>
-                        <p>Reputation: {user.reputation}</p>
+                    <div className="deet-container">
+                        <div className='deet-box'>
+                            <p><span class="italic">Username: {user.username}</span></p>
+                            <p><span class="italic">Email: {user.email}</span></p>
+                            <p><span class="italic">Member Since: {getTimeStamp(user.join_date_time)}</span></p>
+                            <p><span class="italic">Reputation: {user.reputation}</span></p>
+                        </div>
+                        <div className='deet-box-qta'>
+                            <p><span class="italic">Questions: {user.questions.length}</span></p>
+                            <p><span class="italic">Tags: {user.tags.length}</span></p>
+                            <p><span class="italic">Answers: {user.answers.length}</span></p>
+                        </div>
                     </div>
-                    <div className = 'deet-box'>
-                        <p>Questions {user.questions.length}</p>
-                        <p>Tags {user.tags.length}</p>
-                        <p>Answers {user.answers.length}</p>
-                    </div>
-                    </>
                 )}
             </div>
             <div className="profile-menu">
