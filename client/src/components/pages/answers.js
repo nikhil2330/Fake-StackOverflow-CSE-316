@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getTimeStamp } from '../../helpers';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 
 export default function Answers({AskQuestion, handleAnswerQuestion, AddComment}) {
@@ -16,22 +16,35 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
     // const [commentViews, setCommentViews] = useState(3); // Number of comments to display
     // const [commentPage, setCommentPage] = useState(1); // Current comment page
     const navigate = useNavigate();
+    const location = useLocation();
+    const highlight = location.state?.highlight || false;
+    console.log(highlight);
 
     const fetchQuestion = async () => {
         const response = await axios.get(`http://localhost:8000/questions/${id}`);
-        setQuestion(response.data);
+        if (highlight) {
+            console.log("abc");
+            const userAnswers = response.data.answers.filter(a => a.ans_by._id === currentUser._id);
+            console.log(userAnswers);
+            const otherAnswers = response.data.answers.filter(a => a.ans_by._id !== currentUser._id);
+            userAnswers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
+            otherAnswers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
+            setQuestion({
+                ...response.data,
+                answers: [...userAnswers, ...otherAnswers]
+            });
+        }else{
+            console.log("qwz");
+            setQuestion({...response.data, answers: response.data.answers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time))});
+        }
         
     };
     const fetchVotes = async () => {
         const response = await axios.get(`http://localhost:8000/users/${currentUser._id}/votes`);
         setUpvoted(response.data.upVotes.includes(id));
         setDownvoted(response.data.downVotes.includes(id));
-        console.log(response.data.upVotes);
-        console.log(response.data.downVotes);
         setA_upvoted(response.data.A_upVotes.includes(id));
         setA_downvoted(response.data.A_downVotes.includes(id));
-        console.log(response.data.A_upVotes);
-        console.log(response.data.A_downVotes);
     }
     // const fetchComments = async () => {
     //     const response = await axios.get(`http://localhost:8000/comments/${id}`);
@@ -43,11 +56,9 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
         if(currentUser){
             fetchVotes();
         }
-    }, [id, currentUser]);
+    }, [id, currentUser, highlight]);
     const handleVote = async (id, type, isQuestion) => {
-        console.log(type);
         const endpoint = isQuestion ? (type === 'up' ? `questions/upvote/${id}`:`questions/downvote/${id}`) : (type === 'up' ? `answers/upvote/${id}`:`answers/downvote/${id}`);
-        console.log(endpoint);
         try {
             await axios.post(`http://localhost:8000/${endpoint}`);
             fetchQuestion();
@@ -120,9 +131,8 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
                     <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
                 </div>
             </div>
-            {question.answers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time)).map(answer => (
+            {question.answers.map(answer => (
                 <div key={answer._id}>
-                {console.log(answer._id)}
                     <div id = 'sectionAns' >
                         <div className='votebox'>
                             {currentUser && <svg width="36" height="36" className= {voted(a_upvoted)} onClick={() => handleVote(answer._id,'up', false)}>
@@ -139,10 +149,11 @@ export default function Answers({AskQuestion, handleAnswerQuestion, AddComment})
                             <span id = 'Ans_time' > answered {getTimeStamp(answer.ans_date_time)}</span>
                         </div>
                     </div>
+                    {currentUser && currentUser._id === answer.ans_by._id && (<button onClick={() => navigate(`/home/answer/edit/${answer._id}`, { state: { questionId: id } })}>Edit Answer</button>)}
                 </div>
- 
+
             ))}
-            {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => handleAnswerQuestion(question._id)}>Answer Question</button>)}
+            {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => navigate(`/home/answer/new`, { state: { questionId: id } })}>Answer Question</button>)}
 
       
       </>

@@ -130,11 +130,12 @@
     };
 
 
-    const fetchQuestionDetails = async (qid) => {
+    const fetchQuestionDetails = async (qid, fromProfile) => {
       try {
         const response = await axios.get(`http://localhost:8000/questions/${qid}`);
         if (response.status === 200) {
-          navigate(`home/question/${qid}`);
+          console.log("Navigating with highlight:", fromProfile);
+          navigate(`home/question/${qid}`,{ state: { highlight: fromProfile } });
 
         }
       } catch (error) {
@@ -142,9 +143,10 @@
       }
     };
 
-    const handleAnswerClick = (qid) => {
+    const handleAnswerClick = (qid, fromProfile) => {
+      console.log("Navigating with highlight:", fromProfile);
       incrementViews(qid);
-      fetchQuestionDetails(qid);
+      fetchQuestionDetails(qid, fromProfile);
       
     };
     const handleMenu = async (e) => {
@@ -162,9 +164,6 @@
       }
     };
 
-    const handleAnswerQuestion = (qid) => {
-      navigate(`home/answer/${qid}`);
-    };
 
   const showLogin = () => {
     navigate('/login');
@@ -199,8 +198,9 @@
         />} />
         <Route path="ask/:id" element={<AskQuestionPage postquestion={postquestion} />} />
         <Route path="ask" element={<AskQuestionPage postquestion={postquestion} />} />
-        <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')} handleAnswerQuestion={handleAnswerQuestion} />} />
-        <Route path="answer/:id" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
+        <Route path='question/:id' element={<Answers AskQuestion={() => navigate('home/ask')}/>} />
+        <Route path="answer/edit/:id" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
+        <Route path="answer/new" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
         <Route path="tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('home/ask')} />} />
         <Route path="profile" element={<Profile getTagQuestion={handleTagClick} displayAnswers={handleAnswerClick} />} />
       </Route>

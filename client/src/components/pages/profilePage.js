@@ -13,6 +13,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     const [newTid, setNewTid] = useState(null);
     const [newTag, setNewTag] = useState('');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const navigate  = useNavigate();
     const fetchUserDetails = async () => {
         const { data } = await axios.get('http://localhost:8000/users/details');
@@ -40,8 +41,9 @@ export default function Profile({getTagQuestion, displayAnswers}) {
         try {
             const response = await axios.delete(`http://localhost:8000/tags/${tagId}`)
             setTags(prevTags => prevTags.filter(tag => tag.id !== tagId));
+            setError('');
         } catch (error) {
-            console.error('Failed to delete tag:', error);
+            setError(error.response.data.message || 'Failed to delete tag');
         }
     };
     const handleEdit = (tag) => {
@@ -68,10 +70,13 @@ export default function Profile({getTagQuestion, displayAnswers}) {
             setTags(updatedTags);
             setNewTid(null);
             setNewTag('');
+            setError('');
         } catch (error) {
-            console.error('Failed to update tag:', error);
+            setError(error.response.data.message || 'Failed to update tag');
+
         }
     };
+    console.log(answers);
     return(
         <div className="user-profile">
             <div className="user-details">
@@ -85,13 +90,14 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                         <p>Reputation: {user.reputation}</p>
                     </div>
                     <div className = 'deet-box'>
-                        <p>Questions {user.questions.length}</p>
-                        <p>Tags {user.tags.length}</p>
-                        <p>Answers {user.answers.length}</p>
+                        <p>{user.questions.length} {user.questions.length === 1 ? "Question" : "Questions" }</p>
+                        <p>{user.tags.length} {user.tags.length === 1 ? "Tags" : "Tags" }</p>
+                        <p>{user.answers.length} {user.answers.length === 1 ? "Answers" : "Answers" }</p>
                     </div>
                     </>
                 )}
             </div>
+            {error && <div className="error">{error}</div>}
             <div className="profile-menu">
                 <button onClick={() => setContent('questions')}>Questions</button>
                 <button onClick={() => setContent('answers')}>Answers</button>
@@ -101,15 +107,15 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                 {questions.length === 0 && content === 'questions' ? (<div className='no_quest'>No Questions</div>) : (
                     content === 'questions' && questions.map(question => (
                         <div className = "question_card" key={question.id}>
-                            <span className = "title" onClick={() => displayAnswers(question.id)}>{question.title}</span>
+                            <span className = "title" onClick={() => displayAnswers(question.id, false)}>{question.title}</span>
                             <img src="" alt="Edit" className="edit_icon" onClick={() => navigate(`/home/ask/${question.id}`)}/>
                         </div>
                     )))
                 }
                 {questions.length === 0 && content === 'answers' ? (<div className='no_ans'>No Answers</div>) : (
                     content === 'answers' && answers.map(answer => (
-                    <div key={answer.id}>
-                        <span >{answer.title}</span>
+                    <div className = "answer_card" key={answer.id}>
+                        <span className = "title" onClick={() => displayAnswers(answer.id, true)}>{answer.title}</span>
                     </div>
                 )))
                 }
@@ -134,8 +140,12 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                                             <div className="tag-question-count">
                                                 {tag.questionCount} {tag.questionCount === 1 ? 'Question' : 'Questions'}
                                             </div>
-                                            <button onClick={() => handleEdit(tag)}>Edit</button>
-                                            <button onClick={() => deleteTag(tag.id)}>Delete</button>
+                                            {tag.questionCount === 1 && (
+                                                    <>
+                                                        <button onClick={() => handleEdit(tag)}>Edit</button>
+                                                        <button onClick={() => deleteTag(tag._id)}>Delete</button>
+                                                    </>
+                                            )}
                                         </>
                                     )}
                                 </div>
