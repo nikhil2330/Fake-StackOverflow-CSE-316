@@ -76,6 +76,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
 
         }
     };
+    console.log(answers);
     return(
         <div className="user-profile">
             <div className="user-details">

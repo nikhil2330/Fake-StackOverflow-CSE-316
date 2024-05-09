@@ -159,17 +159,31 @@ module.exports.deleteAnswer= async (req, res)=> {
     try {
         const answer = await Answer.findById(id);
 
+        const otherAnswers = await Answer.find({
+            question: answer.question,
+            ans_by: answer.ans_by,
+            _id: { $ne: id }  // Exclude the current answer
+        });
+
         await Question.findByIdAndUpdate(answer.question, {
             $pull: { answers: id }
         });
-
-        await User.findByIdAndUpdate(answer.ans_by, {
-            $pull: {
-                answers: answer.question._id,
-                A_upVotes: id,
-                A_downVotes: id
-            }
-        });
+        if (otherAnswers.length === 0) {
+            await User.findByIdAndUpdate(answer.ans_by, {
+                $pull: {
+                    answers: answer.question,
+                    A_upVotes: id,
+                    A_downVotes: id
+                }
+            });
+        } else{
+            await User.findByIdAndUpdate(answer.ans_by, {
+                $pull: {
+                    A_upVotes: id,
+                    A_downVotes: id
+                }
+            });
+        }
 
         //await Comment.deleteMany({ question: id });
        

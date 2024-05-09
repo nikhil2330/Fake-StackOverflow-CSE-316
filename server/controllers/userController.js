@@ -96,7 +96,9 @@ module.exports.getUserAnswerQuestions = async (req,res) => {
             };
         }
     });
+    
     const answerQuestions = Object.values(uniqueQuestions);
+    console.log(answerQuestions);
     
     res.json(answerQuestions);
     } catch (error) {
