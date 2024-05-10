@@ -1275,3 +1275,134 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     margin-top: 5vh;
 }
 
+.comment {
+    display: flex;
+    align-items: center;
+    /* padding: 10px; */
+    position: relative; 
+}
+
+.comments-section{
+    margin-left: 20vh;
+}
+
+
+/* .comment-line {
+    position: absolute; 
+    left: 0; 
+    width: 100%; 
+    height: 1px; 
+    background-color: black; 
+} */
+
+  
+  .vote-button {
+    margin-right: 4px;
+  }
+  
+  .comment-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 2vh;
+  }
+  
+  .comment-text {
+    white-space: nowrap;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
+  
+  .comment-details {
+    white-space: nowrap; /* Keeps author and date in a single line */
+    margin-left: 1vh;
+    position: relative;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+  }
+  
+  .comment-author {
+    position: relative;
+    margin-right: 5px;
+    font-weight: bold;
+    color: rgb(22, 123, 232); 
+    font-style: italic;
+  }
+  
+.comment-date {
+    opacity: 0.7;
+  }
+
+.comment-divider {
+    width: 180vh;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.comment-input {
+    display: flex;
+    align-items: center;
+}
+
+.comment-input textarea {
+    flex: 1; /* Allow the textarea to grow to fill available space */
+    min-width: 80vh; /* Set a minimum width for the textarea */
+    min-height: 2vh;
+}
+
+.comment-input button {
+    margin-left: 10px; 
+    transition: background-color 0.3s ease;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: rgb(22, 123, 232);
+    border-radius: 6px;
+    border-color: rgb(0, 15, 228);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.comment-input button:hover {
+    background-color: rgb(18, 72, 219);
+    transform: translateY(2px); 
+}
+
+.comment-pn-buttons {
+    margin-top: 2vh;
+    margin-left: 14vh;
+    display: flex;          /* Enable flexbox */
+    justify-content: center; /* Horizontally center the items */
+    align-items: center;    /* Vertically align the items in the middle */
+    gap: 10px;              /* Space between the children */
+    border-color: #000000;
+
+}
+
+.comment-pn-buttons button, 
+.comment-pn-buttons .page-info {
+    padding: 3px 15px;     
+    text-align: center;     /* Center the text inside buttons and span */
+}
+
+.comment-pn-buttons button {
+    background-color: #ff9900;
+    color: white;              /* Text color for buttons */
+    border: none;              /* No border */
+    border-radius: 4px;        /* Rounded corners for the buttons */
+    cursor: pointer;           
+}
+
+.comment-pn-buttons button:disabled {
+    background-color: #ccc;   /* Gray out the button when disabled */
+    cursor: default;          /* Default cursor on disabled state */
+}
+
+.cm-page-info {
+    min-width: 5vh;
+}
+
+.comments-header {
+    display: inline; /* Use inline to keep text on the same line */
+    margin-right: 8px; /* Optional: Adds some space after the header */
+}
+
+
