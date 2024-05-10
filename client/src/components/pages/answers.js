@@ -18,18 +18,24 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     const [commentText, setCommentText] = useState('');
     const [commentError, setCommentError] = useState('');
 
+    const [currentCommentPage, setCurrentCommentPage] = useState(0);
+    const commentsPerPage = 3;  // This sets the limit to 3 comments per page
+
+
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 5; // Number of answers per page
     const [startIndex, setStartIndex] = useState(0);
 
     const totalPages = question ? Math.max(1, Math.ceil(question.answers.length / pageSize)) : 1;
     const displayedAnswers = question ? question.answers.slice(startIndex, startIndex + pageSize) : [];
+    const maxCommentPage = Math.floor((comments.length - 1) / commentsPerPage);
+    
+    const displayedComments = comments.slice(
+        currentCommentPage * commentsPerPage,
+        (currentCommentPage + 1) * commentsPerPage
+    );
 
 
-
-    // const [comments, setComments] = useState([]);
-    // const [commentViews, setCommentViews] = useState(3); // Number of comments to display
-    // const [commentPage, setCommentPage] = useState(1); // Current comment page
     const navigate = useNavigate();
     const location = useLocation();
     const highlight = location.state?.highlight || false;
@@ -119,6 +125,18 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
             setStartIndex((prevPage - 1) * pageSize);
         }
     };
+
+    const handleNextCommentPage = () => {
+        setCurrentCommentPage(prevPage => (prevPage === maxCommentPage ? 0 : prevPage + 1));
+    };
+    
+    const handlePrevCommentPage = () => {
+        setCurrentCommentPage(prevPage => (prevPage > 0 ? prevPage - 1 : 0));
+    };
+    
+    
+    
+    
     
 
     useEffect(() => {
@@ -217,20 +235,43 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                     <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
                 </div>
 
-            </div>
-            <div className="comments-section">
-                <h2>Comments</h2>
+                <div className="comments-section">
+                    <h3 style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                        {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
+                    </h3>
+
+                    {currentUser && (
+                        <div className="comment-input">
+                            <textarea value={commentText} onChange={handleCommentChange} />
+                            {commentError && <p className="error">{commentError}</p>}
+                            <button onClick={submitComment}>Comment</button>
+                        </div>
+                    )}
+
+                    {displayedComments.map(comment => (
+                        <Comment
+                            key={comment._id}
+                            comment={comment}
+                            canUpvote={currentUser}
+                            onUpvote={() => commentUpvote(comment._id)}
+                        />
+                    ))}
+
+                    <div className="comment-pn-buttons">
+                        <button onClick={handlePrevCommentPage} disabled={currentCommentPage === 0}>Prev</button>
+                        <span className="cm-page-info">{currentCommentPage + 1} / {maxCommentPage + 1}</span>
+                        <button onClick={handleNextCommentPage}>Next</button>
+                    </div>
+
+
+
+                </div>
+
+
                 
-                {comments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(comment => (
-                    
-                    <Comment key={comment._id} comment={comment} canUpvote={currentUser} onUpvote={() => commentUpvote(comment._id)} />
-                ))}
-                {currentUser && (<>
-                    <textarea value={commentText} onChange={handleCommentChange} />
-                    {commentError && <p className="error">{commentError}</p>}
-                    <button onClick={submitComment} >Post Comment</button>
-                </>)}
+                
             </div>
+
             {displayedAnswers.map(answer => (
                 <div key={answer._id}>
                     <div id='sectionAns'>
