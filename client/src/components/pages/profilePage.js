@@ -23,7 +23,6 @@ export default function Profile({getTagQuestion, displayAnswers}) {
         const response = await axios.get(`http://localhost:8000/answers/count/${user._id}`);
         setAnswerCount(response.data.count)
     };
-    console.log(user._id);
     const fetchContent = async () => {
         const questions = await axios.get('http://localhost:8000/users/questions');
         setQuestions(newest(questions.data));
