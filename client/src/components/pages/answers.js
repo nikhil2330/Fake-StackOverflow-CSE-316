@@ -3,6 +3,7 @@ import axios from 'axios';
 import { getTimeStamp } from '../../helpers';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
+import Comment from '../comment';
 
 export default function Answers({answers, AskQuestion, handleAnswerQuestion, AddComment}) {
     const { id } = useParams(); 
@@ -12,6 +13,10 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     const [downvoted, setDownvoted] = useState(false);
     const [a_upvoted, setA_upvoted] = useState(false);
     const [a_downvoted, setA_downvoted] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [A_comments, setA_Comments] = useState([]);
+    const [commentText, setCommentText] = useState('');
+    const [commentError, setCommentError] = useState('');
 
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 5; // Number of answers per page
@@ -29,7 +34,41 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     const location = useLocation();
     const highlight = location.state?.highlight || false;
     console.log(highlight);
+    const handleCommentChange = (event) => {
+        setCommentText(event.target.value);
+        if (event.target.value.length > 140) {
+            setCommentError('Comment must not exceed 140 characters.');
+        } else {
+            setCommentError('');
+        }
+    };
+    const submitComment = async () => {
+        if (commentText.length > 140) {
+            setCommentError('Comment must not exceed 140 characters.');
+            return;
+        }
+        if (currentUser && currentUser.reputation < 50) {
+            setCommentError('You require a minimum reputation of 50 to add comments.');
+            return;
+        }
 
+        try {
+            const response = await axios.post('http://localhost:8000/comments', {
+                text: commentText,
+                targetId: id, 
+                type: 'question' 
+            });
+            console.log(response)
+
+            setComments([...comments, response.data]);
+            fetchComments();
+            setCommentText('');
+            setCommentError('');
+        } catch (error) {
+            console.error('Error adding comment:', error);
+            setCommentError('Failed to post comment.');
+        }
+    };
     const fetchQuestion = async () => {
         const response = await axios.get(`http://localhost:8000/questions/${id}`);
         if (highlight) {
@@ -47,8 +86,16 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
             console.log("qwz");
             setQuestion({...response.data, answers: response.data.answers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time))});
         }
-        
+        console.log(id);
+       
+        console.log(comments);
+
     };
+    const fetchComments = async () => {
+        const commentResponse = await axios.get(`http://localhost:8000/comments?targetId=${id}&type=question`);
+        setComments(commentResponse.data);
+
+    }
     const fetchVotes = async () => {
         const response = await axios.get(`http://localhost:8000/users/${currentUser._id}/votes`);
         setUpvoted(response.data.upVotes.includes(id));
@@ -76,10 +123,12 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
 
     useEffect(() => {
         fetchQuestion();
+        fetchComments();
         if(currentUser){
             fetchVotes();
         }
     }, [id, currentUser, highlight]);
+
     const handleVote = async (id, type, isQuestion) => {
         const endpoint = isQuestion ? (type === 'up' ? `questions/upvote/${id}`:`questions/downvote/${id}`) : (type === 'up' ? `answers/upvote/${id}`:`answers/downvote/${id}`);
         try {
@@ -97,6 +146,20 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
             }
         }
     }
+    const commentUpvote = async (commentId) => {
+        try {
+            await axios.post(`http://localhost:8000/comments/upvote/${commentId}`);
+            // Refresh comments to show new vote count
+            fetchComments();
+        } catch (error) {
+            if (error.response) {
+                console.log("abc");
+                if(currentUser){
+                    alert(error.response.data.error);
+                }
+            }
+        }
+    }
 
     if (!question) {    
         return <div></div>;
@@ -105,6 +168,8 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     const answer_s = question.answers.length === 1 ? 'answer' : 'answers';
     const view_s = question.views === 1 ? 'view' : 'views';
     const votes_s = question.votes === 1 ? 'vote' : 'votes';
+    comments.map(comment =>{console.log(comment._id)});
+    
 
     return (
         <>
@@ -126,10 +191,10 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
 
             </div>
             <div  id="ans-page-tags" className='tag_cont'>
-                                    {question.tags.map(tag => (
-                                        <div key={`${tag._id}`} id='tag_cont'>{tag.name}</div>
-                                    ))}
-                                </div>
+                {question.tags.map(tag => (
+                    <div key={`${tag.id}`} id='tag_cont'>{tag.name}</div>
+                ))}
+            </div>
             <div id = "ansSec-B">
                 <div id = "Adata">
                     <div className ="viewC" id="viewC">{question.views}</div> 
@@ -153,7 +218,19 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                 </div>
 
             </div>
-            
+            <div className="comments-section">
+                <h2>Comments</h2>
+                
+                {comments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(comment => (
+                    
+                    <Comment key={comment._id} comment={comment} canUpvote={currentUser} onUpvote={() => commentUpvote(comment._id)} />
+                ))}
+                {currentUser && (<>
+                    <textarea value={commentText} onChange={handleCommentChange} />
+                    {commentError && <p className="error">{commentError}</p>}
+                    <button onClick={submitComment} >Post Comment</button>
+                </>)}
+            </div>
             {displayedAnswers.map(answer => (
                 <div key={answer._id}>
                     <div id='sectionAns'>

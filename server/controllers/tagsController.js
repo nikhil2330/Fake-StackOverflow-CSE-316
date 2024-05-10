@@ -23,6 +23,7 @@ module.exports.getAllTags = async (req, res) => {
 module.exports.deleteTag = async (req, res) => {
     try {
         console.log(req.params.id);
+        console.log(req.params.id);
         const count = await Question.countDocuments({ tags: req.params.id });
         if (count > 1) {
             return res.status(403).json({ message: "Tag is shared by multiple questions and cannot be edited." });
