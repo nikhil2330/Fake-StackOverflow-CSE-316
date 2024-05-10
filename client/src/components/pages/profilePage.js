@@ -46,7 +46,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     
 
     const deleteTag = async (tagId) => {
-        console.log(tagId);
+        
         try {
             const response = await axios.delete(`http://localhost:8000/tags/${tagId}`)
             setTags(prevTags => prevTags.filter(tag => tag.id !== tagId));
@@ -80,6 +80,8 @@ export default function Profile({getTagQuestion, displayAnswers}) {
             setNewTid(null);
             setNewTag('');
             setError('');
+            fetchUserDetails();
+            fetchContent();
         } catch (error) {
             setError(error.response.data.message || 'Failed to update tag');
 
@@ -135,6 +137,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                         <div className="tagsbox" id="tagsbox">
                             <div className="tags-container" id="tags-container">
                             {tags.map((tag, index) => (
+                               
                                 <div className="tag" key={tag.id || index}>
                                     {newTid === tag.id ? (
                                         <>
@@ -144,6 +147,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                                         </>
                                     ) : (
                                         <>
+
                                             <div className="tag-name" onClick={() => getTagQuestion(tag.id)}>{tag.name}</div>
                                             <div className="tag-question-count">
                                                 {tag.questionCount} {tag.questionCount === 1 ? 'Question' : 'Questions'}
@@ -151,7 +155,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                                             {tag.questionCount === 1 && (
                                                     <>
                                                         <button onClick={() => handleEdit(tag)}>Edit</button>
-                                                        <button onClick={() => deleteTag(tag._id)}>Delete</button>
+                                                        <button onClick={() => deleteTag(tag.id)}>Delete</button>
                                                     </>
                                             )}
                                         </>

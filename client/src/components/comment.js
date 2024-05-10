@@ -1,24 +1,14 @@
 import React from 'react';
-import axios from 'axios';
-
-const Comment = ({ comment, canUpvote, onUpvote }) => {
-    const handleUpvote = async () => {
-        if (canUpvote) {
-            try {
-                await axios.post(`http://localhost:8000/comments/upvote/${comment._id}`);
-                onUpvote(comment._id);
-            } catch (error) {
-                console.error('Failed to upvote comment:', error);
-            }
-        }
-    };
+import { getTimeStamp } from '../helpers';
+const Comment = ({comment, canUpvote, onUpvote}) => {
     return (
         <div className="comment">
             <p>{comment.text}</p>
             <div>
-                <span>by {comment.by_user.username} | </span>
-                <span>Votes: {comment.votes} </span><span> at {comment.created_at}</span>
-                {canUpvote && <button onClick={handleUpvote}>Upvote</button>}
+                <span>by {comment.commented_by.username} </span>
+                <span>Votes: {comment.votes} </span>
+                <span> at {getTimeStamp(comment.created_at)}</span>
+                {canUpvote && <button onClick={onUpvote}>Upvote</button>}
             </div>
         </div>
     );
