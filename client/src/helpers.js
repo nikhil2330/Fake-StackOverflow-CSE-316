@@ -31,8 +31,8 @@ export function getTimeStamp(askDate) {
       " at " +
       date.getHours() +
       ":" +
-      date.getMinutes().toString().padStart(2, "0") +
-      "."
+      date.getMinutes().toString().padStart(2, "0")
+       
     );
   } else if (days > 0) {
     return (
@@ -45,11 +45,11 @@ export function getTimeStamp(askDate) {
       date.getMinutes().toString().padStart(2, "0")
     );
   } else if (hours > 0) {
-    return hours + " hours ago.";
+    return hours + (hours === 1 ? " hour ago " : " hours ago ");
   } else if (min > 0) {
-    return min + " minutes ago.";
+    return min + (min === 1 ? " minute ago " : " minutes ago ");
   } else if ((sec) >= 0) {
-    return sec + " seconds ago.";
+    return sec + (sec === 1 ? " second ago " : " seconds ago ");
   }
 }
 
