@@ -9,63 +9,31 @@ body, html {
 }
 
 #header {
-/* 
-    padding: 1vh;
-    border-bottom: 3px solid rgb(245, 170, 42);
-    background-color: rgb(255, 255, 255);
-    position: fixed;
-    width: 100%;
-    height: 6%;
-    display: flex; 
-    align-items: center;  */
     border-bottom: 3px solid rgb(245, 170, 42);
     background-color: rgb(255, 255, 255);
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Distribute items along the main axis */
+    justify-content: space-between; 
+    gap: 2vh;
     padding: 1vh 2vw; /* Adjust padding */
     min-height: 50px; /* Set a minimum height */
 }
 
 
 .fake{
-    /* position: fixed;
-    font-family: 'Optima', sans-serif;
-    font-size: 25px;
-    font-weight: bold;
-    color: #333333; 
-    margin-left: 1vh; 
-    margin-top: -1.4vh; */
-    font-family: 'Optima', sans-serif;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 25px;
     font-weight: bold;
     color: #333333;
-    margin-left: 1vh;
-
 }
 
 .stack {
-    /* margin-left: 3vh;
-    margin-top: -1.3vh; 
-    position: fixed;
-    font-family: 'Optima', sans-serif;
-    color: #333; 
-    font-weight: 500;
-    margin-left: 7vh; */
-    font-family: 'Optima', sans-serif;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: #333;
     font-weight: 500;
-    margin-left: 1vh;
 }
 
 #firstpage {
-    /* position: fixed;
-    margin-left: 30vh;
-    font-size: 18px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    cursor: pointer;
-    transition: transform 0.2s ease; */
-    /* margin-left: 1vh;     */
     font-size: 18px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     cursor: pointer;
@@ -73,13 +41,6 @@ body, html {
 }
 
 #tags {
-    /* position: fixed;
-    font-size: 18px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    margin-left: 45vh;
-    cursor: pointer; 
-    transition: transform 0.2s ease; */
-    /* margin-left: 3vh; */
     font-size: 18px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     cursor: pointer; /* Change cursor to pointer on hover */
@@ -96,17 +57,16 @@ body, html {
 
 
 .logout, .login{
-    position: fixed;
+   
     align-items: center; 
-    right: 18vh;
-    /* margin-left: 54%; */
+    /* right: 18vh; */
     height: 30px;
     width: 80px;
     text-align: center;
     background-color: white; 
     border: 2px solid rgb(0, 15, 228); 
-    border-radius: 5px; /* Apply a slight curve to the border */
-    cursor: pointer; /* Change cursor to pointer on hover */
+    border-radius: 5px; 
+    cursor: pointer;
     color: rgb(0, 15, 228);
     font-weight: 600;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -122,12 +82,11 @@ body, html {
 
 
 .signup, .profile {
-    position: fixed;
     align-items: center; 
-    right: 5vh;
+    /* right: 5vh; */
     justify-content: center; /* Center the text horizontally */
     display: flex;
-    margin-left: 2%;
+    /* margin-left: 2%; */
     height: 30px;
     width: 80px;
     text-align: center;
@@ -147,20 +106,7 @@ body, html {
     transform: translateY(2px); 
 }
 
-
-#search{  
-    /* position: fixed;
-    left: 32%; */
-    /* right: 2%; */
-    margin-right: 28vh; /* Push search input to the right */
-}
-
 #search input{
-    /* text-align: left;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    font-size: 20px;
-    width: 700px;
-    height: 30px;
-    border-radius: 5px; */
     text-align: left;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 20px;
@@ -346,10 +292,11 @@ color: #000000;
 
 }
 #section h3{
+    margin-bottom: 2vh;
     font-size: 20px;
     text-align: left;
     color: rgb(249, 155, 13);
-font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    cursor: pointer;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;    cursor: pointer;
     font-weight: 600;
 
 }
@@ -883,13 +830,23 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     flex-wrap: wrap;
 }
 
+.tag_cont {
+    display: flex;
+    gap: 0.5rem; /* Adds space between tags */
+    align-items: flex-start; /* Aligns tags to the top of the container */
+    margin-left: 0; /* Aligns the start of the tag container with the title/summary */
+}
+
 .tag {
-    text-align: center;
-    border: 2px dashed black;
-    padding: 10px;
-    margin: 35px;
-    width: calc(33.33% - 80px); 
-    box-sizing: border-box;
+    width: auto; /* Adjust width to fit content, or set a specific width if needed */
+    padding: 0.5rem 1rem; /* Consistent padding around the text */
+    background-color: rgba(144, 235, 255, 0.195);
+    border: 2px solid rgba(0, 15, 228, 0.49);
+    color: rgba(0, 15, 228, 0.769);
+    border-radius: 6px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center; /* Keeps text centered within each tag */
+    margin: 0; /* Remove any default margin */
 }
 
 .tag-name {
@@ -911,13 +868,6 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     clear: both;
 }
 
-.summary-tags {
-    margin-left: 18vh;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: -60px; /* Adjust margin-top to move the summary-tags closer */   
-}
 
 #summary_line {
     margin-left: 3vh;
@@ -926,11 +876,10 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     width: 700px;
 }
 
-#tag_cont {
-    display: flex; 
-    justify-content: flex-start;
-    margin-top: 0px;
-    width: 600%;
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 #tagsec{
