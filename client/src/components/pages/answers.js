@@ -179,8 +179,16 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                 &nbsp;
                 <div className ="answer-s-" id="answer-s-">{answer_s}</div>
                 <div className ="Ques_title" id="Ques_title">{question.title}</div>
-                {currentUser && (<button className  = "button1" id="button1" onClick={AskQuestion}>Ask Question</button>)}
-                {currentUser && currentUser._id === question.asked_by._id && (<button className='edit-button' onClick={() => navigate(`/home/ask/${question._id}`)}>Edit Question</button>)}
+                <div className="button-container">
+                    {currentUser && (
+                        <button className="button1" id="button1" onClick={AskQuestion}>Ask Question</button>
+                    )}
+                    {currentUser && currentUser._id === question.asked_by._id && (
+                        <button className="edit-q-button" onClick={() => navigate(`/home/ask/${question._id}`)}>Edit Question</button>
+                    )}
+                </div>
+
+
             </div>
             <div  id="ans-page-tags" className='tag_cont'>
                 {question.tags.map(tag => (
@@ -208,6 +216,7 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                     <span id = 'Qans_name' >{question.asked_by.username}</span>
                     <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
                 </div>
+
             </div>
             <div className="comments-section">
                 <h2>Comments</h2>

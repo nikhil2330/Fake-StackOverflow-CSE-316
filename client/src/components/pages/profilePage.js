@@ -109,10 +109,26 @@ export default function Profile({getTagQuestion, displayAnswers}) {
             </div>
             {error && <div className="error">{error}</div>}
             <div className="profile-menu">
-                <button onClick={() => setContent('questions')}>Questions</button>
-                <button onClick={() => setContent('answers')}>Answers</button>
-                <button onClick={() => setContent('tags')}>Tags</button>
+                <button 
+                    className={`button ${content === 'questions' ? 'active' : ''}`} 
+                    onClick={() => setContent('questions')}
+                >
+                    Questions
+                </button>
+                <button 
+                    className={`button ${content === 'answers' ? 'active' : ''}`} 
+                    onClick={() => setContent('answers')}
+                >
+                    Answers
+                </button>
+                <button 
+                    className={`button ${content === 'tags' ? 'active' : ''}`} 
+                    onClick={() => setContent('tags')}
+                >
+                    Tags
+                </button>
             </div>
+
             <div className="profile-box">
                 {questions.length === 0 && content === 'questions' ? (<div className='no_quest'>No Questions</div>) : (
                     content === 'questions' && questions.map(question => (

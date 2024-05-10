@@ -74,8 +74,8 @@ export default function AnswerQuestionPage({fetchQuestionDetails}) {
             <div className="error_message" id="ans_text_error"></div>
             <br/>
             <div className="container">
-                <button className="post_quest_button" id="post_quest_button" onClick={AnswerSubmit}>{isEditing ? 'Save Changes' : 'Post Answer'}</button>
-                {isEditing && (<button type="button" onClick={handleDelete} style={{ backgroundColor: 'red', color: 'white' }}>Delete Answer</button>
+                <button className="save_quest_button" id="save_quest_button" onClick={AnswerSubmit}>{isEditing ? 'Save Changes' : 'Post Answer'}</button>
+                {isEditing && (<button type="button" onClick={handleDelete} className="delete-question-button">Delete Answer</button>
             )}
                 <div className="mandatory">* indicates mandatory fields</div>  
             </div>   
