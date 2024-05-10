@@ -9,5 +9,6 @@ router.put('/:id',verifyToken, AnswersController.updateAnswer);
 router.delete('/:id',verifyToken, AnswersController.deleteAnswer);
 router.post('/upvote/:id', verifyToken, AnswersController.upvoteAnswer);
 router.post('/downvote/:id', verifyToken, AnswersController.downvoteAnswer);
+router.get('/count/:id', verifyToken, AnswersController.countUserAnswers);
 
 module.exports = router;

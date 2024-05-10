@@ -3,6 +3,7 @@ import axios from 'axios';
 import { getTimeStamp } from '../../helpers';
 import { useNavigate } from 'react-router-dom';
 import { newest } from '../../helpers';
+import { useAuth } from '../../contexts/authContext'; 
 
 export default function Profile({getTagQuestion, displayAnswers}) {
     const [user, setUser] = useState(null);
@@ -13,12 +14,17 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     const [newTid, setNewTid] = useState(null);
     const [newTag, setNewTag] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const [answerCount, setAnswerCount] = useState(0);
     const navigate  = useNavigate();
+    const { currentUser } = useAuth();
     const fetchUserDetails = async () => {
         const { data } = await axios.get('http://localhost:8000/users/details');
         setUser(data);
+        console.log(currentUser);
+        const response = await axios.get(`http://localhost:8000/answers/count/${currentUser._id}`);
+        setAnswerCount(response.data.count)
     };
+
     const fetchContent = async () => {
         const questions = await axios.get('http://localhost:8000/users/questions');
         setQuestions(newest(questions.data));
@@ -28,12 +34,15 @@ export default function Profile({getTagQuestion, displayAnswers}) {
         setTags(tags.data);
         
     };
+
     
     useEffect(() => {
-        fetchUserDetails();
-        fetchContent();
-
-    }, []);
+        if(currentUser){
+            fetchUserDetails();
+            fetchContent();
+        }
+        
+    }, [currentUser]);
     
 
     const deleteTag = async (tagId) => {
@@ -76,7 +85,6 @@ export default function Profile({getTagQuestion, displayAnswers}) {
 
         }
     };
-    console.log(answers);
     return(
         <div className="user-profile">
             <div className="user-details">
@@ -92,7 +100,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                         <div className='deet-box-qta'>
                             <p><span class="italic">Questions: {user.questions.length}</span></p>
                             <p><span class="italic">Tags: {user.tags.length}</span></p>
-                            <p><span class="italic">Answers: {user.answers.length}</span></p>
+                            <p><span class="italic">Answers: {answerCount}</span></p>
                         </div>
                     </div>
                 )}

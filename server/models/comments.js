@@ -12,6 +12,10 @@ const commentSchema = new Schema({
         ref: 'User',
         required: true
     },
+    upvoters: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'User' 
+    }],
     votes: {
         type: Number,
         required: false,

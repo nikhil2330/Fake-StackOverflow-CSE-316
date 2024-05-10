@@ -1175,6 +1175,9 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
     text-align: center;
     margin-top: 2vh;
 }
+.quest_content{
+    overflow-y: scroll;
+}
 
 .edit-button {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;

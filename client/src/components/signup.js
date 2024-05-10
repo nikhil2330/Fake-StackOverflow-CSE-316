@@ -1,8 +1,10 @@
 import React,{useState} from 'react';
 import axios from 'axios';
 import { signupErrors } from '../helpers';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup({ onContinueAsGuest, onLogin, registerUser }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
       username: '',
       email: '',
@@ -19,7 +21,7 @@ export default function Signup({ onContinueAsGuest, onLogin, registerUser }) {
     if(Object.keys(signupErrors(formData)).length === 0){
       try{
         await axios.post('http://localhost:8000/users/register', formData);
-        registerUser();
+        navigate('/login');
 
       } catch(error){
         if(error.response.status === 400){
