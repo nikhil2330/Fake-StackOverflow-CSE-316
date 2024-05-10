@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isGuest, setIsGuest] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false); 
+    
 
     let navigate = useNavigate();
 
@@ -58,6 +60,7 @@ export const AuthProvider = ({ children }) => {
                 const response = await axios.get('http://localhost:8000/users/loggedIn');
                 setCurrentUser(response.data.user);
                 setIsGuest(false);
+                setIsAdmin(response.data.user.isAdmin); 
                 const currentTime = new Date().getTime();
                 const timeLeft = response.data.expiresAt - currentTime;
                 console.log((timeLeft/1000)/60);
@@ -83,6 +86,7 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         currentUser,
+        isAdmin, 
         login,
         logout,
         isGuest,

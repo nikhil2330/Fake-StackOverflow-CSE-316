@@ -173,7 +173,7 @@ module.exports.deleteAnswer= async (req, res)=> {
         const otherAnswers = await Answer.find({
             question: answer.question,
             ans_by: answer.ans_by,
-            _id: { $ne: id }  // Exclude the current answer
+            _id: { $ne: id } 
         });
 
         await Question.findByIdAndUpdate(answer.question, {

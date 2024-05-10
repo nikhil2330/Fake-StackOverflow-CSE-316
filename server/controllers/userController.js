@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Question = require('../models/questions');
+const Answer = require('../models/answers');
+const Comment = require('../models/comments');
+const Tag = require('../models/tags');
 
 
 
@@ -177,3 +180,60 @@ module.exports.getUserVotes = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };  
+
+
+
+module.exports.getUser = async (req, res) => { 
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ message: "Unauthorized" });
+    }
+    try {
+        const users = await User.find().select('-password');  // Exclude passwords for security
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+module.exports.deleteUser = async (req, res) => {
+    
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ message: "Unauthorized" });
+    }
+    try {
+
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+
+        const questions = await Question.find({ asked_by: user._id });
+        for (let question of questions) {
+            await Answer.deleteMany({ question: question._id });
+            await Comment.deleteMany({ question: question._id });
+            await Question.findByIdAndRemove(question._id);
+        }
+        const answers = await Answer.find({ ans_by: user._id });
+        for (let answer of answers) {
+            await Comment.deleteMany({ answer: answer._id });
+            await Answer.findByIdAndRemove(answer._id);
+        }
+        await Comment.deleteMany({ commented_by: user._id });
+
+        const tags = await Tag.find({ set_by: user._id });
+        for (let tag of tags) {
+            const questionCount = await Question.countDocuments({ tags: tag._id });
+            if (questionCount === 0) {
+                await Tag.findByIdAndRemove(tag._id);
+            }
+        }
+        await User.findByIdAndRemove(user._id);
+
+
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+

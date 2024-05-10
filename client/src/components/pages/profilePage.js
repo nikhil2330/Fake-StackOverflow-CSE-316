@@ -4,6 +4,7 @@ import { getTimeStamp } from '../../helpers';
 import { useNavigate } from 'react-router-dom';
 import { newest } from '../../helpers';
 import { useAuth } from '../../contexts/authContext'; 
+import Admin from '../admin';
 
 export default function Profile({getTagQuestion, displayAnswers}) {
     const [user, setUser] = useState(null);
@@ -16,7 +17,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     const [error, setError] = useState('');
     const [answerCount, setAnswerCount] = useState(0);
     const navigate  = useNavigate();
-    const { currentUser } = useAuth();
+    const { currentUser, isAdmin } = useAuth();
     const fetchUserDetails = async () => {
         const { data } = await axios.get('http://localhost:8000/users/details');
         setUser(data);
@@ -40,6 +41,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
         if(currentUser){
             fetchUserDetails();
             fetchContent();
+
         }
         
     }, [currentUser]);
@@ -54,6 +56,8 @@ export default function Profile({getTagQuestion, displayAnswers}) {
         } catch (error) {
             setError(error.response.data.message || 'Failed to delete tag');
         }
+        fetchContent();
+        fetchUserDetails();
     };
     const handleEdit = (tag) => {
         setNewTid(tag.id);  
@@ -107,6 +111,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                     </div>
                 )}
             </div>
+            {isAdmin && <Admin />}
             {error && <div className="error">{error}</div>}
             <div className="profile-menu">
                 <button 

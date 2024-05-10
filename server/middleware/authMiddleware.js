@@ -12,10 +12,17 @@ module.exports.verifyToken = async (req, res, next) => {
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.userId);
-        req.user =  { userId: user._id, username: user.username };  
+        req.user =  { userId: user._id, username: user.username, isAdmin: user.isAdmin };  
         next();
     } catch (err) {
         console.error("Token verification failed:", err);
         return res.status(401).json({ errorMessage: "Unauthorized: Invalid token" });
     }
+};
+
+const verifyAdmin = (req, res, next) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ errorMessage: "Unauthorized: Admin access required" });
+    }
+    next();
 };
