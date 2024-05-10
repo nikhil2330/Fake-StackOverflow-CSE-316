@@ -90,9 +90,7 @@ module.exports.upvoteAnswer = async (req, res) => {
 
 module.exports.countUserAnswers = async (req, res) => {
     try {
-        const { userId } = req.params;
-        console.log(userId);
-        const count = await Answer.countDocuments({ ans_by: userId });
+        const count = await Answer.countDocuments({ ans_by: req.user.userId });
         res.json({ count });
     } catch (error) {
         console.error('Failed to count answers:', error);

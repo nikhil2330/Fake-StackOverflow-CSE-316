@@ -30,29 +30,31 @@ function QuestionList ({questions, displayAnswers}){
 
         return( 
             <>
-                {displayedQuestions.map(question => (    
-                    <div key={question._id}>
-                        <div id="section">
-                            <div id="data">
-                                <div id="answers">{question.answers.length} {question.answers.length === 1 ? 'answer' : 'answers'}</div>
-                                <div id="views">{question.views} {question.views === 1 ? 'view' : 'views'}</div>
-                                <div id="votes">{question.votes} {question.votes === 1 ? 'vote' : 'votes'}</div>
-                            </div>
-                            <div className="content">
-                                <h3 className="title" onClick={() => displayAnswers(question._id, false)}>{question.title}</h3>
-                                <p className="summary_line">{question.summary}</p>
-                                <div className='tag_cont'>
-                                    {question.tags.map(tag => (
-                                        <div key={`${tag._id}`} className='tag'>{tag.name}</div>
-                                    ))}
+                <div classname = "quest_content" _id = "quest_content">
+                    {displayedQuestions.map(question => (    
+                        <div key={question._id}>
+                            <div id="section">
+                                <div id="data">
+                                    <div id="answers">{question.answers.length} {question.answers.length === 1 ? 'answer' : 'answers'}</div>
+                                    <div id="views">{question.views} {question.views === 1 ? 'view' : 'views'}</div>
+                                    <div id="votes">{question.votes} {question.votes === 1 ? 'vote' : 'votes'}</div>
+                                </div>
+                                <div className="content">
+                                    <h3 className="title" onClick={() => displayAnswers(question._id, false)}>{question.title}</h3>
+                                    <p className="summary_line">{question.summary}</p>
+                                    <div className='tag_cont'>
+                                        {question.tags.map(tag => (
+                                            <div key={`${tag._id}`} className='tag'>{tag.name}</div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="metadata">
+                                    <span className='name'>{question.asked_by.username}</span> asked {getTimeStamp(question.ask_date_time)}
                                 </div>
                             </div>
-                            <div className="metadata">
-                                <span className='name'>{question.asked_by.username}</span> asked {getTimeStamp(question.ask_date_time)}
-                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
                <div className="pn-buttons">
                     <button disabled={currentPage === 1} onClick={handlePrev}>Prev</button>
 

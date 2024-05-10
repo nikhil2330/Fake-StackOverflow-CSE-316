@@ -4,7 +4,7 @@ import { getTimeStamp } from '../../helpers';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 
-export default function Answers({AskQuestion, handleAnswerQuestion, AddComment}) {
+export default function Answers({AskQuestion, AddComment}) {
     const { id } = useParams(); 
     const [question, setQuestion] = useState(null);
     const { currentUser } = useAuth();

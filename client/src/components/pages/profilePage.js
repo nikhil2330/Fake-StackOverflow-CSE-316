@@ -20,9 +20,11 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     const fetchUserDetails = async () => {
         const { data } = await axios.get('http://localhost:8000/users/details');
         setUser(data);
-        const response = await axios.get(`http://localhost:8000/answers/count/${user._id}`);
+        console.log(currentUser);
+        const response = await axios.get(`http://localhost:8000/answers/count/${currentUser._id}`);
         setAnswerCount(response.data.count)
     };
+
     const fetchContent = async () => {
         const questions = await axios.get('http://localhost:8000/users/questions');
         setQuestions(newest(questions.data));
@@ -35,11 +37,12 @@ export default function Profile({getTagQuestion, displayAnswers}) {
 
     
     useEffect(() => {
-        fetchUserDetails();
-        fetchContent();
+        if(currentUser){
+            fetchUserDetails();
+            fetchContent();
+        }
         
-
-    }, []);
+    }, [currentUser]);
     
 
     const deleteTag = async (tagId) => {

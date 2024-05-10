@@ -1,8 +1,10 @@
 import React,{useState} from 'react';
 import { loginErrors } from '../helpers';
 import { useAuth } from '../contexts/authContext.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
+  const navigate = useNavigate();
   const {login} = useAuth();
   const [formData, setFormData] = useState({
     email: '',
@@ -16,7 +18,7 @@ export default function Login({ onContinueAsGuest, onSignUp, loginUser }) {
     if(Object.keys(loginErrors(formData)).length === 0){
       try{
         await login(formData);
-        loginUser();
+        navigate('/home');
       } catch(error){
         if(error.response.status === 401){
           setErrors(error.response.data);

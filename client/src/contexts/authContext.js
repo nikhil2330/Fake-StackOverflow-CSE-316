@@ -9,6 +9,9 @@ export function useAuth() {
 }
 
 export const AuthProvider = ({ children }) => {
+    const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [isGuest, setIsGuest] = useState(false);
 
     let navigate = useNavigate();
 
@@ -25,7 +28,6 @@ export const AuthProvider = ({ children }) => {
                     navigate("/login");
                 }, timeLeft);
             }
-            return response.data;
         } catch (error) {
             throw error;
         }
@@ -47,9 +49,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/home');
     };
 
-    const [currentUser, setCurrentUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [isGuest, setIsGuest] = useState(false);
+
 
     useEffect(() => {
         const verifyUser = async () => {
