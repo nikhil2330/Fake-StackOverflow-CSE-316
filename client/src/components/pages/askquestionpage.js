@@ -133,7 +133,7 @@ export default function AskQuestionPage({postquestion}) {
 
             <br/>
             <div className="container">
-                <button className="post_quest_button" id="post_quest_button" onClick={QuestionSubmit}>{isEditing ? 'Save Changes' : 'Post Question'}</button>
+                <button className="save_quest_button" id="save_quest_button" onClick={QuestionSubmit}>{isEditing ? 'Save Changes' : 'Post Question'}</button>
                 {isEditing ? (<button onClick={confirm} className="delete-question-button">Delete Question</button> ) : (<></>) }
                 <div className="mandatory">* indicates mandatory fields</div>  
             </div>
