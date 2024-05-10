@@ -87,6 +87,19 @@ module.exports.upvoteAnswer = async (req, res) => {
     }
 }
 
+
+module.exports.countUserAnswers = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        console.log(userId);
+        const count = await Answer.countDocuments({ ans_by: userId });
+        res.json({ count });
+    } catch (error) {
+        console.error('Failed to count answers:', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 module.exports.downvoteAnswer = async (req, res) => {
     try {
         const answer = await Answer.findById(req.params.id);
