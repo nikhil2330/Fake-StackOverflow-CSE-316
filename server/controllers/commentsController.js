@@ -1,7 +1,5 @@
 
-const comments = require('../models/comments');
 const Comment = require('../models/comments');
-const user = require('../models/user');
 const User = require('../models/user');
 
 
@@ -36,9 +34,7 @@ module.exports.addComment = async (req, res) => {
             [type]: targetId,
             
         });
-        console.log(newComment);
         await newComment.save();
-        console.log(newComment);
         res.json(newComment);
     } catch (error) {
         res.send("Error adding comment: " + error.message);
@@ -55,9 +51,8 @@ module.exports.upvoteComment = async (req, res) => {
         if (!comment) {
             return res.status(404).json({ message: 'Comment not found' });
         }
-
+        console.log(userId, commentId);
         const alreadyUpvoted = comment.upvoters.includes(userId);
-        console.log(alreadyUpvoted);
         if (alreadyUpvoted) {
             comment.votes -= 1;
             comment.upvoters.pull(userId)   
