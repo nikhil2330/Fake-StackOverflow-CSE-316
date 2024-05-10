@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getTimeStamp } from '../helpers';
 
-function QuestionList ({questions, displayAnswers}){
-    const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 5;
-    const [startIndex, setStartIndex] = useState(0);
-    const totalPages = Math.ceil(questions.length / pageSize);
 
+function QuestionList({ questions, displayAnswers, currentPage, setCurrentPage }) {
+    const pageSize = 5;
+    const [localCurrentPage, setLocalCurrentPage] = useState(currentPage);
+    const totalPages = Math.ceil(questions.length / pageSize);
+    const startIndex = (localCurrentPage - 1) * pageSize;
+    const displayedQuestions = questions.slice(startIndex, startIndex + pageSize);
+
+    useEffect(() => {
+        setLocalCurrentPage(1); 
+    }, [questions]);
+
+    useEffect(() => {
+        setCurrentPage(localCurrentPage); 
+    }, [localCurrentPage, setCurrentPage]);
 
     const handleNext = () => {
-        const nextPage = currentPage === totalPages ? 1 : currentPage + 1;
-        setCurrentPage(nextPage);
-        setStartIndex((nextPage - 1) * pageSize);
+        const nextPage = localCurrentPage < totalPages ? localCurrentPage + 1 : 1;
+        setLocalCurrentPage(nextPage);
     };
-    
 
     const handlePrev = () => {
-        const prevPage = currentPage - 1;
-        setCurrentPage(prevPage);
-        setStartIndex((prevPage - 1) * pageSize);
+        const prevPage = localCurrentPage > 1 ? localCurrentPage - 1 : totalPages;
+        setLocalCurrentPage(prevPage);
     };
 
     if(questions.length === 0){
@@ -41,9 +47,9 @@ function QuestionList ({questions, displayAnswers}){
                             <div className="content">
                                 <h3 className="title" onClick={() => displayAnswers(question._id, false)}>{question.title}</h3>
                                 <p className="summary_line">{question.summary}</p>
-                                <div className='tag_cont'>
+                                <div  className='tag_cont'>
                                     {question.tags.map(tag => (
-                                        <div key={`${tag._id}`} className='tag'>{tag.name}</div>
+                                        <div key={`${tag._id}`} id='tag_cont'>{tag.name}</div>
                                     ))}
                                 </div>
                             </div>
