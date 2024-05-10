@@ -4,7 +4,7 @@ import { getTimeStamp } from '../../helpers';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 
-export default function Answers({AskQuestion, AddComment}) {
+export default function Answers({answers, AskQuestion, handleAnswerQuestion, AddComment}) {
     const { id } = useParams(); 
     const [question, setQuestion] = useState(null);
     const { currentUser } = useAuth();
@@ -12,6 +12,16 @@ export default function Answers({AskQuestion, AddComment}) {
     const [downvoted, setDownvoted] = useState(false);
     const [a_upvoted, setA_upvoted] = useState(false);
     const [a_downvoted, setA_downvoted] = useState(false);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 5; // Number of answers per page
+    const [startIndex, setStartIndex] = useState(0);
+
+    const totalPages = question ? Math.max(1, Math.ceil(question.answers.length / pageSize)) : 1;
+    const displayedAnswers = question ? question.answers.slice(startIndex, startIndex + pageSize) : [];
+
+
+
     // const [comments, setComments] = useState([]);
     // const [commentViews, setCommentViews] = useState(3); // Number of comments to display
     // const [commentPage, setCommentPage] = useState(1); // Current comment page
@@ -46,10 +56,23 @@ export default function Answers({AskQuestion, AddComment}) {
         setA_upvoted(response.data.A_upVotes.includes(id));
         setA_downvoted(response.data.A_downVotes.includes(id));
     }
-    // const fetchComments = async () => {
-    //     const response = await axios.get(`http://localhost:8000/comments/${id}`);
-    //     setComments(response.data);
-    // };
+
+
+    const handleNext = () => {
+        const nextPage = currentPage === totalPages ? 1 : currentPage + 1;
+        setCurrentPage(nextPage);
+        setStartIndex((nextPage - 1) * pageSize);
+    };
+    
+    
+    const handlePrev = () => {
+        if (currentPage > 1) {
+            const prevPage = currentPage - 1;
+            setCurrentPage(prevPage);
+            setStartIndex((prevPage - 1) * pageSize);
+        }
+    };
+    
 
     useEffect(() => {
         fetchQuestion();
@@ -75,22 +98,6 @@ export default function Answers({AskQuestion, AddComment}) {
         }
     }
 
-    // const handleAddComment = async (commentText) => {
-    //     try {
-    //         await axios.post('http://localhost:8000/comments/add', {
-    //             postId: id,
-    //             text: commentText,
-    //             commenterId: currentUser._id,
-    //             timestamp: new Date().toISOString(),
-    //         });
-    //         await fetchComments(); // Fetch updated comments after adding a new one
-    //     } catch (error) {
-    //         console.error('Error adding comment:', error);
-    //     }
-    // };
-    
-
-
     if (!question) {    
         return <div></div>;
     }
@@ -101,14 +108,20 @@ export default function Answers({AskQuestion, AddComment}) {
 
     return (
         <>
+            
             <div id = "ansSec-A">
                 <div className ="ans_count" id="ans_count">{question.answers.length}</div> 
                 &nbsp;
                 <div className ="answer-s-" id="answer-s-">{answer_s}</div>
                 <div className ="Ques_title" id="Ques_title">{question.title}</div>
                 {currentUser && (<button className  = "button1" id="button1" onClick={AskQuestion}>Ask Question</button>)}
-                {currentUser && currentUser._id === question.asked_by._id && (<button onClick={() => navigate(`/home/ask/${question._id}`)}>Edit Question</button>)}
+                {currentUser && currentUser._id === question.asked_by._id && (<button className='edit-button' onClick={() => navigate(`/home/ask/${question._id}`)}>Edit Question</button>)}
             </div>
+            <div  id="ans-page-tags" className='tag_cont'>
+                                    {question.tags.map(tag => (
+                                        <div key={`${tag._id}`} id='tag_cont'>{tag.name}</div>
+                                    ))}
+                                </div>
             <div id = "ansSec-B">
                 <div id = "Adata">
                     <div className ="viewC" id="viewC">{question.views}</div> 
@@ -131,31 +144,38 @@ export default function Answers({AskQuestion, AddComment}) {
                     <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
                 </div>
             </div>
-            {question.answers.map(answer => (
+            
+            {displayedAnswers.map(answer => (
                 <div key={answer._id}>
-                    <div id = 'sectionAns' >
+                    <div id='sectionAns'>
                         <div className='votebox'>
-                            {currentUser && <svg width="36" height="36" className= {voted(a_upvoted)} onClick={() => handleVote(answer._id,'up', false)}>
-                                <path d="M2 26h32L18 10 2 26z" ></path>
+                            {currentUser && <svg width="36" height="36" className={voted(a_upvoted)} onClick={() => handleVote(answer._id, 'up', false)}>
+                                <path d="M2 26h32L18 10 2 26z"></path>
                             </svg>}
                             <span className='votesC'>{answer.votes} {answer.votes === 1 ? 'vote' : 'votes'}</span>
-                            {currentUser && <svg width="36" height="36" className= {voted(a_downvoted)} onClick={() => handleVote(answer._id,'down', false)}>
-                                <path d="M2 10h32L18 26 2 10z" ></path>
+                            {currentUser && <svg width="36" height="36" className={voted(a_downvoted)} onClick={() => handleVote(answer._id, 'down', false)}>
+                                <path d="M2 10h32L18 26 2 10z"></path>
                             </svg>}
                         </div>
-                        <div id = 'answertext' dangerouslySetInnerHTML={{ __html: answer.text}}></div>
-                        <div id = 'Ans_metadata'>
-                            <div id = 'Ans_name' >{answer.ans_by.username}</div>
-                            <span id = 'Ans_time' > answered {getTimeStamp(answer.ans_date_time)}</span>
+                        <div id='answertext' dangerouslySetInnerHTML={{ __html: answer.text }}></div>
+                        <div id='Ans_metadata'>
+                            <div id='Ans_name'>{answer.ans_by.username}</div>
+                            <span id='Ans_time'> answered {getTimeStamp(answer.ans_date_time)}</span>
                         </div>
-                    </div>
-                    {currentUser && currentUser._id === answer.ans_by._id && (<button onClick={() => navigate(`/home/answer/edit/${answer._id}`, { state: { questionId: id } })}>Edit Answer</button>)}
-                </div>
+                        {currentUser && currentUser._id === answer.ans_by._id && (<button className='edit-button' onClick={() => navigate(`/home/answer/edit/${answer._id}`, { state: { questionId: id } })}>Edit Answer</button>)}
 
+                    </div>
+                </div>
             ))}
+
             {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => navigate(`/home/answer/new`, { state: { questionId: id } })}>Answer Question</button>)}
 
-      
+            <div className="pn-buttons">
+                <button disabled={currentPage === 1} onClick={handlePrev}>Prev</button>
+                <span className="page-info">{currentPage} / {totalPages}</span>
+                <button onClick={handleNext}>Next</button>
+            </div>
+
       </>
   );
 }
