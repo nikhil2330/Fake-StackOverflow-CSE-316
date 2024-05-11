@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 function Header({handleChange, handleKeyDown, handleLogout, handleMenu,  active}) {
   const { currentUser } = useAuth();
   let navigate = useNavigate();
-  if (!currentUser._id) {
-    return <div>Loading...</div>; 
-}
+//   if (!currentUser._id) {
+//     return <div>Loading...</div>; 
+// }
   
   return (
     <header id="header">

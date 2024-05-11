@@ -11,5 +11,23 @@ Add design docs in *images/*
 
 
 ## Team Member 1 Contribution
+* Home page - UI of the home page, questions displayed, viewcount, all buttons
+* Searching text & tags - any input taken in the search bar
+* Sorting Algorithms - sorting questions newest to oldest, most recently answered, unanswered
+* Question Page - UI of the page
+* Post Question - error messages, displaying the question on homepage, storing new question into model
+* Hyperlinks - included in post question, post answer, displaying answers
+* Mongo schema - schema for questons, answers, tags, & server based functions
+* Answer Page - UI of the page
+* admmin and profile page
+* Comments
+* Question of a Tag - clicking a specific tag & displaying the questions linked to the tag, having the tags displayed on the question
+
 
 ## Team Member 2 Contribution
+* Tags page - UI of tags page, displaying tag boxes, view count, three boxes in a row
+
+* Post Answer - error messages, displaying the answer with the associated question, storing new answer into the model
+* Post Question - fixing the errors displayed with tags and whitespaces
+* CSS - css for the pages, fixing layout of home page, tags page, question and answer displays, fixing scroll, aligning buttons, fixing UIs view and borders
+* Pagination
