@@ -2,6 +2,7 @@ const Question = require('../models/questions');
 const Tag = require('../models/tags');
 const User = require('../models/user');
 const Answer = require('../models/answers')
+const Comment = require('../models/comments')
 
 module.exports.createQuestion = async (req, res) => {
     try{
@@ -307,7 +308,8 @@ module.exports.deleteQuestion = async (req, res)=> {
                 }
             }
         );
-        //await Comment.deleteMany({ question: id });
+        await Comment.deleteMany({ question: id });
+        await Comment.deleteMany({ answer: { $in: answerIds } });
         await Answer.deleteMany({ question: id });
         await User.updateOne({ _id: req.user.userId }, { $pull: { questions: id } });
         await User.updateMany(

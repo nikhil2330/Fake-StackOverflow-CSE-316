@@ -41,8 +41,9 @@ module.exports.registerUser = async (req, res) => {
 };
 
 module.exports.getUserDetails = async (req, res) => {
+    console.log("Fetching details for user ID:", req.params.userId);
     try {
-        const user = await User.findById(req.user.userId).select('-password');  
+        const user = await User.findById(req.params.userId).select('-password');  
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
@@ -54,7 +55,8 @@ module.exports.getUserDetails = async (req, res) => {
 
 module.exports.getUserQuestions = async (req,res) => {
     try {
-    const user = await User.findById(req.user.userId).populate('questions', 'title ask_date_time' );
+    console.log("Fetching details for user ID:", req.params.userId);
+    const user = await User.findById(req.params.userId).populate('questions', 'title ask_date_time' );
     
     const questions = user.questions.map(question => {
         return {
@@ -63,7 +65,7 @@ module.exports.getUserQuestions = async (req,res) => {
             ask_date_time: question.ask_date_time
         };
     });
-    res.json(questions);
+    res.json(questions || []);
     } catch (error) {
         console.error('Error fetching user questions:', error);
         res.status(500).json({ message: "Internal server error" });
@@ -71,7 +73,7 @@ module.exports.getUserQuestions = async (req,res) => {
 }
 module.exports.getUserTags = async (req,res) => {
     try {
-    const user = await User.findById(req.user.userId).populate('tags', 'name');
+    const user = await User.findById(req.params.userId).populate('tags', 'name');
     const tagsWithCounts = await Promise.all(user.tags.map(async (tag) => {
         const count = await Question.countDocuments({ tags: tag._id });
         
@@ -89,7 +91,7 @@ module.exports.getUserTags = async (req,res) => {
 }
 module.exports.getUserAnswerQuestions = async (req,res) => {
     try {
-    const user = await User.findById(req.user.userId).populate('answers', 'title');
+    const user = await User.findById(req.params.userId).populate('answers', 'title');
     const uniqueQuestions = {};
     user.answers.forEach(question => {
         if (!uniqueQuestions[question._id]) {
@@ -129,13 +131,15 @@ module.exports.loginUser = async (req, res) => {
             process.exit(1); // Exit process with failure
         }
 
-        const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '2h' });
+        const token = jwt.sign({ userId: user._id, email: user.email, isAdmin: user.isAdmin  }, process.env.JWT_SECRET, { expiresIn: '2h' });
         const decoded = jwt.decode(token);
         await res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'none', maxAge: (2 * 60 * 60 * 1000) }).status(200).json({
             success: true,
             user: {
                 id: user._id,
-                email: user.email
+                email: user.email,
+                isAdmin: user.isAdmin 
+
             },
             expiresAt: decoded.exp * 1000
             }).send();
@@ -199,25 +203,29 @@ module.exports.deleteUser = async (req, res) => {
     
     if (!req.user.isAdmin) {
         return res.status(403).json({ message: "Unauthorized" });
+        
     }
     try {
 
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.userId);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-
+        
         const questions = await Question.find({ asked_by: user._id });
+        
+        
         for (let question of questions) {
             await Answer.deleteMany({ question: question._id });
             await Comment.deleteMany({ question: question._id });
-            await Question.findByIdAndRemove(question._id);
+            await Question.findByIdAndDelete(question._id);
         }
+        
         const answers = await Answer.find({ ans_by: user._id });
         for (let answer of answers) {
             await Comment.deleteMany({ answer: answer._id });
-            await Answer.findByIdAndRemove(answer._id);
+            await Answer.findByIdAndDelete(answer._id);
         }
         await Comment.deleteMany({ commented_by: user._id });
 
@@ -225,15 +233,16 @@ module.exports.deleteUser = async (req, res) => {
         for (let tag of tags) {
             const questionCount = await Question.countDocuments({ tags: tag._id });
             if (questionCount === 0) {
-                await Tag.findByIdAndRemove(tag._id);
+                await Tag.findByIdAndDelete(tag._id);
             }
         }
-        await User.findByIdAndRemove(user._id);
+        await User.findByIdAndDelete(user._id);
 
 
         res.json({ message: "User deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        console.log(error);
+        res.json({ message: "Internal server error" });
     }
 };
 
