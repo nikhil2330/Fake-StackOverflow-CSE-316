@@ -20,7 +20,7 @@ module.exports.verifyToken = async (req, res, next) => {
     }
 };
 
-const verifyAdmin = (req, res, next) => {
+module.exports.verifyAdmin = (req, res, next) => {
     if (!req.user.isAdmin) {
         return res.status(403).json({ errorMessage: "Unauthorized: Admin access required" });
     }

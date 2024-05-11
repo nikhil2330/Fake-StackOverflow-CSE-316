@@ -1,6 +1,7 @@
 const Answer = require('../models/answers');
 const Question = require('../models/questions');
-const User = require('../models/user')
+const User = require('../models/user');
+const Comment = require('../models/user')
 
 module.exports.createAnswer = async (req, res) => {
     const { text, questionID } = req.body;
@@ -196,8 +197,7 @@ module.exports.deleteAnswer= async (req, res)=> {
             });
         }
 
-        //await Comment.deleteMany({ question: id });
-       
+        await Comment.deleteMany({ answer: id });
         await Answer.findByIdAndDelete(id);
         // const user = await User.findById(req.user.userId);
         // console.log(user);

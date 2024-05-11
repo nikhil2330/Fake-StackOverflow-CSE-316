@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
             const response = await axios.post('http://localhost:8000/users/login', formData);
             setCurrentUser(response.data.user);
             setIsGuest(false);
+            setIsAdmin(response.data.user.isAdmin); 
             const currentTime = new Date().getTime();
             const timeLeft = response.data.expiresAt - currentTime;
             if (timeLeft > 0) {
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }) => {
             await axios.get('http://localhost:8000/users/logout',);
             setCurrentUser(null);
             setIsGuest(false);
+            setIsAdmin(false);
             console.log("userloggedout");
         } catch (error) {
             console.error('Logout failed', error);
@@ -79,8 +81,8 @@ export const AuthProvider = ({ children }) => {
             }
             setLoading(false);
         };
-
         verifyUser();
+        console.log(currentUser);
 
     }, []);
 
