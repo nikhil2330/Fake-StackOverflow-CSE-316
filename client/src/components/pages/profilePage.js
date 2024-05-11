@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { newest } from '../../helpers';
 import { useAuth } from '../../contexts/authContext'; 
 import Admin from '../admin';
+import { useParams } from 'react-router-dom';
 
 export default function Profile({getTagQuestion, displayAnswers}) {
     const [user, setUser] = useState(null);
+    const { userId } = useParams();
     const [content, setContent] = useState('questions');
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
@@ -19,34 +21,30 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     const navigate  = useNavigate();
     const { currentUser, isAdmin } = useAuth();
     const fetchUserDetails = async () => {
-        const { data } = await axios.get('http://localhost:8000/users/details');
+        console.log(userId);
+        const { data } = await axios.get(`http://localhost:8000/users/details/${userId}`);
         setUser(data);
-        console.log(currentUser);
-        const response = await axios.get(`http://localhost:8000/answers/count/${currentUser._id}`);
+        const response = await axios.get(`http://localhost:8000/answers/count/${userId}`);
         setAnswerCount(response.data.count)
     };
 
     const fetchContent = async () => {
-        const questions = await axios.get('http://localhost:8000/users/questions');
+        const questions = await axios.get(`http://localhost:8000/users/questions/${userId}`);
         setQuestions(newest(questions.data));
-        const answers = await axios.get('http://localhost:8000/users/answers');
+        const answers = await axios.get(`http://localhost:8000/users/answers/${userId}`);
         setAnswers(newest(answers.data));
-        const tags = await axios.get('http://localhost:8000/users/tags');
+        const tags = await axios.get(`http://localhost:8000/users/tags/${userId}`);
         setTags(tags.data);
-        
     };
 
     
     useEffect(() => {
-        if(currentUser){
             fetchUserDetails();
             fetchContent();
-
-        }
-        
-    }, [currentUser]);
+            console.log(userId);
+    }, [userId]);
     
-
+    console.log(userId);
     const deleteTag = async (tagId) => {
         
         try {
@@ -143,7 +141,7 @@ export default function Profile({getTagQuestion, displayAnswers}) {
                         </div>
                     )))
                 }
-                {questions.length === 0 && content === 'answers' ? (<div className='no_ans'>No Answers</div>) : (
+                {answers.length === 0 && content === 'answers' ? (<div className='no_ans'>No Answers</div>) : (
                     content === 'answers' && answers.map(answer => (
                     <div className = "answer_card" key={answer.id}>
                         <span className = "title" onClick={() => displayAnswers(answer.id, true)}>{answer.title}</span>

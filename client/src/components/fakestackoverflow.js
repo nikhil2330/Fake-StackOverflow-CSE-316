@@ -202,7 +202,7 @@
         <Route path="answer/edit/:id" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
         <Route path="answer/new" element={<AnswerQuestionPage fetchQuestionDetails={fetchQuestionDetails} />} />
         <Route path="tags" element={<TagsPage getTagQuestion={handleTagClick} AskQuestion={() => navigate('home/ask')} />} />
-        <Route path="profile" element={<Profile getTagQuestion={handleTagClick} displayAnswers={handleAnswerClick} />} />
+        <Route path="profile/:userId" element={<Profile getTagQuestion={handleTagClick} displayAnswers={handleAnswerClick} />} />
       </Route>
     </Routes>
   );
