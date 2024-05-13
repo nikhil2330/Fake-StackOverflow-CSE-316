@@ -21,7 +21,6 @@ export default function Profile({getTagQuestion, displayAnswers}) {
     const navigate  = useNavigate();
     const { currentUser, isAdmin } = useAuth();
     const fetchUserDetails = async () => {
-        console.log(userId);
         const { data } = await axios.get(`http://localhost:8000/users/details/${userId}`);
         setUser(data);
         const response = await axios.get(`http://localhost:8000/answers/count/${userId}`);
@@ -32,19 +31,19 @@ export default function Profile({getTagQuestion, displayAnswers}) {
         const questions = await axios.get(`http://localhost:8000/users/questions/${userId}`);
         setQuestions(newest(questions.data));
         const answers = await axios.get(`http://localhost:8000/users/answers/${userId}`);
+        console.log(userId);
         setAnswers(newest(answers.data));
         const tags = await axios.get(`http://localhost:8000/users/tags/${userId}`);
         setTags(tags.data);
     };
+    console.log(userId);
 
     
     useEffect(() => {
             fetchUserDetails();
             fetchContent();
-            console.log(userId);
     }, [userId]);
     
-    console.log(userId);
     const deleteTag = async (tagId) => {
         
         try {
@@ -133,24 +132,24 @@ export default function Profile({getTagQuestion, displayAnswers}) {
             </div>
 
             <div className="profile-box">
-                {questions.length === 0 && content === 'questions' ? (<div className='no_quest'>No Questions</div>) : (
+                {questions.length === 0 && content === 'questions' ? (<div className='no_content no_quest'>No Questions</div>) : (
                     content === 'questions' && questions.map(question => (
                         <div className = "question_card" key={question.id}>
-                            <span className = "title" onClick={() => displayAnswers(question.id, false)}>{question.title}</span>
-                            <img src="" alt="Edit" className="edit_icon" onClick={() => navigate(`/home/ask/${question.id}`)}/>
+                            <span className = "title" onClick={() => displayAnswers(question.id, false, userId)}>{question.title}</span>
+                            <button onClick={() => navigate(`/home/ask/${question.id}`)} className='edit'><img src="../../edit.png"  width="10" height="10" alt="Edit" className="edit_icon" />  Edit</button>
                         </div>
                     )))
                 }
-                {answers.length === 0 && content === 'answers' ? (<div className='no_ans'>No Answers</div>) : (
+                {answers.length === 0 && content === 'answers' ? (<div className='no_content no_ans'>No Answers</div>) : (
                     content === 'answers' && answers.map(answer => (
                     <div className = "answer_card" key={answer.id}>
-                        <span className = "title" onClick={() => displayAnswers(answer.id, true)}>{answer.title}</span>
+                        <span className = "title" onClick={() => displayAnswers(answer.id, true, userId)}>{answer.title}</span>
                     </div>
                 )))
                 }
                 {
                     content === 'tags' && tags.length === 0 ? (
-                        <div className='no_tags'>No Tags</div>
+                        <div className='no_content no_tags'>No Tags</div>
                     ) : (
                         content === 'tags' && (
                         <div className="tagsbox" id="tagsbox">

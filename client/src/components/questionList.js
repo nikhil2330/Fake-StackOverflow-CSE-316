@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getTimeStamp } from '../helpers';
 
 
-function QuestionList({ questions, displayAnswers, currentPage, setCurrentPage }) {
+function QuestionList({ questions, displayAnswers, currentPage, setCurrentPage, profileId }) {
     const pageSize = 5;
     const [localCurrentPage, setLocalCurrentPage] = useState(currentPage);
     const totalPages = Math.ceil(questions.length / pageSize);
@@ -45,7 +45,7 @@ function QuestionList({ questions, displayAnswers, currentPage, setCurrentPage }
                                 <div id="votes">{question.votes} {question.votes === 1 ? 'vote' : 'votes'}</div>
                             </div>
                             <div className="content">
-                                <h3 className="title" onClick={() => displayAnswers(question._id, false)}>{question.title}</h3>
+                                <h3 className="title" onClick={() => displayAnswers(question._id, false, profileId)}>{question.title}</h3>
                                 <p className="summary_line">{question.summary}</p>
                                 <div  className='tag_cont'>
                                     {question.tags.map(tag => (

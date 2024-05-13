@@ -11,44 +11,25 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     const { currentUser } = useAuth();
     const [upvoted, setUpvoted] = useState(false);
     const [downvoted, setDownvoted] = useState(false);
-    const [a_upvoted, setA_upvoted] = useState(false);
-    const [a_downvoted, setA_downvoted] = useState(false);
+    const [a_upvoted, setA_upvoted] = useState({});
+    const [a_downvoted, setA_downvoted] = useState({});
     const [comments, setComments] = useState([]);
     const [A_comments, setA_Comments] = useState({});
     const [commentText, setCommentText] = useState({});
     const [commentError, setCommentError] = useState({});
-    const [currentAnswerCommentPages, setCurrentAnswerCommentPages] = useState({});
-    const [maxCommentPages, setMaxCommentPages] = useState({});
-    const [currentCommentPage, setCurrentCommentPage] = useState(0);
-    const commentsPerPage = 3;  // This sets the limit to 3 comments per page
-
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 5; // Number of answers per page
-    const [startIndex, setStartIndex] = useState(0);
-    const totalPages = question ? Math.max(1, Math.ceil(question.answers.length / pageSize)) : 1;
-    const displayedAnswers = question ? question.answers.slice(startIndex, startIndex + pageSize) : [];
-    const maxCommentPage = Math.floor((comments.length - 1) / commentsPerPage);
+    const [currentCommentPage, setCurrentCommentPage] = useState(1);
+    const [A_commentCurrentPage, setA_commentCurrentPage] = useState({});
+    const [A_commentTotalPages, setA_commentTotalPages] = useState({});
+    const commentsPerPage = 3; 
+    const [commentVotes, setCommentVotes] = useState({}); 
     
-    const displayedComments = comments.slice(
-        currentCommentPage * commentsPerPage,
-        (currentCommentPage + 1) * commentsPerPage
-    );
-
-    useEffect(() => {
-        // Initialize current page for each answer to 0
-        const initialCurrentAnswerCommentPages = {};
-        displayedAnswers.forEach(answer => {
-            initialCurrentAnswerCommentPages[answer._id] = 0;
-        });
-        setCurrentAnswerCommentPages(initialCurrentAnswerCommentPages);
-    }, [displayedAnswers]);
-    
-
 
     const navigate = useNavigate();
     const location = useLocation();
-    const highlight = location.state?.highlight || false;
-    console.log(highlight);
+    const { profileId, highlight } = location.state || {};
+    console.log(profileId);
+
     const handleCommentChange = (text, targetId) => {
         setCommentText(prev => ({ ...prev, [targetId]: text }));
         setCommentError(prev => ({...prev,[targetId]: text.length > 140 ? 'Comment must not exceed 140 characters.' : ''}));
@@ -64,12 +45,11 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
             return;
         }
         try {
-            const response = await axios.post('http://localhost:8000/comments', {
+            await axios.post('http://localhost:8000/comments', {
                 text,
                 targetId,
                 type
             });
-            console.log(response)
 
             fetchComments(targetId, type);
             setCommentText(prev => ({ ...prev, [targetId]: '' })); 
@@ -77,31 +57,33 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
         } catch (error) {
             console.error('Error adding comment:', error);
             setCommentError(prev => ({ ...prev, [targetId]: '' }));
+            if (error.response) {
+                alert(error.response.data);
+            }
         }
     };
     const fetchQuestion = async () => {
         const response = await axios.get(`http://localhost:8000/questions/${id}`);
+        
         if (highlight) {
-            console.log("abc");
-            const userAnswers = response.data.answers.filter(a => a.ans_by._id === currentUser._id);
-            console.log(userAnswers);
-            const otherAnswers = response.data.answers.filter(a => a.ans_by._id !== currentUser._id);
+            const userAnswers = response.data.answers.filter(a => a.ans_by._id === (profileId || (currentUser._id || currentUser.id)));
+            const otherAnswers = response.data.answers.filter(a => a.ans_by._id !== (profileId || (currentUser._id || currentUser.id)));
             userAnswers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
             otherAnswers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
+            console.log(userAnswers);
+            console.log(otherAnswers);
             setQuestion({
                 ...response.data,
                 answers: [...userAnswers, ...otherAnswers]
             });
+            console.log(question);
         }else{
-            console.log("qwz");
             setQuestion({...response.data, answers: response.data.answers.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time))});
         }
-        console.log(id);
-        fetchComments(id, 'question');  // Fetch comments related to the question
+        fetchComments(id, 'question');  
         response.data.answers.forEach(answer => {
-            fetchComments(answer._id, 'answer');  // Fetch comments for each answer
+            fetchComments(answer._id, 'answer');  
         });
-        console.log(comments);
 
     };
     const fetchComments = async (targetId, type) => {
@@ -113,12 +95,8 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                 setComments(sortedComments);
             } else if (type === 'answer') {
                 setA_Comments(prev => ({ ...prev, [targetId]: sortedComments }));
-    
-                // Calculate max comment pages for the answer
-                const answerCommentsCount = sortedComments.length;
-                const answerMaxPages = Math.ceil(answerCommentsCount / commentsPerPage);
-
-                setMaxCommentPages(prev => ({ ...prev, [targetId]: answerMaxPages }));
+                setA_commentTotalPages(prev => ({ ...prev, [targetId]: Math.ceil(sortedComments.length / commentsPerPage) }));
+                setA_commentCurrentPage(prev => ({ ...prev, [targetId]: 1 }));
             }
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -126,60 +104,22 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     };
     
     const fetchVotes = async () => {
-        const response = await axios.get(`http://localhost:8000/users/${currentUser._id}/votes`);
+        const response = await axios.get(`http://localhost:8000/users/${currentUser.id || currentUser._id}/votes`);
+        const newA_upvoted = {};
+        const newA_downvoted = {};
         setUpvoted(response.data.upVotes.includes(id));
         setDownvoted(response.data.downVotes.includes(id));
-        setA_upvoted(response.data.A_upVotes.includes(id));
-        setA_downvoted(response.data.A_downVotes.includes(id));
+
+        response.data.A_upVotes.forEach(answerId => {
+            newA_upvoted[answerId] = true;
+        });
+        response.data.A_downVotes.forEach(answerId => {
+            newA_downvoted[answerId] = true;
+        });
+        setA_upvoted(newA_upvoted);
+        setA_downvoted(newA_downvoted);
+        
     }
-
-
-    const handleNext = () => {
-        const nextPage = currentPage === totalPages ? 1 : currentPage + 1;
-        setCurrentPage(nextPage);
-        setStartIndex((nextPage - 1) * pageSize);
-    };
-    
-    
-    const handlePrev = () => {
-        if (currentPage > 1) {
-            const prevPage = currentPage - 1;
-            setCurrentPage(prevPage);
-            setStartIndex((prevPage - 1) * pageSize);
-        }
-    };
-
-    const handleNextCommentPage = () => {
-        setCurrentCommentPage(prevPage => (prevPage === maxCommentPage ? 0 : prevPage + 1));
-    };
-    
-    const handlePrevCommentPage = () => {
-        setCurrentCommentPage(prevPage => (prevPage > 0 ? prevPage - 1 : 0));
-    };
-
-
-    const handleNextAnswerCommentPage = (answerId) => {
-        setCurrentAnswerCommentPages(prevPages => {
-            const nextPage = prevPages[answerId] >= (maxCommentPages[answerId] - 1) ? 0 : prevPages[answerId] + 1;
-            console.log(`Next - Current: ${prevPages[answerId]}, Max: ${maxCommentPages[answerId]}, Next: ${nextPage}`);
-            return { ...prevPages, [answerId]: nextPage };
-        });
-    };
-
-    const handlePrevAnswerCommentPage = (answerId) => {
-        setCurrentAnswerCommentPages(prevPages => {
-            const prevPage = prevPages[answerId] <= 0 ? maxCommentPages[answerId] - 1 : prevPages[answerId] - 1;
-            console.log(`Prev - Current: ${prevPages[answerId]}, Max: ${maxCommentPages[answerId]}, Prev: ${prevPage}`);
-            return { ...prevPages, [answerId]: prevPage };
-        });
-    };
-
-    
-    
-    
-    
-    
-    
     
 
     useEffect(() => {
@@ -187,7 +127,46 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
         if(currentUser){
             fetchVotes();
         }
+        
     }, [id, currentUser, highlight]);
+
+    const pageSize = 5;
+    if(!question){
+        return <div></div>
+    }
+    const totalPages = Math.ceil(question.answers.length / pageSize);
+
+    const handleNext = () => {
+        setCurrentPage((prev) => (prev === totalPages ? 1 : prev + 1));
+    };
+
+    const handlePrev = () => {
+        setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+    };
+
+    const displayedAnswers = question.answers.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    const totalCommentPages = Math.ceil(comments.length / commentsPerPage);
+    const displayedComments = comments.slice(
+        (currentCommentPage - 1) * commentsPerPage,
+        currentCommentPage * commentsPerPage
+    );
+    const handleNextCommentPage = () => {
+        setCurrentCommentPage((prevPage) => prevPage === totalCommentPages ? 1 : prevPage + 1);
+    };
+
+    const handlePrevCommentPage = () => {
+        setCurrentCommentPage((prevPage) => prevPage > 1 ? prevPage - 1 : 1);
+    };
+
+    const handleAnswerCommentNavigation = (answerId, direction) => {
+        setA_commentCurrentPage(prev => {
+            const newPage = direction === 'next' ? (prev[answerId] === A_commentTotalPages[answerId] ? 1 : prev[answerId] + 1) : (prev[answerId] > 1 ? prev[answerId] - 1 : A_commentTotalPages[answerId]);
+            return { ...prev, [answerId]: newPage };
+        });
+    };
+
+
 
     const handleVote = async (id, type, isQuestion) => {
         const endpoint = isQuestion ? (type === 'up' ? `questions/upvote/${id}`:`questions/downvote/${id}`) : (type === 'up' ? `answers/upvote/${id}`:`answers/downvote/${id}`);
@@ -199,7 +178,6 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
             }
         } catch (error) {
             if (error.response) {
-                console.log("abc");
                 if(currentUser){
                     alert(error.response.data.error);
                 }
@@ -208,12 +186,13 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     }
     const commentUpvote = async (commentId, targetId, type) => {
         try {
+            const alreadyUpvoted = !!commentVotes[commentId];
+            const newVotes = { ...commentVotes, [commentId]: !alreadyUpvoted };
             await axios.post(`http://localhost:8000/comments/upvote/${commentId}`);
-            // Refresh comments to show new vote count
+            setCommentVotes(newVotes);
             fetchComments(targetId, type);
         } catch (error) {
             if (error.response) {
-                console.log("abc");
                 if(currentUser){
                     alert(error.response.data.error);
                 }
@@ -224,57 +203,63 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
     if (!question) {    
         return <div></div>;
     }
+    if (!question.answers) {    
+        return <div></div>;
+    }
+    if (!A_comments) {    
+        return <div></div>;
+    }
     const voted = (isActive) => isActive ? "voted" : "vote";
     const answer_s = question.answers.length === 1 ? 'answer' : 'answers';
     const view_s = question.views === 1 ? 'view' : 'views';
     const votes_s = question.votes === 1 ? 'vote' : 'votes';
-    comments.map(comment =>{console.log(comment._id)});
     
 
     return (
         <>
-            
-            <div id = "ansSec-A">
-                <div className ="ans_count" id="ans_count">{question.answers.length}</div> 
-                &nbsp;
-                <div className ="answer-s-" id="answer-s-">{answer_s}</div>
-                <div className ="Ques_title" id="Ques_title">{question.title}</div>
-                <div className="button-container">
-                    {currentUser && (
-                        <button className="button1" id="button1" onClick={AskQuestion}>Ask Question</button>
-                    )}
-                    {currentUser && currentUser._id === question.asked_by._id && (
-                        <button className="edit-q-button" onClick={() => navigate(`/home/ask/${question._id}`)}>Edit Question</button>
-                    )}
-                </div>
-            </div>
-            <div  id="ans-page-tags" className='tag_cont'>
-                {question.tags.map(tag => (
-                    <div key={`${tag.id}`} id='tag_cont'>{tag.name}</div>
-                ))}
-            </div>
-            <div id = "ansSec-B">
-                <div id = "Adata">
-                    <div className ="viewC" id="viewC">{question.views}</div> 
+            <div className = "ques_sec">
+                <div id = "ansSec-A">
+                    <div className ="ans_count" id="ans_count">{question.answers.length}</div> 
                     &nbsp;
-                    <div className ="view-s-" id="view-s-">{view_s}</div>
-                    &nbsp;
-                    <div className='votebox'>
-                        {currentUser && <svg width="36" height="36" className= {voted(upvoted)} onClick={() => handleVote(id,'up', true)}>
-                            <path d="M2 26h32L18 10 2 26z" ></path>
-                        </svg>}
-                        <span className='votesC'>{question.votes} {votes_s}</span>
-                        {currentUser && <svg width="36" height="36" className= {voted(downvoted)} onClick={() => handleVote(id,'down', true)}>
-                            <path d="M2 10h32L18 26 2 10z" ></path>
-                        </svg>}
+                    <div className ="answer-s-" id="answer-s-">{answer_s}</div>
+                    <div className ="Ques_title" id="Ques_title">{question.title}</div>
+                    <div className="button-container">
+                        {currentUser && (
+                            <button className="button1" id="button1" onClick={AskQuestion}>Ask Question</button>
+                        )}
+                        {currentUser && ((profileId || (currentUser._id || currentUser.id)) === question.asked_by._id) && (
+                            <button className="edit-q-button" onClick={() => navigate(`/home/ask/${question._id}`)}>Edit Question</button>
+                        )}
                     </div>
                 </div>
-                <div className ="ques_text" id="ques_text" dangerouslySetInnerHTML={{ __html: question.text}}></div>
-                <div  id = 'Qans_metadata'>
-                    <span id = 'Qans_name' >{question.asked_by.username}</span>
-                    <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
+                <div  id="ans-page-tags" className='tag_cont'>
+                    {question.tags.map(tag => (
+                        <div key={`${tag.id}`} id='tag_cont'>{tag.name}</div>
+                    ))}
                 </div>
+                <div id = "ansSec-B">
+                    <div id = "Adata">
+                        <div className ="viewC" id="viewC">{question.views}</div> 
+                        &nbsp;
+                        <div className ="view-s-" id="view-s-">{view_s}</div>
+                        &nbsp;
+                        <div className='votebox'>
+                            {currentUser && <svg width="36" height="36" className= {voted(upvoted)} onClick={() => handleVote(id,'up', true)}>
+                                <path d="M2 26h32L18 10 2 26z" ></path>
+                            </svg>}
+                            <span className='votesC'>{question.votes} {votes_s}</span>
+                            {currentUser && <svg width="36" height="36" className= {voted(downvoted)} onClick={() => handleVote(id,'down', true)}>
+                                <path d="M2 10h32L18 26 2 10z" ></path>
+                            </svg>}
+                        </div>
+                    </div>
+                    <div className ="ques_text" id="ques_text" dangerouslySetInnerHTML={{ __html: question.text}}></div>
+                    <div  id = 'Qans_metadata'>
+                        <span id = 'Qans_name' >{question.asked_by.username}</span>
+                        <span id = 'Qans_time' > asked {getTimeStamp(question.ask_date_time)}</span>
+                    </div>
 
+                </div>
                 <div className="comments-section">
                     <h3 style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
                         {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
@@ -288,51 +273,27 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                         </div>
                     )}
 
-                    {/* {displayedComments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(comment => (
-                        <Comment key={comment._id} comment={comment} canUpvote={currentUser} onUpvote={() => commentUpvote(comment._id, id, 'question')} />
-                    ))} */}
-
-                    {comments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(
-                        currentCommentPage * commentsPerPage,
-                        (currentCommentPage + 1) * commentsPerPage
-                    ).map(comment => (
-                        <Comment key={comment._id} comment={comment} canUpvote={currentUser} onUpvote={() => commentUpvote(comment._id, id, 'question')} />
+                    {displayedComments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(comment => (
+                        <Comment key={comment._id} comment={comment} canUpvote={currentUser} onUpvote={() => commentUpvote(comment._id, id, 'question')} isUpvoted={commentVotes[comment._id]}/>
                     ))}
-
+                    {comments.length >= 1 && (
                     <div className="comment-pn-buttons">
                         <button onClick={handlePrevCommentPage} disabled={currentCommentPage === 0}>Prev</button>
-                        <span className="cm-page-info">{currentCommentPage + 1} / {maxCommentPage + 1}</span>
+                        <span className="cm-page-info">{currentCommentPage} / {totalCommentPages}</span>
                         <button onClick={handleNextCommentPage}>Next</button>
                     </div>
+                    )}
                 </div>
-
             </div>
-            
-                {/* <div className="comments-section">
-                    <h3 style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-                        {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
-                    </h3>
-                    
-                    {displayedComments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(comment => (
-                        <Comment key={comment._id} comment={comment} canUpvote={currentUser} onUpvote={() => commentUpvote(comment._id, id, 'question')} />
-                    ))}
-                    {currentUser && (<>
-                        <textarea value={commentText[id] || ''} onChange={(e) => handleCommentChange(e.target.value, id)} />
-                        {commentError[id] && <p className="error">{commentError[id]}</p>}
-                        <button onClick={() => submitComment(id, 'question')} >Post Comment</button>
-                    </>)}
-                </div> */}
-            
-
             {displayedAnswers.map(answer => (
                 <div key={answer._id}>
                     <div id='sectionAns'>
                         <div className='votebox'>
-                            {currentUser && <svg width="36" height="36" className={voted(a_upvoted)} onClick={() => handleVote(answer._id, 'up', false)}>
+                            {currentUser && <svg width="36" height="36"  className= {a_upvoted[answer._id] ? "voted" : "vote"} onClick={() => handleVote(answer._id, 'up', false)}>
                                 <path d="M2 26h32L18 10 2 26z"></path>
                             </svg>}
                             <span className='votesC'>{answer.votes} {answer.votes === 1 ? 'vote' : 'votes'}</span>
-                            {currentUser && <svg width="36" height="36" className={voted(a_downvoted)} onClick={() => handleVote(answer._id, 'down', false)}>
+                            {currentUser && <svg width="36" height="36" className= {a_downvoted[answer._id] ? "voted" : "vote"} onClick={() => handleVote(answer._id, 'down', false)}>
                                 <path d="M2 10h32L18 26 2 10z"></path>
                             </svg>}
                         </div>
@@ -341,14 +302,11 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                             <div id='Ans_name'>{answer.ans_by.username}</div>
                             <span id='Ans_time'> answered {getTimeStamp(answer.ans_date_time)}</span>
                         </div>
-                        {currentUser && currentUser._id === answer.ans_by._id && (<button className='edit-button' onClick={() => navigate(`/home/answer/edit/${answer._id}`, { state: { questionId: id } })}>Edit Answer</button>)}
-                        
-                        
+                        {currentUser && ((profileId || (currentUser._id || currentUser.id)) === answer.ans_by._id) && (<button className='edit-button' onClick={() => navigate(`/home/answer/edit/${answer._id}`, { state: { questionId: id } })}>Edit Answer</button>)}
                         <div className="comments-section">
                             <h3 style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
                                 {A_comments[answer._id]?.length || 0} {A_comments[answer._id]?.length === 1 ? 'Comment' : 'Comments'}
                             </h3>
-
                             {currentUser && (
                                 <div className="comment-input">
                                     <textarea 
@@ -359,51 +317,48 @@ export default function Answers({answers, AskQuestion, handleAnswerQuestion, Add
                                     <button onClick={() => submitComment(answer._id, 'answer')}>Comment</button>
                                 </div>
                             )}
-
                             {(A_comments[answer._id] || []).slice(
-                                currentAnswerCommentPages[answer._id] * commentsPerPage,
-                                (currentAnswerCommentPages[answer._id] + 1) * commentsPerPage
+                            (A_commentCurrentPage[answer._id] - 1) * commentsPerPage,
+                            A_commentCurrentPage[answer._id] * commentsPerPage
                             ).map(comment => (
                                 <Comment 
                                     key={comment._id} 
                                     comment={comment} 
                                     canUpvote={currentUser} 
                                     onUpvote={() => commentUpvote(comment._id, answer._id, 'answer')}
+                                    isUpvoted={commentVotes[comment._id]}
                                 />
                             ))}
-
-                            <div className="comment-pn-buttons">
-                                <button 
-                                    onClick={() => handlePrevAnswerCommentPage(answer._id)}
-                                    disabled={currentAnswerCommentPages[answer._id] === 0}
-                                >
+                            {(A_comments[answer._id] || []).length >= 1 && (
+                                <div className="comment-pn-buttons">
+                                    <button onClick={() => handleAnswerCommentNavigation(answer._id, 'prev')} disabled={A_commentCurrentPage[answer._id] === 1}>
                                     Prev
-                                </button>
-                                <span className="cm-page-info">
-                                    {currentAnswerCommentPages[answer._id] + 1} / {(maxCommentPages[answer._id] || 1)}
-                                </span>
-                                <button 
-                                    onClick={() => handleNextAnswerCommentPage(answer._id)}
-                                >
+                                    </button>
+                                    <span className="cm-page-info">
+                                    {A_commentCurrentPage[answer._id]} / {A_commentTotalPages[answer._id]}
+                                    </span>
+                                    <button  onClick={() => handleAnswerCommentNavigation(answer._id, 'next')}>
                                     Next
-                                </button>
-                            </div>
+                                    </button>
+                                </div>
+                            )}
                         </div>
-
-
-
                     </div>
                 </div>
             ))}
 
             {currentUser && (<button className = "button1" id="button2" key = {question._id} onClick={() => navigate(`/home/answer/new`, { state: { questionId: id } })}>Answer Question</button>)}
-
-            <div className="pn-buttons">
-                <button disabled={currentPage === 1} onClick={handlePrev}>Prev</button>
-                <span className="page-info">{currentPage} / {totalPages}</span>
-                <button onClick={handleNext}>Next</button>
-            </div>
-
+            {question.answers.length > 0 && (
+                <div>
+                    {totalPages >= 1 && (
+                        <div className="pn-buttons">
+                            <button disabled={currentPage === 1} onClick={handlePrev}>Prev</button>
+                            <span className="page-info">{currentPage} / {totalPages}</span>
+                            <button onClick={handleNext}>Next</button>
+                        </div>
+                    )}
+                </div>
+            )}
       </>
   );
 }

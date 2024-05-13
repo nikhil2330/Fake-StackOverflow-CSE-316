@@ -21,10 +21,8 @@ const Admin = () => {
     }, []);
 
     const handleDeleteUser = async (userId) => {
-        console.log(userId);
         if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
             try {
-                console.log(userId);
                 await axios.delete(`http://localhost:8000/users/${userId}`);
 
                 setUsers(users.filter(user => user._id !== userId)); 
@@ -34,18 +32,17 @@ const Admin = () => {
             }
         }
     };
-    console.log(users);
 
     return (
-        <div>
-            <h1>Admin Dashboard</h1>
-            <ul>
+        <div className='admin-body'>
+            <h1 className='admin'>Admin Dashboard</h1>
+            <ul className='user'>
                 {users.map(user => (
                     <li key={user._id}>
                         <div className='userDeets'  onClick={() => navigate(`/home/profile/${user._id}`)}>
-                        <span>{user.username}</span>   --- <span>{user.email}</span>  <span> Member Since {getTimeStamp(user.join_date_time)}</span><span>  Reputation:  {user.reputation}</span>
+                        <span className='user-admin-name'>{user.username}</span>   --- <span className='user-email'>{user.email}</span>  <span className='user-time'> Member Since {getTimeStamp(user.join_date_time)}</span><span className='userreputation'>  Reputation:  {user.reputation}</span>
                         </div>
-                        <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
+                        <button className = "delete-user"onClick={() => handleDeleteUser(user._id)}>Delete</button>
                     </li>
                 ))}
             </ul>
