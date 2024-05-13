@@ -21,7 +21,7 @@ function Header({handleChange, handleKeyDown, handleLogout, handleMenu,  active}
       {currentUser ? (<button className='logout' onClick={handleLogout}>Logout</button>) : 
       (<button className='login' onClick={() => navigate('/login')}>Login</button>)}
 
-      {currentUser ? (<button className='profile' onClick={() => navigate(`/home/profile/${currentUser._id}`)}>Profile</button>) : 
+      {currentUser ? (<button className='profile' onClick={() => navigate(`/home/profile/${currentUser._id || currentUser.id}`)}>Profile</button>) : 
       (<button className='signup' onClick={() => navigate('/signup')}>Sign Up</button>)}
 
 

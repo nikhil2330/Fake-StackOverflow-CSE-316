@@ -417,14 +417,17 @@ svg {
     font-weight: 700;
 font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-
+.ques_sec{
+    padding-bottom: 10px;
+    border-bottom: dashed 2px;
+}
 #ansSec-B{
     display: grid;
     grid-template-columns: 80px 700px 200px ; 
     gap: 10px;
     align-items: center;
     padding-bottom: 20px;
-    border-bottom: dashed 2px;
+    
 }
 #Adata{
     display: flex;
@@ -1162,97 +1165,124 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 }
 
 .Prof-title {
-    font-size: 35px;
+    font-size: 24px;
     text-align: center;
-    text-decoration: underline;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #0056b3; 
+    font-weight: bold;
+    padding: 20px 0;
+    border-bottom: 3px solid #ffa041; 
+    margin-bottom: 20px;
+    background-color: #e7f1ff; 
 }
 
 .deet-container {
-    display: grid;
-    grid-template-columns: 80vh 30vh;
-    gap: 20px; /* Adjust the gap as needed */
-    margin: auto; /* Centers the grid horizontally */
-    width: fit-content; /* Adjusts width to fit its contents */
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #e7f1ff; 
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
-
-.deet-box,
-.deet-box-qta {
-    font-size: 20px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: #a4e4ff5d;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    padding: 15px;
-    width: 30vh;
-    text-align: center;
+.deet-box, .deet-box-qta {
+    background-color: #ffffff; 
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 45%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left;
 }
 
-.deet-box p,
-.deet-box-qta p {
-    margin: 5px 0;
+.deet-box p, .deet-box-qta p {
+    margin: 10px 0;
+    line-height: 1.6;
+    color: #333; 
 }
 
 .italic {
     font-style: italic;
-}
-
-.profile-menu button.active {
-    background-color: rgb(36, 139, 249); 
-    border: 2px solid rgb(0, 1, 9); 
+    color: #0056b3; 
 }
 
 .profile-menu {
     display: flex;
-    justify-content: center; 
-    gap: 10vh;
+    justify-content: center;
+    margin: 20px 0;
 }
 
 .profile-menu button {
-    height: 50px;
-    width: 100px;
-    text-align: center;
-    font-size: 18px;
-    background-color: rgb(125, 184, 247); 
-    border: 2px solid rgb(43, 54, 212); 
+    background-color: #ffa041;
+    color: #ffffff; 
+    border: none;
+    padding: 10px 15px;
+    margin: 0 10px;
     border-radius: 5px;
-    margin: 10px 10px; 
-    padding: 10px 20px; 
-    cursor: pointer; 
-    margin-top: 7vh;
-    transition: transform 0.2s ease;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-menu button.active, .profile-menu button:hover {
+    background-color: #cc7a00; 
+}
+
+.question_card, .answer_card{
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.question_card span, .answer_card span {
+    cursor: pointer;
+    color: #007bff; 
+    display: block;
+    margin-bottom: 5px;
+}
+
+.edit {
+    background: none;
+    border: none;
+    color: #28a745; 
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.edit:hover {
+    background-color: #e2e6ea;
+}
+
+.no_content {
+    text-align: center;
+    color: #007bff; 
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f0f8ff; 
+    border-radius: 8px;
+}
+
+
+
+
+.no_quest, .no_ans, .no_tags {
     display: flex;
     justify-content: center;
-    align-items: center; 
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    align-items: center;
+    height: 100px; 
 }
 
-.profile-menu button:hover {
-    background-color: rgba(142, 191, 218, 0.42);
-    border-color:  rgb(0, 15, 228);
-    color: rgb(0, 15, 228);
-    transform: translateY(2px); 
-}
 
-.question_card {
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-align: center;
-    margin-top: 2vh;
-    cursor: pointer; 
-}
-
-.answer_card {
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-align: center;
-    margin-top: 2vh;
-    cursor: pointer; 
-}
-
-.profile-box {
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-align: center;
-    margin-top: 2vh;
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 .quest_content{
     overflow-y: scroll;
@@ -1299,8 +1329,11 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
   .vote-button {
     margin-right: 4px;
   }
+  #comment-upvote{
+    margin-right: 10px;
+  }
   
-  .comment-content {
+  .comment-content {    
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1414,3 +1447,64 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
 } */
 
 
+
+.admin-body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    max-width: 960px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.admin {
+    color: #0056b3;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.user {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.user li {
+    background-color: #e7f1ff;
+    border: 1px solid #007bff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userDeets {
+    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+}
+
+.userDeets:hover {
+    text-decoration: underline;
+}
+
+.delete-user {
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-user:hover {
+    background-color: #cc7a00;
+}
+
+.user-admin-name, .user-email, .user-time, .userreputation {
+    margin-right: 10px;
+}

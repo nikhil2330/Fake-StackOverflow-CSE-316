@@ -41,7 +41,7 @@ module.exports.registerUser = async (req, res) => {
 };
 
 module.exports.getUserDetails = async (req, res) => {
-    console.log("Fetching details for user ID:", req.params.userId);
+
     try {
         const user = await User.findById(req.params.userId).select('-password');  
         if (!user) {
@@ -55,7 +55,6 @@ module.exports.getUserDetails = async (req, res) => {
 
 module.exports.getUserQuestions = async (req,res) => {
     try {
-    console.log("Fetching details for user ID:", req.params.userId);
     const user = await User.findById(req.params.userId).populate('questions', 'title ask_date_time' );
     
     const questions = user.questions.map(question => {
@@ -103,7 +102,6 @@ module.exports.getUserAnswerQuestions = async (req,res) => {
     });
     
     const answerQuestions = Object.values(uniqueQuestions);
-    console.log(answerQuestions);
     
     res.json(answerQuestions);
     } catch (error) {

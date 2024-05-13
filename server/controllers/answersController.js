@@ -91,7 +91,7 @@ module.exports.upvoteAnswer = async (req, res) => {
 
 module.exports.countUserAnswers = async (req, res) => {
     try {
-        const count = await Answer.countDocuments({ ans_by: req.user.userId });
+        const count = await Answer.countDocuments({ ans_by: req.params.id });
         res.json({ count });
     } catch (error) {
         console.error('Failed to count answers:', error);
@@ -199,8 +199,6 @@ module.exports.deleteAnswer= async (req, res)=> {
 
         await Comment.deleteMany({ answer: id });
         await Answer.findByIdAndDelete(id);
-        // const user = await User.findById(req.user.userId);
-        // console.log(user);
         res.json({ message: "Answer and associated data deleted successfully" });
     } catch (error) {
         console.error('Failed to delete Answer:', error);

@@ -7,7 +7,6 @@ const Comment = require('../models/comments')
 module.exports.createQuestion = async (req, res) => {
     try{
         const {title, text, tags, summary} = req.body;
-        console.log(req.body);
         const user = await User.findById(req.user.userId);
         const tagsarr = tags.split(/\s+/).filter((value, index, self) => value && self.indexOf(value) === index);
         const T_exist = await Tag.find({ name: { $in: tagsarr } });
@@ -34,7 +33,6 @@ module.exports.createQuestion = async (req, res) => {
         }
     
         const allTags = [...T_exist, ...newTags];
-        console.log(user.username);
         const newQuestion = new Question({
             title,
             text,
@@ -46,7 +44,6 @@ module.exports.createQuestion = async (req, res) => {
             votes: 0,
             answers: [],
         });
-        console.log(newQuestion);
         user.questions.push(newQuestion._id);
         await user.save();
         await newQuestion.save();
@@ -318,7 +315,6 @@ module.exports.deleteQuestion = async (req, res)=> {
         );
         await Question.deleteOne({ _id: id });
         const user = await User.findById(req.user.userId);
-        console.log(user);
         res.json({ message: "Question and associated data deleted successfully" });
     } catch (error) {
         console.error('Failed to delete question:', error);
