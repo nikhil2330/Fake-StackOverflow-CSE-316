@@ -60,7 +60,6 @@ export default function AskQuestionPage({postquestion}) {
         document.getElementById("text_error").textContent = "Hyperlinks must be in the format [name](http(s)://link).";
         flag = 1;
       }
-      console.log("a");
       if(flag !== 1){
         const newText = text.replace(validHyperlink, (match, name, link) => `<a href="${link}" target="_blank">${name}</a>`);
         const data = {

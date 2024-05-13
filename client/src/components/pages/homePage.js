@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Top from '../top'
 import QuestionList from '../questionList';
 
-const HomePage = ({ handleSortNewest, title, handleSortActive, handleSortUnanswered, questions, AskQuestion, displayAnswers, QuestionC, filter}) => {
+const HomePage = ({ handleSortNewest, title, handleSortActive, handleSortUnanswered, questions, AskQuestion, displayAnswers, QuestionC, filter, profileId}) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const resetPage = () => {
@@ -26,6 +26,7 @@ const HomePage = ({ handleSortNewest, title, handleSortActive, handleSortUnanswe
                 displayAnswers={displayAnswers} 
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage} 
+                profileId={profileId}
             />
         </div>
     );

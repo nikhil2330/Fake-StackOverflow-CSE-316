@@ -85,7 +85,6 @@
         }
       }).then(response => {
         setTitle("Search Results");
-        console.log(title);
         setQuestions(newest(response.data));
         setCurrentQuestions(newest(response.data));
         navigate('/home');
@@ -115,10 +114,8 @@
     };
 
     const handleTagClick =(tid) => {
-      console.log("abc"); 
       axios.get(`http://localhost:8000/questions/tag/${tid}`)
       .then(response => {
-          console.log("abc"); 
           setQuestions(response.data);
           setCurrentQuestions(response.data);
           navigate('/home');
@@ -130,12 +127,11 @@
     };
 
 
-    const fetchQuestionDetails = async (qid, fromProfile) => {
+    const fetchQuestionDetails = async (qid, fromProfile, userId=null) => {
       try {
         const response = await axios.get(`http://localhost:8000/questions/${qid}`);
         if (response.status === 200) {
-          console.log("Navigating with highlight:", fromProfile);
-          navigate(`home/question/${qid}`,{ state: { highlight: fromProfile } });
+          navigate(`home/question/${qid}`,{ state: { highlight: fromProfile, profileId: userId  } });
 
         }
       } catch (error) {
@@ -143,10 +139,10 @@
       }
     };
 
-    const handleAnswerClick = (qid, fromProfile) => {
-      console.log("Navigating with highlight:", fromProfile);
+    const handleAnswerClick = (qid, fromProfile, userId=null) => {
+      console.log(userId);
       incrementViews(qid);
-      fetchQuestionDetails(qid, fromProfile);
+      fetchQuestionDetails(qid, fromProfile, userId);
       
     };
     const handleMenu = async (e) => {

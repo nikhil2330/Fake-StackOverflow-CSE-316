@@ -5,10 +5,8 @@ const User = require('../models/user');
 
 module.exports.getComments = async (req, res) => {
     const { targetId, type } = req.query; 
-    console.log(targetId);
     try {
         const comments = await Comment.find({ [type]: targetId }).populate('commented_by', 'username').populate('created_at');
-        console.log(comments);
         res.json(comments);
     } catch (error) {
         res.status(500).send("Error fetching comments: " + error.message);
@@ -23,7 +21,6 @@ module.exports.addComment = async (req, res) => {
     }
     try {
         const user = await User.findById(req.user.userId);
-        console.log(user);
         if (user.reputation < 50) {
             return res.status(403).send("You require a minimum repuation of 50 to add comments.");
         }
@@ -51,7 +48,6 @@ module.exports.upvoteComment = async (req, res) => {
         if (!comment) {
             return res.status(404).json({ message: 'Comment not found' });
         }
-        console.log(userId, commentId);
         const alreadyUpvoted = comment.upvoters.includes(userId);
         if (alreadyUpvoted) {
             comment.votes -= 1;

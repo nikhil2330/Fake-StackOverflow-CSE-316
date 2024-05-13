@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router-dom';
 function Header({handleChange, handleKeyDown, handleLogout, handleMenu,  active}) {
   const { currentUser } = useAuth();
   let navigate = useNavigate();
-//   if (!currentUser._id) {
-//     return <div>Loading...</div>; 
-// }
-  
   return (
     <header id="header">
         <h1>
@@ -25,7 +21,7 @@ function Header({handleChange, handleKeyDown, handleLogout, handleMenu,  active}
       {currentUser ? (<button className='logout' onClick={handleLogout}>Logout</button>) : 
       (<button className='login' onClick={() => navigate('/login')}>Login</button>)}
 
-      {currentUser ? (<button className='profile' onClick={() => navigate(`/home/profile/${currentUser._id}`)}>Profile</button>) : 
+      {currentUser ? (<button className='profile' onClick={() => navigate(`/home/profile/${currentUser._id || currentUser.id}`)}>Profile</button>) : 
       (<button className='signup' onClick={() => navigate('/signup')}>Sign Up</button>)}
 
 

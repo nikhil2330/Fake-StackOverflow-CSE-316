@@ -9,7 +9,6 @@ const userSchema = new Schema({
     join_date_time:{type: Date, default: Date.now, required: true},
     questions: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
     answers: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
-    //comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     upVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
     downVotes: [{ type: Schema.Types.ObjectId, ref: 'Question' }],
